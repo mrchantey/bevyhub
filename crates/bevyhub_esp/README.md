@@ -1,6 +1,6 @@
-# Beet Esp
+# Bevyhub ESP
 
-This crate is an exploration of the use of Bevy & Beet in microcontrollers. The initial focus is on the ESP32-S3-WROOM-1-N16R8, purchasable for < $10, ie [here](https://www.aliexpress.us/item/1005004617322170.html). 
+This crate is an exploration of the use of Bevy in microcontrollers. The initial focus is on the ESP32-S3-WROOM-1-N16R8, purchasable for < $10, ie [here](https://www.aliexpress.us/item/1005004617322170.html). 
 
 
 - [Hello World Demo](https://youtu.be/R-q5iJ98X40)

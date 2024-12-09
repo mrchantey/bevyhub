@@ -1431,7 +1431,7 @@ dependencies = [
 
 [[package]]
 name = "bevyhub"
-version = "0.0.7"
+version = "0.0.1-rc.1"
 dependencies = [
  "anyhow",
  "bevy",
@@ -1444,7 +1444,7 @@ dependencies = [
 
 [[package]]
 name = "bevyhub-cli"
-version = "0.0.7"
+version = "0.0.1-rc.1"
 dependencies = [
  "anyhow",
  "clap",
@@ -1453,7 +1453,7 @@ dependencies = [
 
 [[package]]
 name = "bevyhub_core"
-version = "0.0.7"
+version = "0.0.1-rc.1"
 dependencies = [
  "anyhow",
  "bevy",
@@ -1468,7 +1468,7 @@ dependencies = [
 
 [[package]]
 name = "bevyhub_net"
-version = "0.0.7"
+version = "0.0.1-rc.1"
 dependencies = [
  "anyhow",
  "bevy",
@@ -1497,7 +1497,7 @@ dependencies = [
 
 [[package]]
 name = "bevyhub_scene"
-version = "0.0.7"
+version = "0.0.1-rc.1"
 dependencies = [
  "anyhow",
  "bevy",
@@ -1513,7 +1513,7 @@ dependencies = [
 
 [[package]]
 name = "bevyhub_server"
-version = "0.0.7"
+version = "0.0.1-rc.1"
 dependencies = [
  "anyhow",
  "axum",
@@ -1539,7 +1539,7 @@ dependencies = [
 
 [[package]]
 name = "bevyhub_template"
-version = "0.0.7"
+version = "0.0.1-rc.1"
 dependencies = [
  "bevy",
  "bevyhub",

@@ -53,7 +53,7 @@ build-wasm *args:
 	--copy-local ../bevyhub-apps \
 	--copy-scenes scenes \
 	--copy-registries target/registries {{args}}
-	@echo "🚀 exporting beet"
+	@echo "🚀 exporting bevyhub_template"
 	cd crates/bevyhub_template && just export-scenes
 	bevyhub build \
 	-p bevyhub_template --example app \
