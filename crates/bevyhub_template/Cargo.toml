@@ -1,0 +1,53 @@
+[package]
+name = "bevyhub_template"
+version.workspace = true
+edition.workspace = true
+description = "An example workflow for publishing Bevy apps and scenes to Bevyhub."
+documentation.workspace = true
+readme = "README.md"
+homepage.workspace = true
+repository.workspace = true
+license.workspace = true
+keywords.workspace = true
+categories.workspace = true
+publish = true
+
+[dependencies]
+bevyhub.workspace = true
+bevy = { workspace = true, default-features = true }
+
+### 👋 1 - An empty scene
+
+# yep, this is a valid scene!
+[[package.metadata.scene]]
+name = "hello-world"
+# path will default to 'scenes/hello-world.json'
+
+### 🎥 2 - A base scene
+
+# you may like to create base sceness upon which others can build
+[[package.metadata.scene]]
+name = "my-base-scene"
+# add some metadata so it looks great on bevyhub.org
+description = "Simply default plugins, a light and a 3d camera with a sensible offset."
+thumb-text = "🎥"
+# here we can specify the path to the scene file
+path = "scenes/my-base-scene.json"
+# specifying the path to a wasm app is a great way to share a demo of your scene
+app.js-url = "https://mrchantey.github.io/bevyhub-apps/bevyhub_template/app.js"
+app.wasm-url = "https://mrchantey.github.io/bevyhub-apps/bevyhub_template/app_bg.wasm"
+app.type-registry-url = "https://mrchantey.github.io/bevyhub-apps/bevyhub_template/registries/type_registry.json"
+app.replication-registry-url = "https://mrchantey.github.io/bevyhub-apps/bevyhub_template/registries/replication_registry.json"
+
+### 🚀 3 - A demo scene
+
+# this example includes a scene and demo configuration
+[[package.metadata.scene]]
+name = "my-beautiful-scene"
+description = "A beautiful cube gloriously perched upon a circular platform!"
+path = "scenes/my-beautiful-scene.json"
+thumb-url = "https://bevyengine.org/processed_images/3d_scene.303294348e55980f.png"
+# we can specify another scene here to use its app
+app = "my-base-scene"
+# include other scenes to have them and all of their includes also loaded
+include = ["hello-world"]

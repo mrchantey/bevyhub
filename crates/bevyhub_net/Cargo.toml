@@ -1,0 +1,76 @@
+[package]
+name = "bevyhub_net"
+version.workspace = true
+edition.workspace = true
+description = "A lightweight Bevy replication library."
+documentation.workspace = true
+homepage.workspace = true
+repository.workspace = true
+license.workspace = true
+keywords.workspace = true
+categories.workspace = true
+
+[features]
+default = ["serde_json"]
+serde_json = ["dep:serde_json"]
+tokio = ["dep:tokio", "dep:tokio-tungstenite", "dep:futures-util"]
+# default = ["bevy_replicon"]
+# bevy_replicon = ["dep:bevy_replicon"]
+
+[dependencies]
+forky.workspace = true
+log.workspace = true
+anyhow.workspace = true
+extend.workspace = true
+
+#💡io
+serde.workspace = true
+serde_json = { workspace = true, optional = true }
+bincode = "1"
+# these probs should be workspace dependencies
+ron = "0.8"
+flume = "0.11"
+
+strum.workspace = true
+strum_macros.workspace = true
+# futures.workspace = true
+# parking_lot.workspace = true
+
+# strum.workspace = true
+# strum_macros.workspace = true
+
+bevy = { workspace = true, default-features = false }
+
+[target.'cfg(not(target_arch = "wasm32"))'.dependencies]
+tokio = { workspace = true, optional = true }
+tokio-tungstenite = { workspace = true, optional = true }
+futures-util = { workspace = true, optional = true }
+
+
+[target.'cfg(target_arch = "wasm32")'.dependencies]
+forky.workspace = true
+web-sys.workspace = true
+js-sys.workspace = true
+wasm-bindgen.workspace = true
+wasm-bindgen-futures.workspace = true
+
+# tokio = { workspace = true, optional = true }
+# [target.'cfg(not(target_arch = "wasm32"))'.dependencies]
+
+[dev-dependencies]
+bevyhub_scene = { workspace = true, features = ["test"] }
+pretty_env_logger.workspace = true
+sweet.workspace = true
+rand.workspace = true
+[target.'cfg(not(target_arch = "wasm32"))'.dev-dependencies]
+tokio.workspace = true
+
+[[example]]
+name = "client"
+path = "examples/client.rs"
+required-features = ["tokio"]
+
+[[example]]
+name = "two_clients"
+path = "examples/two_clients.rs"
+required-features = ["tokio"]

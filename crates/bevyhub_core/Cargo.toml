@@ -1,0 +1,32 @@
+[package]
+name = "bevyhub_core"
+version.workspace = true
+edition.workspace = true
+description.workspace = true
+documentation.workspace = true
+homepage.workspace = true
+repository.workspace = true
+license.workspace = true
+keywords.workspace = true
+categories.workspace = true
+
+
+[features]
+default = ["render"]
+render = ["scene", "bevy/bevy_render"]
+scene = ["bevy/bevy_scene", "bevy/serialize", "dep:bevyhub_scene"]
+test = ["dep:sweet"]
+
+[dependencies]
+forky.workspace = true
+bevyhub_net.workspace = true
+bevyhub_scene = { workspace = true, optional = true }
+bevy.workspace = true
+log.workspace = true
+anyhow.workspace = true
+serde.workspace = true
+extend.workspace = true
+sweet = { workspace = true, optional = true }
+
+[dev-dependencies]
+sweet.workspace = true

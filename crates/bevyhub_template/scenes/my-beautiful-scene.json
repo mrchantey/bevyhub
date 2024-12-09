@@ -1,0 +1,121 @@
+{
+  "resources": {},
+  "entities": {
+    "4294967302": {
+      "components": {
+        "bevyhub_scene::utils::bundle_placeholder::BundlePlaceholder": {
+          "Pbr": {
+            "mesh": {
+              "Circle": {
+                "radius": 4.0
+              }
+            },
+            "material": {
+              "Color": {
+                "LinearRgba": {
+                  "red": 1.0,
+                  "green": 1.0,
+                  "blue": 1.0,
+                  "alpha": 1.0
+                }
+              }
+            }
+          }
+        },
+        "bevy_core::name::Name": "Circle",
+        "bevy_transform::components::global_transform::GlobalTransform": [
+          1.0,
+          0.0,
+          0.0,
+          0.0,
+          1.0,
+          0.0,
+          0.0,
+          0.0,
+          1.0,
+          0.0,
+          0.0,
+          0.0
+        ],
+        "bevy_transform::components::transform::Transform": {
+          "translation": [
+            0.0,
+            0.0,
+            0.0
+          ],
+          "rotation": [
+            -0.70710677,
+            0.0,
+            0.0,
+            0.70710677
+          ],
+          "scale": [
+            1.0,
+            1.0,
+            1.0
+          ]
+        }
+      }
+    },
+    "4294967303": {
+      "components": {
+        "bevyhub_scene::utils::bundle_placeholder::BundlePlaceholder": {
+          "Pbr": {
+            "mesh": {
+              "Cuboid": {
+                "half_size": [
+                  0.5,
+                  0.5,
+                  0.5
+                ]
+              }
+            },
+            "material": {
+              "Color": {
+                "Srgba": {
+                  "red": 0.4862745,
+                  "green": 0.5647059,
+                  "blue": 1.0,
+                  "alpha": 1.0
+                }
+              }
+            }
+          }
+        },
+        "bevy_core::name::Name": "Cube",
+        "bevy_transform::components::global_transform::GlobalTransform": [
+          1.0,
+          0.0,
+          0.0,
+          0.0,
+          1.0,
+          0.0,
+          0.0,
+          0.0,
+          1.0,
+          0.0,
+          0.0,
+          0.0
+        ],
+        "bevy_transform::components::transform::Transform": {
+          "translation": [
+            0.0,
+            0.5,
+            0.0
+          ],
+          "rotation": [
+            0.0,
+            0.0,
+            0.0,
+            1.0
+          ],
+          "scale": [
+            1.0,
+            1.0,
+            1.0
+          ]
+        }
+      }
+    }
+  }
+}

@@ -1,2 +1,3 @@
-# bevyhub
-Crate for interacting with bevyhub.org
+# Bevyhub
+
+A collection of crates related to the [bevyhub site](https://bevyhub.org/docs/bevyhub)

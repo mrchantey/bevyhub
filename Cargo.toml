@@ -1,0 +1,270 @@
+#💡 Enable a small amount of optimization in debug mode
+[profile.dev]
+opt-level = 1
+
+# no measurable difference
+# [profile.wasm-release]
+# inherits = "release"
+# opt-level = "z"
+# lto = "fat"
+# codegen-units = 1
+
+#💡 Enable high optimizations for dependencies (incl. Bevy), but not for our code:
+[profile.dev.package."*"]
+opt-level = 3
+
+[workspace.package]
+version = "0.0.7"
+edition = "2021"
+description = "The number one bevy scene registry."
+documentation = "https://bevyhub.org/docs"
+readme = "README.md"
+homepage = "https://bevyhub.org"
+repository = "https://github.com/mrchantey/bevyhub"
+license = "MIT OR Apache-2.0"
+keywords = ["bevyhub", "behavior", "game-ai", "robotics"]
+categories = [
+	"science::robotics",
+	"game-development",
+	"simulation",
+	"wasm",
+	"embedded",
+]
+
+[workspace]
+resolver = "2"
+members = [
+	"crates/bevyhub_scene",
+	"crates/bevyhub_core",
+	"crates/bevyhub_net",
+	"crates/bevyhub_server",
+	"crates/bevyhub_template",
+	"crates/cli",
+]
+exclude = ["crates/bevyhub_esp"]
+
+
+[workspace.dependencies]
+#💡 internal
+bevyhub = { path = "./", version = "0.0.7" }
+bevyhub_core = { path = "crates/bevyhub_core", version = "0.0.7" }
+bevyhub_net = { path = "crates/bevyhub_net", version = "0.0.7" }
+bevyhub_scene = { path = "crates/bevyhub_scene", version = "0.0.7" }
+bevyhub_server = { path = "crates/bevyhub_server", version = "0.0.7" }
+
+#💡 local-relative
+# sweet = { version = "0.1.51", path = "../sweet", features = ["bevy"] }
+forky = { version = "0.2", features = ["bevy", "web"] }
+
+#💡 local-published
+# sweet = { path = "../sweet", version = "0.2.0-rc.3", features = ["bevy"] }
+sweet = { version = "0.2", features = ["bevy"] }
+
+#💡 Utility
+log = "0.4"
+pretty_env_logger = "0.4"
+console_log = { version = "1.0", features = ["color"] }
+anyhow = "1.0.75"
+extend = "1.1.2"
+strum = { version = "0.26.0", features = ["derive"] }
+strum_macros = "0.26.0"
+rand = "0.8"
+
+#💡 IO
+serde = { version = "1", features = ["derive"] }
+serde_json = { version = "1" }
+
+#💡 Async
+tokio = { version = "1.35", features = ["full"] }
+futures-util = { version = "0.3", default-features = false, features = [
+	"sink",
+	"std",
+] }
+tokio-tungstenite = { version = "0.21" }
+futures = "0.3"
+
+
+#💡 Web
+js-sys = "0.3"
+wasm-bindgen = "0.2"
+wasm-bindgen-futures = "0.4"
+
+#💡 Game
+bevy = { version = "0.15", default-features = false }
+bevy_reflect = { version = "0.15" }
+# bevy = { git = "https://github.com/bevyengine/bevy", rev = "0c959f77007c29eead7f902bddd3342a1ecbca20", default-features = false }
+# bevy_reflect = { git = "https://github.com/bevyengine/bevy", rev = "0c959f77007c29eead7f902bddd3342a1ecbca20" }
+
+
+[package]
+name = "bevyhub"
+publish = true
+version.workspace = true
+edition.workspace = true
+description.workspace = true
+documentation.workspace = true
+readme.workspace = true
+homepage.workspace = true
+repository.workspace = true
+license.workspace = true
+keywords.workspace = true
+categories.workspace = true
+include = ["CHANGELOG.md", "README.md", "/src", "/examples", "/scenes"]
+
+[features]
+default = ["net", "render"]
+net = ["dep:bevyhub_net"]
+render = ["scene", "bevyhub_core/render"]
+tokio = ["bevyhub_net/tokio"]
+test = ["bevyhub_core/test", "bevyhub_scene/test"]
+scene = ["dep:bevyhub_scene", "bevyhub_core/scene"]
+
+[dependencies]
+bevyhub_core.workspace = true
+bevyhub_scene = { workspace = true, optional = true }
+bevyhub_net = { workspace = true, optional = true }
+
+[dev-dependencies]
+forky.workspace = true
+bevy.workspace = true
+anyhow.workspace = true
+serde_json.workspace = true
+
+[workspace.dependencies.web-sys]
+# [target.'cfg(target_arch = "wasm32")'.dependencies.web-sys]
+version = "0.3"
+features = [
+	# HTML
+	'Headers',
+	'Document',
+	'Element',
+	'Window',
+	"Cache",
+	"CacheStorage",
+	'HtmlIFrameElement',
+	'DomRectReadOnly',
+	# Style
+	'MediaQueryList',
+	# Events
+	'MouseEvent',
+	'KeyboardEvent',
+	'CustomEvent',
+	'CustomEventInit',
+	# JS
+	'Gpu',
+	'console',
+	'Navigator',
+	'Performance',
+	# Fetch
+	'Request',
+	'RequestInit',
+	'RequestMode',
+	'Response',
+	# Blob
+	'Blob',
+	'BlobEvent',
+	'BlobEventInit',
+	'BlobPropertyBag',
+	# Elements
+	'HtmlAnchorElement',
+	'HtmlCanvasElement',
+	'HtmlInputElement',
+	'File',
+	'FileList',
+	# Url
+	'Url',
+	'History',
+	'Location',
+	'UrlSearchParams',
+	# indexedDB
+	"IdbCursor",
+	"IdbCursorDirection",
+	"IdbCursorWithValue",
+	"IdbDatabase",
+	"IdbFactory",
+	"IdbFileHandle",
+	"IdbFileMetadataParameters",
+	"IdbFileRequest",
+	"IdbIndex",
+	"IdbIndexParameters",
+	"IdbKeyRange",
+	"IdbLocaleAwareKeyRange",
+	"IdbMutableFile",
+	"IdbObjectStore",
+	"IdbObjectStoreParameters",
+	"IdbOpenDbOptions",
+	"IdbOpenDbRequest",
+	"IdbRequest",
+	"IdbRequestReadyState",
+	"IdbTransaction",
+	"IdbTransactionMode",
+	"IdbVersionChangeEvent",
+	"IdbVersionChangeEventInit",
+]
+
+[[package.metadata.scene]]
+name = "app"
+thumb-text = "🖥️"
+description = "A basic bevyhub app, supports spawning objects and a terminal."
+app.js-url = "https://mrchantey.github.io/bevyhub-apps/bevyhub/app.js"
+app.wasm-url = "https://mrchantey.github.io/bevyhub-apps/bevyhub/app_bg.wasm"
+app.type-registry-url = "https://mrchantey.github.io/bevyhub-apps/bevyhub/registries/type_registry.json"
+app.replication-registry-url = "https://mrchantey.github.io/bevyhub-apps/bevyhub/registries/replication_registry.json"
+
+[[package.metadata.scene]]
+name = "hello-terminal"
+thumb-text = "🖥️"
+description = "Simple camera and on-screen terminal."
+app = "app"
+path = "scenes/ui-terminal-input.json"
+include = ["camera-2d"]
+
+[[package.metadata.scene]]
+name = "ui-terminal"
+thumb-text = "🖥️"
+description = "On-screen terminal."
+path = "scenes/ui-terminal.json"
+
+[[package.metadata.scene]]
+name = "ui-terminal-input"
+thumb-text = "🖥️"
+description = "On-screen terminal with support for user input."
+path = "scenes/ui-terminal-input.json"
+
+[[package.metadata.scene]]
+name = "camera-2d"
+thumb-text = "📸"
+description = "2D camera for rendering 2D scenes."
+path = "scenes/camera-2d.json"
+
+[[package.metadata.scene]]
+name = "camera-3d"
+thumb-text = "📸"
+description = "3D camera for rendering 3D scenes."
+path = "scenes/camera-3d.json"
+
+[[package.metadata.scene]]
+name = "ground-3d"
+thumb-text = "🏝️"
+description = "A simple 3D ground plane."
+path = "scenes/ground-3d.json"
+
+[[package.metadata.scene]]
+name = "lighting-3d"
+thumb-text = "💡"
+description = "A directional light configured with shadows."
+path = "scenes/lighting-3d.json"
+
+[[package.metadata.scene]]
+name = "space-scene"
+thumb-text = "🌌"
+description = "A starry background."
+path = "scenes/space-scene.json"
+
+
+# [[package.metadata.scene]]
+# name = "hello-net"
+# description = "A simple behavior demonstrating triggering and reacting to network events."
+# thumb-url = "https://storage.googleapis.com/beet-examples/screenshots/hello-net.png"
+# path = "scenes/hello-net.json"
+# include = ["camera-2d", "ui-terminal"]

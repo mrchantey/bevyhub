@@ -1,0 +1,43 @@
+[package]
+name = "bevyhub_scene"
+version.workspace = true
+edition.workspace = true
+description.workspace = true
+documentation.workspace = true
+homepage.workspace = true
+repository.workspace = true
+license.workspace = true
+keywords.workspace = true
+categories.workspace = true
+
+
+[features]
+default = ["render", "export_types"]
+# reflect
+export_types = ["dep:ts-rs", "dep:bevy_reflect", "bevy_reflect/documentation"]
+render = [
+	"scene",
+	# TODO being more granular will speed up compile times
+	"bevy/default",
+	# "bevy/bevy_asset",
+	# "bevy/animation",
+	# "bevy/bevy_core_pipeline",
+]
+scene = ["bevy/bevy_scene", "bevy/serialize"]
+test = ["dep:sweet"]
+
+
+[dependencies]
+ts-rs = { version = "9.0.1", optional = true }
+forky.workspace = true
+bevy.workspace = true
+bevy_reflect = { workspace = true, optional = true }
+log.workspace = true
+anyhow.workspace = true
+serde.workspace = true
+serde_json.workspace = true
+extend.workspace = true
+sweet = { workspace = true, optional = true }
+
+[dev-dependencies]
+sweet.workspace = true
