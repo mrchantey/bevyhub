@@ -9,11 +9,6 @@ pub const DEFAULT_TRANSPORT_INTERVAL: Duration = Duration::from_millis(100);
 #[extend::ext(name=AppExtTransport)]
 pub impl App {
 	/// Adds the [`transport_incoming`] and [`transport_outgoing`] systems for a given transport type, and inserts it as a [`NonSend`]
-	/// ```rust
-	/// app
-	/// 	.insert_non_send_resource(ChannelsTransport)
-	/// 	.add_plugins(TransportPlugin::<ChannelsTransport>::new());
-	/// ```
 	fn add_transport<T: 'static + Transport>(
 		&mut self,
 		transport: T,

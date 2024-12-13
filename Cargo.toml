@@ -39,18 +39,22 @@ members = [
 	"crates/bevyhub_net",
 	"crates/bevyhub_server",
 	"crates/bevyhub_template",
+	"crates/bevyhub_api",
 	"crates/cli",
 ]
+
 exclude = ["crates/bevyhub_esp"]
 
 
 [workspace.dependencies]
 #💡 internal
 bevyhub = { path = "./", version = "0.0.1-rc.1" }
+bevyhub_api = { path = "crates/bevyhub_api", version = "0.0.1-rc.1" }
 bevyhub_core = { path = "crates/bevyhub_core", version = "0.0.1-rc.1" }
 bevyhub_net = { path = "crates/bevyhub_net", version = "0.0.1-rc.1" }
 bevyhub_scene = { path = "crates/bevyhub_scene", version = "0.0.1-rc.1" }
 bevyhub_server = { path = "crates/bevyhub_server", version = "0.0.1-rc.1" }
+
 
 #💡 local-relative
 # sweet = { version = "0.1.51", path = "../sweet", features = ["bevy"] }
@@ -61,27 +65,33 @@ forky = { version = "0.2", features = ["bevy", "web"] }
 sweet = { version = "0.2", features = ["bevy"] }
 
 #💡 Utility
+anyhow = "1.0.75"
+console_log = { version = "1.0", features = ["color"] }
+extend = "1.1.2"
 log = "0.4"
 pretty_env_logger = "0.4"
-console_log = { version = "1.0", features = ["color"] }
-anyhow = "1.0.75"
-extend = "1.1.2"
+rand = "0.8"
 strum = { version = "0.26.0", features = ["derive"] }
 strum_macros = "0.26.0"
-rand = "0.8"
+
+#💡 Cargo
+toml = "0.8"
+cargo-manifest = "0.15"
+semver = { version = "1.0", features = ["serde"] }
 
 #💡 IO
 serde = { version = "1", features = ["derive"] }
 serde_json = { version = "1" }
 
 #💡 Async
-tokio = { version = "1.35", features = ["full"] }
+async-trait = "0.1.81"
+futures = "0.3"
 futures-util = { version = "0.3", default-features = false, features = [
 	"sink",
 	"std",
 ] }
+tokio = { version = "1.35", features = ["full"] }
 tokio-tungstenite = { version = "0.21" }
-futures = "0.3"
 
 
 #💡 Web

@@ -48,4 +48,4 @@ jobs:
         override: true
         default: true
     - name: 🔎 Test
-      run: cargo test --workspace --lib
+      run: just test-ci

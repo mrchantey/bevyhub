@@ -1,0 +1,56 @@
+[package]
+name = "bevyhub_api"
+version.workspace = true
+edition.workspace = true
+
+[features]
+default = []
+
+[dependencies]
+#💡 Utility
+anyhow.workspace = true
+extend.workspace = true
+rand.workspace = true
+tracing = "0.1"
+
+#💡 Async
+futures-util.workspace = true
+tokio.workspace = true
+futures.workspace = true
+async-trait.workspace = true
+
+#💡 Cargo
+cargo-manifest.workspace = true
+semver.workspace = true
+toml.workspace = true
+
+#💡 Services
+aws-config = "1.5.4"
+aws-sdk-s3 = "1.41.0"
+lambda_http = "0.12"
+mongodb = "3.0.1"
+
+#💡 Net
+axum = { version = "0.7", features = ["macros"] }
+flate2 = "1.0.30"
+reqwest = "0.12"
+tower = "0.4"
+tower-http = { version = "0.5", features = ["trace"] }
+# specifying feature required to fix openssl build error
+openssl = { version = "0.10", features = ["vendored"] }
+# tracing-subscriber = "0.3"
+
+#💡 IO
+serde.workspace = true
+serde_json.workspace = true
+tar = "0.4"
+ts-rs = { version = "9.0.1", features = ["semver-impl"] }
+
+[dev-dependencies]
+sweet.workspace = true
+# in prod aws has its own
+
+# [[test]]
+# name = "bevyhub_api"
+# path = "src/test.rs"
+# harness = false

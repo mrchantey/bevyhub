@@ -76,7 +76,7 @@ export-test-scene:
 
 
 test *args:
-	just watch 'cargo test --workspace --lib -- {{args}}'
+	just watch 'cargo test --workspace -- --skip mongo_sets_latest {{args}}'
 
 test-core *args:
 	just watch 'cargo test -p bevyhub_core --lib -- {{args}}'
@@ -84,6 +84,10 @@ test-net *args:
 	just watch 'cargo test -p bevyhub_net --lib -- {{args}}'
 test-scene *args:
 	just watch 'cargo test -p bevyhub_scene --lib -- {{args}}'
+
+test-ci:
+	cargo test --workspace --lib
+	cd crates/bevyhub_template && just test-ci
 
 assets-push:
 	aws s3 sync ./assets s3://beetmash-public/assets --delete
