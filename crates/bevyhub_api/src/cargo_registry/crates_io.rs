@@ -1,12 +1,8 @@
 use crate::prelude::*;
 use anyhow::Result;
 use axum::body::Bytes;
-use reqwest::Client;
 use std::sync::Arc;
 use tokio::sync::RwLock;
-
-
-static USER_AGENT: &str = "contact:github.com/mrchantey/bevyhub";
 
 #[derive(Default, Clone)]
 pub struct CratesIo {
@@ -20,9 +16,8 @@ impl CratesIo {
 impl CargoRegistry for CratesIo {
 	async fn crate_index(&self, crate_name: &str) -> Result<CrateIndex> {
 		let url = crate_index_url(crate_name);
-		let client = reqwest::Client::new();
 		// println!("fetching versions for {}", url);
-		let res = client.get(url).send().await?;
+		let res = REQWEST_CLIENT.get(url).send().await?;
 		let res = res.error_for_status()?;
 
 		let text = res.text().await?;
@@ -43,14 +38,13 @@ impl CargoRegistry for CratesIo {
 	async fn tarball(&self, crate_id: &CrateId) -> Result<Bytes> {
 		self.throttle.write().await.throttle().await;
 
-		let client = Client::builder().user_agent(USER_AGENT).build()?;
 
 		let url = format!(
 			"https://crates.io/api/v1/crates/{}/download",
 			crate_id.path()
 		);
 
-		let res = client.get(url).send().await?;
+		let res = REQWEST_CLIENT.get(url).send().await?;
 		let res = res.error_for_status()?;
 		Ok(res.bytes().await?)
 	}

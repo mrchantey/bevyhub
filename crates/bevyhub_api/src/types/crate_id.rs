@@ -22,8 +22,8 @@ impl CrateId {
 			version,
 		}
 	}
-	pub fn into_scene_id(&self, project_name: impl Into<String>) -> SceneId {
-		SceneId::new(self.clone(), project_name)
+	pub fn into_scene_id(&self, scene_name: impl Into<String>) -> SceneId {
+		SceneId::new(self.clone(), scene_name)
 	}
 
 	/// String in format `crate_name/version`
@@ -48,7 +48,7 @@ impl std::fmt::Display for CrateId {
 // #[cfg(test)]
 impl CrateId {
 	pub fn bevyhub_template() -> Self {
-		let version = CargoManifest::bevyhub_crate_version();
+		let version = Version::parse("0.0.1-rc.1").unwrap();
 		Self::new("bevyhub_template", version)
 	}
 	pub fn bevyhub_template_bad_version() -> Self {

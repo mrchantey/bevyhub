@@ -249,7 +249,7 @@ impl CargoLock {
 // #[cfg(test)]
 #[extend::ext]
 pub impl CargoManifest {
-	fn bevyhub_crate_version() -> Version {
+	fn bevyhub_repo_crate_version() -> Version {
 		let file = include_str!("../../../../Cargo.toml");
 		let version = toml::from_str::<CargoManifest>(&file)
 			.unwrap()

@@ -14,6 +14,9 @@ region:="us-west-2"
 e2e *args:
 	cargo test --test mongo_sets_latest {{args}}
 
+test *args:
+	just watch 'cargo test --lib -- {{args}}'
+
 test-curl *args:
 	cargo run --example curl {{args}}
 test-curl-prod *args:

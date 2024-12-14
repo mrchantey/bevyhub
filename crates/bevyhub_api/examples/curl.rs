@@ -1,6 +1,6 @@
 use anyhow::Result;
 use bevyhub_api::prelude::ApiEnvironment;
-use reqwest::Client;
+use bevyhub_api::prelude::REQWEST_CLIENT;
 use serde_json::Value;
 
 const LOCAL_HOST: &str = "http://localhost:3000";
@@ -20,8 +20,7 @@ async fn assert_status_and_json(
 	};
 
 	let url = format!("{host}{}", url_path);
-	let client = Client::new();
-	let response = client.get(&url).send().await?;
+	let response = REQWEST_CLIENT.get(&url).send().await?;
 	let status = response.status().as_u16();
 	let text = response.text().await?;
 	if status != expected_status {

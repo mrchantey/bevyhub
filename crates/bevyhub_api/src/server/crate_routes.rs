@@ -62,7 +62,8 @@ async fn get_crate_doc(
 		.version_or_latest(&crate_name, &version_param)
 		.await?;
 	let doc = api.crate_doc(&CrateId::new(&crate_name, version)).await?;
-	no_cache_if_latest(Json(doc), &version_param)
+	let res = append_no_cache_headers_if_latest(Json(doc), &version_param);
+	Ok(res)
 }
 
 /// Get a [SceneDoc] list for a crate
@@ -77,7 +78,8 @@ async fn get_crate_scene_doc_list(
 	let docs = api
 		.all_scene_docs(&CrateId::new(&crate_name, version))
 		.await?;
-	no_cache_if_latest(Json(docs), &version_param)
+	let res = append_no_cache_headers_if_latest(Json(docs), &version_param);
+	Ok(res)
 }
 
 /// Get a [SceneDoc] for a crate
@@ -95,5 +97,6 @@ async fn get_crate_scene_doc(
 		.await?;
 	let scene_id = SceneId::with_crate_name(&crate_name, version, scene_name);
 	let doc = api.scene_doc(&scene_id).await?;
-	no_cache_if_latest(Json(doc), &version_param)
+	let res = append_no_cache_headers_if_latest(Json(doc), &version_param);
+	Ok(res)
 }
