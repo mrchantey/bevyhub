@@ -28,7 +28,7 @@ mod test {
 		.to_be(0)?;
 
 		let _crate1 = services
-			.crate_doc(&CrateId::new(
+			.crate_doc(&CrateId::new_crates_io(
 				"bevyhub_template",
 				Version::parse("0.0.6-rc.5").unwrap(),
 			))
@@ -48,7 +48,7 @@ mod test {
 		.to_be(3)?;
 
 		let _crate1 = services
-			.crate_doc(&CrateId::new(
+			.crate_doc(&CrateId::new_crates_io(
 				"bevyhub_template",
 				Version::parse("0.0.6-rc.4").unwrap(),
 			))

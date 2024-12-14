@@ -9,7 +9,7 @@ pub impl Services {
 	/// Also finds all scenes that are not latest and ensures `is_latest: false`.
 	async fn set_latest_scenes_in_db(&self, crate_id: &CrateId) -> Result<()> {
 		let latest_version =
-			self.registry().latest_version(&crate_id.name).await?;
+			self.registry().latest_version(&crate_id.crate_name).await?;
 
 		// entries that:
 		// 1. have the same crate name
@@ -17,7 +17,7 @@ pub impl Services {
 		// 3. are marked as latest
 		let mut should_not_be_latest = get_scenes(self, doc! {
 			"scene_id.crate_id":{
-					"crate_name": &crate_id.name,
+					"crate_name": &crate_id.crate_name,
 					"version":	{
 						"$ne": latest_version.to_string()
 					}
@@ -35,7 +35,7 @@ pub impl Services {
 		// 1. are the latest version of this crate
 		// 2. are not marked as latest
 		let mut should_be_latest = get_scenes(self, doc! {
-			"scene_id.crate_id": CrateId::new(&crate_id.name, latest_version.clone()),
+			"scene_id.crate_id": CrateId::new_crates_io(&crate_id.crate_name, latest_version.clone()),
 			"is_latest": false
 		})
 		.await?;

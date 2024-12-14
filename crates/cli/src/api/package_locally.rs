@@ -45,5 +45,5 @@ pub fn package_locally_if_needed(
 
 
 fn tarball_path(prefix: &str, id: &CrateId) -> PathBuf {
-	format!("{}/{}-{}.crate", prefix, id.name, id.version).into()
+	format!("{}/{}-{}.crate", prefix, id.crate_name, id.version).into()
 }

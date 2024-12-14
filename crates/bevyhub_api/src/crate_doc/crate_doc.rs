@@ -40,10 +40,7 @@ impl CrateDoc {
 		} = pkg;
 
 		let version = unwrap_inherited(version, "0.0.1".into());
-		let crate_id = CrateId {
-			name: name.clone(),
-			version: Version::parse(&version)?,
-		};
+		let crate_id = CrateId::new_crates_io(name.clone(), Version::parse(&version)?);
 
 		Ok(Self {
 			_id: crate_id.into_doc_id(),

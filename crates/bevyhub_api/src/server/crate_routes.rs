@@ -37,7 +37,7 @@ async fn unpkg(
 	Path((crate_name, version, file_path)): Path<(String, String, String)>,
 ) -> AppResult<Bytes> {
 	let version = Version::parse(&version)?;
-	let crate_id = CrateId::new(&crate_name, version);
+	let crate_id = CrateId::new_crates_io(&crate_name, version);
 	let bytes = api.get_crate_file(&crate_id, &file_path).await?;
 
 	Ok(bytes)
@@ -61,7 +61,9 @@ async fn get_crate_doc(
 		.registry()
 		.version_or_latest(&crate_name, &version_param)
 		.await?;
-	let doc = api.crate_doc(&CrateId::new(&crate_name, version)).await?;
+	let doc = api
+		.crate_doc(&CrateId::new_crates_io(&crate_name, version))
+		.await?;
 	let res = append_no_cache_headers_if_latest(Json(doc), &version_param);
 	Ok(res)
 }
@@ -76,7 +78,7 @@ async fn get_crate_scene_doc_list(
 		.version_or_latest(&crate_name, &version_param)
 		.await?;
 	let docs = api
-		.all_scene_docs(&CrateId::new(&crate_name, version))
+		.all_scene_docs(&CrateId::new_crates_io(&crate_name, version))
 		.await?;
 	let res = append_no_cache_headers_if_latest(Json(docs), &version_param);
 	Ok(res)

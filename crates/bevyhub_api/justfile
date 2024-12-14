@@ -5,8 +5,9 @@ default:
 	just --list --unsorted
 
 init-repo:
-	just populate --force
-	just bindings
+	just populate --force-tarball
+	just export-bindings
+
 
 # Oregon
 region:="us-west-2"
@@ -29,7 +30,7 @@ run:
 	just watch 'cargo run --example server'
 
 cli *args:
-	cargo run -p cli -- {{args}}
+	cargo run -p bevyhub-cli -- {{args}}
 
 lambda:
 	cargo lambda watch --invoke-port 3000
@@ -46,9 +47,9 @@ clear-local-storage:
 
 export-bindings:
 	cargo run --example export_bindings
-	rm -rf ../bevyhub-site/packages/shared/src/api-bindings/generated
-	mkdir -p ../bevyhub-site/packages/shared/src/api-bindings/generated || true
-	cp ./bindings/* ../bevyhub-site/packages/shared/src/api-bindings/generated
+	rm -rf ../../../bevyhub-site/packages/shared/src/api-bindings/generated
+	mkdir -p ../../../bevyhub-site/packages/shared/src/api-bindings/generated || true
+	cp ./bindings/* ../../../bevyhub-site/packages/shared/src/api-bindings/generated
 
 
 # 1. test
@@ -115,7 +116,7 @@ curl-prod *args:
 populate *args:
 	just clear-local-storage
 	just cli populate {{args}} \
-	../ \
+	../../ \
 	../bevyhub_template \
 	../bevyhub_net \
 # ../beet \

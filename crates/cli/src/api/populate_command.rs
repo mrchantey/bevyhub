@@ -27,17 +27,17 @@ impl Subcommand for PopulateCommand {
 					.action(ArgAction::Append),
 			)
 			.arg(
-				Arg::new("force")
-					.help("repackage tarballs even if they exist")
+				Arg::new("force-tarball")
+					.help("repackage tarballs even if they exist, useful if the crate source has changed")
 					.action(ArgAction::SetTrue)
 					.short('f')
-					.long("force"),
+					.long("force-tarball"),
 			)
 	}
 
 	fn run(&self, args: &ArgMatches) -> Result<()> {
 		tokio::runtime::Runtime::new()?.block_on(async move {
-			let force = args.get_flag("force");
+			let force = args.get_flag("force-tarball");
 
 			let crate_ids = args
 				.get_many::<String>("paths")

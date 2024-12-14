@@ -35,7 +35,7 @@ impl SceneId {
 		version: Version,
 		scene_name: impl Into<String>,
 	) -> Self {
-		Self::new(CrateId::new(crate_name, version), scene_name)
+		Self::new(CrateId::new_crates_io(crate_name, version), scene_name)
 	}
 	/// Construct from `{crate_name}, {scene_name}, {version}`
 	pub fn from_parts(
@@ -43,22 +43,23 @@ impl SceneId {
 		scene_name: String,
 		version: Version,
 	) -> Self {
-		Self::new(CrateId::new(crate_name, version), scene_name)
+		Self::new(CrateId::new_crates_io(crate_name, version), scene_name)
 	}
 	pub fn scene_name(&self) -> &str { &self.scene_name }
 	pub fn crate_id(&self) -> &CrateId { &self.crate_id }
-	pub fn crate_name(&self) -> &str { &self.crate_id.name }
+	pub fn crate_name(&self) -> &str { &self.crate_id.crate_name }
 	pub fn version(&self) -> &Version { &self.crate_id.version }
 
 	/// String in format `crate_name/version/scene_name`
 	pub fn path(&self) -> String {
 		format!("{}/{}", self.crate_id.path(), self.scene_name)
 	}
-	/// String in format `crates.io/crate_name/scene_name/version`
+	/// String in format `crate_doc_id/scene_name`
 	pub fn into_doc_id(&self) -> DocId {
 		DocId(format!(
-			"crates.io/{}/{}/{}",
-			self.crate_id.name, self.scene_name, self.crate_id.version
+			"{}/{}",
+			self.crate_id.into_doc_id(),
+			self.scene_name
 		))
 	}
 }
@@ -69,7 +70,7 @@ impl std::fmt::Display for SceneId {
 		write!(
 			f,
 			"{}/{}/{}",
-			self.crate_id.name, self.scene_name, self.crate_id.version
+			self.crate_id.crate_name, self.scene_name, self.crate_id.version
 		)
 	}
 }

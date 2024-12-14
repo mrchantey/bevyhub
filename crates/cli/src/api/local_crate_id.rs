@@ -28,7 +28,7 @@ impl LocalCrateId {
 		let version = get_version(&path)?;
 
 		Ok(Self {
-			crate_id: CrateId::new(&name, Version::parse(&version)?),
+			crate_id: CrateId::new_crates_io(&name, Version::parse(&version)?),
 			path,
 		})
 	}

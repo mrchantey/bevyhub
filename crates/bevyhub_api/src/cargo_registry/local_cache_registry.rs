@@ -31,8 +31,10 @@ impl CargoRegistry for LocalCacheRegistry {
 
 	async fn tarball(&self, crate_id: &CrateId) -> Result<Bytes> {
 		let dir = "target/tarball-cache";
-		let path =
-			format!("{}/{}-{}.crate", dir, crate_id.name, crate_id.version);
+		let path = format!(
+			"{}/{}-{}.crate",
+			dir, crate_id.crate_name, crate_id.version
+		);
 		if let Ok(bytes) = fs::read(&path).await {
 			return Ok(bytes.into());
 		}
@@ -55,7 +57,7 @@ mod test {
 	use anyhow::Result;
 	use semver::Version;
 	use sweet::*;
-	
+
 	#[tokio::test]
 	async fn versions() -> Result<()> {
 		let registry = LocalCacheRegistry::default();
@@ -74,7 +76,7 @@ mod test {
 	async fn tarball() -> Result<()> {
 		let registry = LocalCacheRegistry::default();
 		let tarball = registry
-			.tarball(&CrateId::new(
+			.tarball(&CrateId::new_crates_io(
 				"bevyhub_template",
 				Version::parse("0.0.1-rc.1").unwrap(),
 			))

@@ -22,6 +22,10 @@ impl UnpackCargoManifest for Services {
 			anyhow::bail!("Cargo.toml missing package field");
 		};
 
+		// why were we reconstructing the crate_id here? could it have been 'latest'?
+
+		// i think we need to reconstruct crate_id because version may be 'latest'
+		// this is terrible we need another type for latest crates.io requests
 		let Some(version) = &package_toml.version else {
 			anyhow::bail!("Cargo.toml missing package.version field");
 		};
@@ -30,10 +34,12 @@ impl UnpackCargoManifest for Services {
 		};
 
 		let version = Version::parse(version)?;
-		let crate_id = CrateId::new(&package_toml.name, version);
+		let crate_id = CrateId {
+			version,
+			..crate_id.clone()
+		};
 
 		let crate_doc = CrateDoc::from_package(package_toml.clone())?;
-
 
 		let scene_docs = if let Some(scene_list) = &package_toml.metadata {
 			let cargo_lock = self.cargo_lock(&crate_id).await?;

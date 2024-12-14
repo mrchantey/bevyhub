@@ -124,8 +124,8 @@ impl SceneIncludeTree {
 		dep: &ManifestDependency,
 	) -> Result<Self> {
 		let (crate_name, scene_name) =
-			dep.into_crate_and_scene(&manifest_crate_id.name)?;
-		if crate_name == manifest_crate_id.name {
+			dep.into_crate_and_scene(&manifest_crate_id.crate_name)?;
+		if crate_name == manifest_crate_id.crate_name {
 			let sibling_scene = manifest_metadata.find_scene(&scene_name)?;
 
 			return Self::from_manifest(

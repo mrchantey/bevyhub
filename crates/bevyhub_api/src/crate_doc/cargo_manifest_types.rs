@@ -242,7 +242,7 @@ impl CargoLock {
 				anyhow::anyhow!("missing dependency in Cargo.lock: {}", name)
 			})?;
 		let version = Version::parse(&pkg.version)?;
-		Ok(CrateId::new(name, version))
+		Ok(CrateId::new_crates_io(name, version))
 	}
 }
 
@@ -262,8 +262,7 @@ pub impl CargoManifest {
 		Version::parse(&version).unwrap()
 	}
 	fn bevyhub_template() -> Self {
-		let file =
-			include_str!("../../../bevyhub_template/Cargo.toml");
+		let file = include_str!("../../../bevyhub_template/Cargo.toml");
 		toml::from_str::<CargoManifest>(&file).unwrap()
 	}
 }

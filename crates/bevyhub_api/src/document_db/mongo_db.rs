@@ -35,8 +35,8 @@ impl MongoDb {
 			ApiEnvironment::Local => {
 				unimplemented!("Local MongoDb not implemented")
 			}
-			ApiEnvironment::Staging => client.database("db_staging"),
-			ApiEnvironment::Prod => client.database("db_prod"),
+			ApiEnvironment::Staging => client.database("crate_cache_staging"),
+			ApiEnvironment::Prod => client.database("crate_cache"),
 		};
 
 		Ok(Self {
