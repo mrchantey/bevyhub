@@ -3,6 +3,7 @@ use super::crates_io::CratesIo;
 use crate::prelude::*;
 use anyhow::Result;
 use axum::body::Bytes;
+use std::path::PathBuf;
 use tokio::fs;
 
 /// First attempts to load from fs before hitting crates.io
@@ -21,6 +22,13 @@ impl LocalCacheRegistry {
 			read_only: true,
 		}
 	}
+	pub fn tarball_path(
+		prefix: &str,
+		crate_name: &str,
+		version: &str,
+	) -> PathBuf {
+		format!("{}/{}-{}.crate", prefix, crate_name, version).into()
+	}
 }
 
 #[async_trait::async_trait]
@@ -29,16 +37,20 @@ impl CargoRegistry for LocalCacheRegistry {
 		self.crates_io.crate_index(crate_name).await
 	}
 
-	async fn tarball(&self, crate_id: &CrateId) -> Result<Bytes> {
+	async fn tarball(&self, crate_id: &CratesIoCrateId) -> Result<Bytes> {
 		let dir = "target/tarball-cache";
-		let path = format!(
-			"{}/{}-{}.crate",
-			dir, crate_id.crate_name, crate_id.version
+		let path = Self::tarball_path(
+			dir,
+			&crate_id.crate_name,
+			&crate_id.version.to_string(),
 		);
 		if let Ok(bytes) = fs::read(&path).await {
 			return Ok(bytes.into());
 		}
-		println!("Local cache - downloading from registry: {}", path);
+		println!(
+			"Local cache - downloading from registry: {}",
+			path.display()
+		);
 		let buff = self.crates_io.tarball(crate_id).await?;
 
 		if !self.read_only {
@@ -76,7 +88,7 @@ mod test {
 	async fn tarball() -> Result<()> {
 		let registry = LocalCacheRegistry::default();
 		let tarball = registry
-			.tarball(&CrateId::new_crates_io(
+			.tarball(&CratesIoCrateId::new(
 				"bevyhub_template",
 				Version::parse("0.0.1-rc.1").unwrap(),
 			))

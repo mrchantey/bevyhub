@@ -37,8 +37,9 @@ async fn unpkg(
 	Path((crate_name, version, file_path)): Path<(String, String, String)>,
 ) -> AppResult<Bytes> {
 	let version = Version::parse(&version)?;
-	let crate_id = CrateId::new_crates_io(&crate_name, version);
-	let bytes = api.get_crate_file(&crate_id, &file_path).await?;
+	let crate_id = CratesIoCrateId::new(&crate_name, version);
+	let bytes =
+		CratesIoFiles::get_crate_file(&api, &crate_id, &file_path).await?;
 
 	Ok(bytes)
 }

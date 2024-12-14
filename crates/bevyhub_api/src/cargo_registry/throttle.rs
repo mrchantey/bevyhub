@@ -2,14 +2,15 @@ use std::time::Duration;
 use std::time::Instant;
 use tokio::time::sleep;
 
-
+/// Crates.io does not allow more than one request per second
 pub struct Throttle {
 	last_fetch: Instant,
 }
 impl Default for Throttle {
 	fn default() -> Self {
 		Self {
-			last_fetch: Instant::now() - Duration::from_secs(1), // Ensure the first request can proceed immediately
+			// Ensure the first request can proceed immediately
+			last_fetch: Instant::now() - Duration::from_secs(1),
 		}
 	}
 }

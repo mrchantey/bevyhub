@@ -47,31 +47,17 @@ impl SceneId {
 	}
 	pub fn scene_name(&self) -> &str { &self.scene_name }
 	pub fn crate_id(&self) -> &CrateId { &self.crate_id }
-	pub fn crate_name(&self) -> &str { &self.crate_id.crate_name }
-	pub fn version(&self) -> &Version { &self.crate_id.version }
 
-	/// String in format `crate_name/version/scene_name`
 	pub fn path(&self) -> String {
 		format!("{}/{}", self.crate_id.path(), self.scene_name)
 	}
-	/// String in format `crate_doc_id/scene_name`
-	pub fn into_doc_id(&self) -> DocId {
-		DocId(format!(
-			"{}/{}",
-			self.crate_id.into_doc_id(),
-			self.scene_name
-		))
-	}
+	pub fn into_doc_id(&self) -> DocId { DocId(self.path()) }
 }
 
 
 impl std::fmt::Display for SceneId {
 	fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
-		write!(
-			f,
-			"{}/{}/{}",
-			self.crate_id.crate_name, self.scene_name, self.crate_id.version
-		)
+		write!(f, "{}", self.path())
 	}
 }
 

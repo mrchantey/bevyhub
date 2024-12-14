@@ -1,8 +1,7 @@
 use super::*;
 use anyhow::Result;
-use bevyhub_api::types::CrateId;
+use bevyhub_api::prelude::LocalCacheRegistry;
 use std::fs;
-use std::path::PathBuf;
 use std::process::Command;
 
 /// If `--force` or tarball is missing from local cache it will
@@ -13,11 +12,19 @@ pub fn package_locally_if_needed(
 ) -> Result<bool> {
 	let cargo_target_dir = std::env::var("CARGO_TARGET_DIR")
 		.unwrap_or_else(|_| "target".to_string());
-	let pkg_src =
-		tarball_path(&format!("{}/package", &cargo_target_dir), &id.crate_id);
+	let pkg_src = LocalCacheRegistry::tarball_path(
+		&format!("{}/package", &cargo_target_dir),
+		&id.crate_name,
+		&id.version.to_string(),
+	);
 	let pkg_dst = "target/tarball-cache";
 
-	if !force && fs::exists(tarball_path(pkg_dst, &id.crate_id))? {
+	if !force
+		&& fs::exists(LocalCacheRegistry::tarball_path(
+			pkg_dst,
+			&id.crate_name,
+			&id.version.to_string(),
+		))? {
 		return Ok(false);
 	}
 
@@ -41,9 +48,4 @@ pub fn package_locally_if_needed(
 		.exit_ok()?;
 
 	Ok(true)
-}
-
-
-fn tarball_path(prefix: &str, id: &CrateId) -> PathBuf {
-	format!("{}/{}-{}.crate", prefix, id.crate_name, id.version).into()
 }

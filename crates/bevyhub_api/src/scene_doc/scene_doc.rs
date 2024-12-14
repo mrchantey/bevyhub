@@ -45,14 +45,14 @@ impl SceneDoc {
 		scene: &ManifestScene,
 	) -> Result<Self> {
 		let tree = SceneIncludeTree::from_manifest(
-			api, cargo_lock, crate_id, scenes, scene,
+			api, crate_doc, cargo_lock, scenes, scene,
 		)
 		.await?;
 
 		let app = if let Some(app) = scene.app.as_ref() {
 			Some(
 				SceneApp::from_manifest(
-					api, cargo_lock, crate_id, scenes, scene, app,
+					api, crate_doc, cargo_lock, scenes, scene, app,
 				)
 				.await?,
 			)

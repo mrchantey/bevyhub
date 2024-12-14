@@ -6,12 +6,25 @@ use std::fs;
 use std::path::Path;
 use std::path::PathBuf;
 
-
 /// Extract the version and name from a path, can handle workspace crates
 #[derive(Debug, Clone)]
 pub struct LocalCrateId {
-	pub crate_id: CrateId,
+	pub crate_name: String,
+	pub version: Version,
 	pub path: PathBuf,
+}
+
+impl Into<CratesIoCrateId> for LocalCrateId {
+	fn into(self) -> CratesIoCrateId {
+		CratesIoCrateId {
+			crate_name: self.crate_name,
+			version: self.version,
+		}
+	}
+}
+
+impl Into<CrateId> for LocalCrateId {
+	fn into(self) -> CrateId { CrateId::CratesIo(self.into()) }
 }
 
 impl LocalCrateId {
@@ -28,18 +41,12 @@ impl LocalCrateId {
 		let version = get_version(&path)?;
 
 		Ok(Self {
-			crate_id: CrateId::new_crates_io(&name, Version::parse(&version)?),
+			crate_name: name,
+			version: Version::parse(&version)?,
 			path,
 		})
 	}
 }
-
-impl std::fmt::Display for LocalCrateId {
-	fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
-		self.crate_id.fmt(f)
-	}
-}
-
 
 fn get_version(path: &Path) -> Result<String> {
 	let path = path.canonicalize()?;

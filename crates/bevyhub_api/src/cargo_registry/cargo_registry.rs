@@ -48,9 +48,8 @@ pub trait CargoRegistry: 'static + Send + Sync {
 
 	async fn crate_index(&self, crate_name: &str) -> Result<CrateIndex>;
 
-	// fn get(&mut self, crate_name: &str, version: &str);
-	// fn get_latest(&mut self, crate_name: &str);
-	async fn tarball(&self, crate_id: &CrateId) -> Result<Bytes>;
+	/// Download the tarball of a crate
+	async fn tarball(&self, crate_id: &CratesIoCrateId) -> Result<Bytes>;
 }
 
 #[derive(Clone)]

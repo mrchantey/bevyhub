@@ -77,36 +77,36 @@ impl SceneIncludeTree {
 
 	pub async fn from_manifest(
 		api: &Services,
+		crate_doc: &CrateDoc,
 		cargo_lock: &CargoLock,
-		manifest_crate_id: &CrateId,
 		manifest_metadata: &ManifestMetadata,
 		manifest_scene: &ManifestScene,
 	) -> Result<Self> {
 		let scene_file = SceneFile::from_manifest(manifest_scene)?;
 		let dependencies = Self::build_dependencies(
 			api,
+			crate_doc,
 			cargo_lock,
-			manifest_crate_id,
 			manifest_metadata,
 			&manifest_scene.get_includes(),
 		)
 		.await?;
-		let id = manifest_crate_id.into_scene_id(&manifest_scene.name);
+		let id = crate_doc.crate_id.into_scene_id(&manifest_scene.name);
 		Ok(Self::new(id, scene_file, dependencies))
 	}
 
 	pub async fn build_dependencies(
 		api: &Services,
+		crate_doc: &CrateDoc,
 		cargo_lock: &CargoLock,
-		manifest_crate_id: &CrateId,
 		manifest_metadata: &ManifestMetadata,
 		deps: &Vec<ManifestDependency>,
 	) -> Result<Vec<Self>> {
 		let futs = deps.iter().map(|dep| {
 			Self::build_dependency(
 				api,
+				crate_doc,
 				cargo_lock,
-				manifest_crate_id,
 				manifest_metadata,
 				dep,
 			)
@@ -118,20 +118,20 @@ impl SceneIncludeTree {
 
 	async fn build_dependency(
 		api: &Services,
+		crate_doc: &CrateDoc,
 		cargo_lock: &CargoLock,
-		manifest_crate_id: &CrateId,
 		manifest_metadata: &ManifestMetadata,
 		dep: &ManifestDependency,
 	) -> Result<Self> {
 		let (crate_name, scene_name) =
-			dep.into_crate_and_scene(&manifest_crate_id.crate_name)?;
-		if crate_name == manifest_crate_id.crate_name {
+			dep.into_crate_and_scene(&crate_doc.name)?;
+		if crate_name == crate_doc.name {
 			let sibling_scene = manifest_metadata.find_scene(&scene_name)?;
 
 			return Self::from_manifest(
 				api,
+				crate_doc,
 				cargo_lock,
-				manifest_crate_id,
 				manifest_metadata,
 				sibling_scene,
 			)

@@ -13,7 +13,13 @@ use ts_rs::TS;
 pub struct CrateDoc {
 	_id: DocId,
 	pub crate_id: CrateId,
+	// may be duplicated in the crate_id if its a crates.io crate
+	pub name: String,
+	// may be duplicated in the crate_id if its a crates.io crate
+	pub version: Version,
 	pub readme: String,
+	/// if this is blank in the manifest *and* the crate_id is a github repo
+	/// then the github repo will be used instead
 	pub repository: Option<String>,
 	pub description: Option<String>,
 	pub keywords: Vec<String>,
@@ -26,7 +32,10 @@ impl HasDocId for CrateDoc {
 }
 
 impl CrateDoc {
-	pub fn from_package<T>(pkg: Package<T>) -> Result<Self> {
+	pub fn from_package<T>(
+		crate_id: &CrateId,
+		pkg: Package<T>,
+	) -> Result<Self> {
 		// todo!()
 		let Package {
 			name,
@@ -40,14 +49,24 @@ impl CrateDoc {
 		} = pkg;
 
 		let version = unwrap_inherited(version, "0.0.1".into());
-		let crate_id = CrateId::new_crates_io(name.clone(), Version::parse(&version)?);
+		let version = Version::parse(&version)?;
+
+		let repository = map_inherited(repository);
+		let repository = match (&repository, crate_id) {
+			(None, CrateId::Github(github_crate_id)) => {
+				Some(github_crate_id.into_repo_url())
+			}
+			_ => repository,
+		};
 
 		Ok(Self {
 			_id: crate_id.into_doc_id(),
-			crate_id,
+			crate_id: crate_id.clone(),
+			name,
+			version,
+			repository,
 			readme: map_readme(readme),
 			description: map_inherited(description),
-			repository: map_inherited(repository),
 			keywords: unwrap_inherited(keywords, Vec::new()),
 			authors: unwrap_inherited(authors, Vec::new()),
 		})

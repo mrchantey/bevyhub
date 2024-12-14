@@ -78,7 +78,7 @@ impl Subcommand for PopulateCommand {
 			let mut scene_lists = Vec::new();
 			for id in crate_ids {
 				// we need to do it sequentially to avoid crate upload before scene upload race
-				scene_lists.push(api.all_scene_docs(&id.crate_id).await?);
+				scene_lists.push(api.all_scene_docs(&id.into()).await?);
 			}
 			let num_scenes = scene_lists.iter().map(|c| c.len()).sum::<usize>();
 

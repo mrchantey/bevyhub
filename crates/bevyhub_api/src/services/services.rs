@@ -24,4 +24,24 @@ impl Services {
 			env,
 		})
 	}
+
+	pub async fn cargo_manifest(
+		&self,
+		crate_id: &CrateId,
+	) -> Result<CargoManifest> {
+		match crate_id {
+			CrateId::CratesIo(crates_io_crate_id) => {
+				CratesIoFiles::cargo_manifest(self, crates_io_crate_id).await
+			}
+			CrateId::Github(_github_crate_id) => todo!(),
+		}
+	}
+	pub async fn cargo_lock(&self, crate_id: &CrateId) -> Result<CargoLock> {
+		match crate_id {
+			CrateId::CratesIo(crates_io_crate_id) => {
+				CratesIoFiles::cargo_lock(self, crates_io_crate_id).await
+			}
+			CrateId::Github(_github_crate_id) => todo!(),
+		}
+	}
 }

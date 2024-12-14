@@ -15,8 +15,8 @@ pub struct SceneApp {
 impl SceneApp {
 	pub async fn from_manifest(
 		api: &Services,
+		crate_doc: &CrateDoc,
 		cargo_lock: &CargoLock,
-		manifest_crate_id: &CrateId,
 		manifest_metadata: &ManifestMetadata,
 		scene: &ManifestScene,
 		app: &ManifestApp,
@@ -26,7 +26,7 @@ impl SceneApp {
 				js_url, wasm_url, ..
 			} => Ok(Self {
 				binary: BevyBinary::Wasm {
-					scene_id: manifest_crate_id.into_scene_id(&scene.name),
+					scene_id: crate_doc.crate_id.into_scene_id(&scene.name),
 					js_url: js_url.clone(),
 					wasm_url: wasm_url.clone(),
 					canvas_id: app.canvas_id(),
@@ -39,12 +39,13 @@ impl SceneApp {
 			}),
 			app => {
 				let (crate_name, scene_name) =
-					app.into_crate_and_scene(&manifest_crate_id.crate_name)?;
+					app.into_crate_and_scene(&crate_doc.name)?;
 
-				if crate_name == manifest_crate_id.crate_name {
+				if crate_name == crate_doc.name {
 					let sibling_scene =
 						manifest_metadata.find_scene(&scene_name)?;
-					let scene_id = manifest_crate_id.into_scene_id(scene_name);
+					let scene_id =
+						&crate_doc.crate_id.into_scene_id(scene_name);
 					// if we depended on another scene it shouldnt be None
 					let sibling_app =
 						sibling_scene.app.as_ref().ok_or_else(|| {
@@ -56,8 +57,8 @@ impl SceneApp {
 
 					Box::pin(Self::from_manifest(
 						api,
+						crate_doc,
 						cargo_lock,
-						manifest_crate_id,
 						manifest_metadata,
 						&sibling_scene,
 						sibling_app,

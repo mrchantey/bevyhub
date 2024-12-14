@@ -4,6 +4,7 @@ use axum::body::Bytes;
 use std::sync::Arc;
 use tokio::sync::RwLock;
 
+/// The Crates.io registry
 #[derive(Default, Clone)]
 pub struct CratesIo {
 	throttle: Arc<RwLock<Throttle>>,
@@ -35,15 +36,12 @@ impl CargoRegistry for CratesIo {
 
 	// fn get_latest(&mut self, _crate_name: &str) { unimplemented!() }
 
-	async fn tarball(&self, crate_id: &CrateId) -> Result<Bytes> {
+	async fn tarball(&self, crate_id: &CratesIoCrateId) -> Result<Bytes> {
 		self.throttle.write().await.throttle().await;
-
-
 		let url = format!(
-			"https://crates.io/api/v1/crates/{}/download",
-			crate_id.path()
+			"https://crates.io/api/v1/crates/{}/{}/download",
+			crate_id.crate_name, crate_id.version
 		);
-
 		let res = REQWEST_CLIENT.get(url).send().await?;
 		let res = res.error_for_status()?;
 		Ok(res.bytes().await?)
