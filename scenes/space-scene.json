@@ -1,0 +1,54 @@
+{
+  "resources": {},
+  "entities": {
+    "4294967307": {
+      "components": {
+        "beetmash_core::render::block_app_ready::AssetLoadBlockAppReady": {},
+        "beetmash_scene::utils::bundle_placeholder::BundlePlaceholder": {
+          "Sprite": {
+            "path": "space_background/Space_Stars2.png",
+            "image_mode": {
+              "Tiled": {
+                "tile_x": true,
+                "tile_y": true,
+                "stretch_value": 0.01
+              }
+            }
+          }
+        },
+        "bevy_transform::components::global_transform::GlobalTransform": [
+          1.0,
+          0.0,
+          0.0,
+          0.0,
+          1.0,
+          0.0,
+          0.0,
+          0.0,
+          1.0,
+          0.0,
+          0.0,
+          0.0
+        ],
+        "bevy_transform::components::transform::Transform": {
+          "translation": [
+            0.0,
+            0.0,
+            -1.0
+          ],
+          "rotation": [
+            0.0,
+            0.0,
+            0.0,
+            1.0
+          ],
+          "scale": [
+            100.0,
+            100.0,
+            100.0
+          ]
+        }
+      }
+    }
+  }
+}
