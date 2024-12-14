@@ -7,6 +7,9 @@ pub use self::app_state::*;
 pub mod crate_routes;
 #[allow(unused_imports)]
 pub use self::crate_routes::*;
+pub mod github_routes;
+#[allow(unused_imports)]
+pub use self::github_routes::*;
 pub mod layers;
 pub mod scene_routes;
 #[allow(unused_imports)]
