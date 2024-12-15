@@ -37,6 +37,7 @@ impl Services {
 				GithubFiles::cargo_manifest(github_crate_id).await
 			}
 		}
+		.map_err(|err| anyhow::anyhow!("Failed to find Cargo.toml: {}", err))
 	}
 	pub async fn cargo_lock(&self, crate_id: &CrateId) -> Result<CargoLock> {
 		match crate_id {
@@ -47,5 +48,6 @@ impl Services {
 				GithubFiles::cargo_lock(github_crate_id).await
 			}
 		}
+		.map_err(|err| anyhow::anyhow!("Failed to find Cargo.lock: {}", err))
 	}
 }

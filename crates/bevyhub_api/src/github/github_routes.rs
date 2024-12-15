@@ -82,6 +82,7 @@ async fn crate_doc(
 		GithubApi::resolve_gh_ref_param_to_hash(&owner, &repo, &gh_ref_param)
 			.await?;
 
+
 	let crate_id = CrateId::new_github(
 		&owner,
 		&repo,

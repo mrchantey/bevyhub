@@ -121,6 +121,8 @@ mod test {
 	use anyhow::Result;
 	use sweet::*;
 
+	const COMMIT_HASH: &str = "61eb2f523bfbfb41778e67770f1d115988622b80";
+
 	#[tokio::test]
 	async fn file() -> Result<()> {
 		let json = GithubApi::json(
@@ -138,7 +140,7 @@ mod test {
 		let json = GithubApi::json(
 			"mrchantey",
 			"bevyhub",
-			"61eb2f523bfbfb41778e67770f1d115988622b80",
+			COMMIT_HASH,
 			"scenes/space-scene.json",
 		)
 		.await?;

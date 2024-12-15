@@ -43,7 +43,7 @@ pub async fn server() -> Result<Router> {
 async fn root(State(uptime): State<Uptime>) -> Html<String> {
 	let version = CargoManifest::bevyhub_repo_crate_version();
 	Html(format!(
-		"<h1>🥁Welcome to the Bevyhub API🥁</h1><p>verison: {}</p><p>{}</p>",
+		"<h1>🥁Welcome to the Bevyhub API🥁</h1><p>Verison: {}</p><p>{}</p>",
 		version,
 		uptime.stats()
 	))

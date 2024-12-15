@@ -17,9 +17,52 @@ impl SetLatestScenesInDb {
 			CrateId::CratesIo(crate_id) => {
 				Self::set_latest_scenes_in_db_crates_io(api, crate_id).await
 			}
-			CrateId::Github(_crate_id) => todo!(),
+			CrateId::Github(crate_id) => {
+				Self::set_latest_scenes_in_db_github(api, crate_id).await
+			}
 		}
 	}
+
+	async fn set_latest_scenes_in_db_github(
+		api: &Services,
+		crate_id: &GithubCrateId,
+	) -> Result<()> {
+		let default_branch =
+			GithubApi::default_branch(&crate_id.owner, &crate_id.repo).await?;
+		let latest_hash = GithubApi::latest_commit_hash(
+			&crate_id.owner,
+			&crate_id.repo,
+			&default_branch,
+		)
+		.await?;
+
+
+		let should_not_be_latest_doc = doc! {
+			"scene_id.crate_id":{
+					"owner": &crate_id.owner,
+					"repo": &crate_id.repo,
+					"manifest_dir": &crate_id.manifest_dir,
+					"commit_hash":	{
+						"$ne": latest_hash.to_string()
+					}
+			},
+			"is_latest": true
+		};
+		let should_be_latest_doc = doc! {
+			"scene_id.crate_id": CrateId::Github(GithubCrateId {
+				commit_hash: latest_hash,
+				..crate_id.clone()
+			}),
+			"is_latest": false
+		};
+		Self::set_latest_scenes_in_db_inner(
+			api,
+			should_not_be_latest_doc,
+			should_be_latest_doc,
+		)
+		.await
+	}
+
 	async fn set_latest_scenes_in_db_crates_io(
 		api: &Services,
 		crate_id: &CratesIoCrateId,
@@ -31,7 +74,7 @@ impl SetLatestScenesInDb {
 		// 1. have the same crate name
 		// 2. not the latest version
 		// 3. are marked as latest
-		let mut should_not_be_latest = Self::get_scenes(api, doc! {
+		let should_not_be_latest_doc = doc! {
 			"scene_id.crate_id":{
 					"crate_name": &crate_id.crate_name,
 					"version":	{
@@ -39,22 +82,36 @@ impl SetLatestScenesInDb {
 					}
 			},
 			"is_latest": true
-		})
-		.await?;
+		};
 
+
+		let should_be_latest_doc = doc! {
+			"scene_id.crate_id": CrateId::new_crates_io(&crate_id.crate_name, latest_version.clone()),
+			"is_latest": false
+		};
+
+		Self::set_latest_scenes_in_db_inner(
+			api,
+			should_not_be_latest_doc,
+			should_be_latest_doc,
+		)
+		.await
+	}
+
+	async fn set_latest_scenes_in_db_inner(
+		api: &Services,
+		should_not_be_latest_doc: Document,
+		should_be_latest_doc: Document,
+	) -> Result<()> {
+		let mut should_not_be_latest =
+			Self::get_scenes(api, should_not_be_latest_doc).await?;
 
 		for scene in should_not_be_latest.iter_mut() {
 			scene.is_latest = false;
 		}
 
-		// entries that:
-		// 1. are the latest version of this crate
-		// 2. are not marked as latest
-		let mut should_be_latest = Self::get_scenes(api, doc! {
-			"scene_id.crate_id": CrateId::new_crates_io(&crate_id.crate_name, latest_version.clone()),
-			"is_latest": false
-		})
-		.await?;
+		let mut should_be_latest =
+			Self::get_scenes(api, should_be_latest_doc).await?;
 		for scene in should_be_latest.iter_mut() {
 			scene.is_latest = true;
 		}

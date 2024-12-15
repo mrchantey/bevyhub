@@ -63,11 +63,6 @@ impl GithubCrateId {
 			format!("{}/{}", parts.join("/"), path)
 		}
 	}
-
-	/// Gets the parent of the manifest_dir and appends `Cargo.lock`
-	pub fn manifest_lock_dir(&self) -> String {
-		Self::relative_to_manifest_dir(&self.manifest_dir, "Cargo.lock")
-	}
 }
 
 impl Into<CrateId> for CratesIoCrateId {
@@ -117,8 +112,8 @@ impl CrateId {
 				owner,
 				repo,
 				commit_hash,
-				..
-			}) => format!("github/{owner}/{repo}/{commit_hash}"),
+				manifest_dir,
+			}) => format!("github/{owner}/{repo}/{commit_hash}/{manifest_dir}"),
 		}
 	}
 
