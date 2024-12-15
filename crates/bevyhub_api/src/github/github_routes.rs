@@ -35,11 +35,11 @@ struct GithubRouteQueryParams {
 
 async fn latest_commit(
 	State(_api): State<Services>,
-	Path((owner, repo, gh_ref_param)): Path<(String, String, String)>,
+	Path((owner, repo, branch_param)): Path<(String, String, String)>,
 ) -> AppResult<String> {
-	let gh_ref =
-		GithubApi::resolve_gh_ref_param(&owner, &repo, &gh_ref_param).await?;
-	let commit = GithubApi::latest_commit_hash(&owner, &repo, &gh_ref).await?;
+	let branch =
+		GithubApi::resolve_branch_param(&owner, &repo, &branch_param).await?;
+	let commit = GithubApi::latest_commit_hash(&owner, &repo, &branch).await?;
 	Ok(commit)
 }
 

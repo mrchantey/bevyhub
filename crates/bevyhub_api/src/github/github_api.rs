@@ -9,6 +9,21 @@ pub struct GithubApi;
 const BASE_URL: &str = "https://api.github.com";
 
 impl GithubApi {
+	/// If the ref is "latest" then resolve the default branch
+	/// Otherwise return as-is
+	pub async fn resolve_branch_param(
+		owner: &str,
+		repo: &str,
+		gh_ref_param: &str,
+	) -> Result<String> {
+		if gh_ref_param == "latest" {
+			let branch = Self::default_branch(owner, repo).await?;
+			Ok(branch)
+		} else {
+			Ok(gh_ref_param.to_string())
+		}
+	}
+
 	/// If the ref is "latest" then resolve the latest commit hash for the default branch
 	/// Otherwise return as-is
 	pub async fn resolve_gh_ref_param(

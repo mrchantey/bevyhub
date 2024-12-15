@@ -46,7 +46,7 @@ async fn assert_status_and_json(
 #[tokio::main]
 async fn main() -> Result<()> {
 	// just {{curl-call}} crates/bevyhub_template/versions
-	// just {{curl-call}} crates/bevyhub_template/versions/0.0.6-rc.1/unpkg/README.md
+	// just {{curl-call}} crates/bevyhub_template/versions/0.0.6-rc.1/file/README.md
 	// just {{curl-call}} crates/bevyhub_template/versions/0.0.6-rc.1
 	// just {{curl-call}} crates/bevyhub_template
 	// just {{curl-call}} crates/bevyhub_template/versions/0.0.6-rc.1/scenes/
@@ -98,7 +98,7 @@ async fn main() -> Result<()> {
 	)
 	.await?;
 	assert_status_and_json(
-		"/crates/bevyhub/versions/0.0.1-rc.1/unpkg/scenes/app.json",
+		"/crates/bevyhub/versions/0.0.1-rc.1/file/scenes/app.json",
 		200,
 		None,
 	)

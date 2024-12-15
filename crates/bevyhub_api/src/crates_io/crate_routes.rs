@@ -14,8 +14,8 @@ pub fn crate_routes() -> AppRouter {
 	Router::new()
 		.route("/crates/:crate_name/versions",
 			get(all_versions).layer(middleware::from_fn(no_cache)))
-		.route("/crates/:crate_name/versions/:version/unpkg/*path",
-			get(unpkg))
+		.route("/crates/:crate_name/versions/:version/file/*path",
+			get(file))
 		.route("/crates/:crate_name/versions/:version", 
 			get(crate_doc))
 		.route("/crates/:crate_name/versions/:version/scenes",
@@ -26,7 +26,7 @@ pub fn crate_routes() -> AppRouter {
 
 
 /// Get a specific file, like `scenes/my-scene.json` from a crate
-async fn unpkg(
+async fn file(
 	State(api): State<Services>,
 	Path((crate_name, version, file_path)): Path<(String, String, String)>,
 ) -> AppResult<Bytes> {
