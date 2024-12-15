@@ -45,15 +45,13 @@ impl Services {
 			.scenes()
 			.find()
 			.filter(doc! {
-				"scene_id":{
-					"crate_id": crate_id
-				}
+				"scene_id.crate_id":crate_id
 			})
 			.send()
 			.await?
 			.try_collect()
 			.await?;
-
+	
 		if scenes.len() > 0
 			|| self.db().crates().has(&crate_id.into_doc_id()).await?
 		{

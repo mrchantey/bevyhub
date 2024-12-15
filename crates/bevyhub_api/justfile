@@ -29,6 +29,9 @@ example name *args:
 run:
 	just watch 'cargo run --example server'
 
+run-prod:
+	API_ENV=prod just watch 'cargo run --example server'
+
 cli *args:
 	cargo run -p bevyhub-cli -- {{args}}
 
@@ -83,13 +86,13 @@ purge-prod:
 	just mongo-purge-prod
 
 mongosh-find *args:
-	mongosh $MONGODB_CLIENT --eval "use db_prod" --eval "db.scenes.find({{args}})"
+	mongosh $MONGODB_CLIENT --eval "use crate_cache" --eval "db.scenes.find({{args}})"
 
 mongosh *args:
 	mongosh $MONGODB_CLIENT
 
 mongo-purge-prod:
-	mongosh $MONGODB_CLIENT --eval "use db_prod" --eval  "db.dropDatabase()"
+	mongosh $MONGODB_CLIENT --eval "use crate_cache" --eval  "db.dropDatabase()"
 
 s3-purge:
 	aws s3 rm s3://bevyhub-api-cache --recursive
@@ -98,19 +101,19 @@ s3-set-cors:
 	aws s3api put-bucket-cors --bucket bevyhub-api-cache --cors-configuration file://./config/cors.json
 
 lambda-env:
-	echo $MONGODB_CLIENT
 	aws lambda update-function-configuration \
 	--function-name bevyhub_api \
-	--region {{region}}
-	--environment "Variables={MONGODB_CLIENT=$MONGODB_CLIENT}" \
+	--region {{region}} \
+	--environment "Variables={ \
+			MONGODB_CLIENT=$MONGODB_CLIENT, \
+			GITHUB_API_TOKEN=$GITHUB_API_TOKEN \
+		}"
 
 pws *args:
 	just --shell powershell.exe --shell-arg -c {{args}}
 
 curl *args:
-	cargo run --example curl {{args}}
-curl-prod *args:
-	API_ENV=prod just curl
+	curl http://127.0.0.1:3000/{{args}}
 
 
 populate *args:

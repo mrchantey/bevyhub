@@ -16,7 +16,7 @@ fn file_path(name: &str) -> PathBuf {
 }
 
 
-/// Any regular field or the $ne and $eq filters are handled.
+/// Any regular field or the following filters are handled
 fn is_handled_filter(name: &str) -> bool {
 	!name.starts_with("$") || vec!["$ne", "$eq", "$exists"].contains(&name)
 }
