@@ -9,25 +9,19 @@ use axum::routing::get;
 use axum::Router;
 use semver::Version;
 
+#[rustfmt::skip]
 pub fn crate_routes() -> AppRouter {
 	Router::new()
-		.route(
-			"/crates/:crate_name/versions",
-			get(get_versions).layer(middleware::from_fn(no_cache)),
-		)
-		.route(
-			"/crates/:crate_name/versions/:version/unpkg/*path",
-			get(unpkg),
-		)
-		.route("/crates/:crate_name/versions/:version", get(get_crate_doc))
-		.route(
-			"/crates/:crate_name/versions/:version/scenes",
-			get(get_crate_scene_doc_list),
-		)
-		.route(
-			"/crates/:crate_name/versions/:version/scenes/:scene_name",
-			get(get_crate_scene_doc),
-		)
+		.route("/crates/:crate_name/versions",
+			get(all_versions).layer(middleware::from_fn(no_cache)))
+		.route("/crates/:crate_name/versions/:version/unpkg/*path",
+			get(unpkg))
+		.route("/crates/:crate_name/versions/:version", 
+			get(crate_doc))
+		.route("/crates/:crate_name/versions/:version/scenes",
+			get(all_scene_docs))
+		.route("/crates/:crate_name/versions/:version/scenes/:scene_name",
+			get(scene_doc))
 }
 
 
@@ -45,7 +39,7 @@ async fn unpkg(
 }
 
 /// Get all versions of a crate
-async fn get_versions(
+async fn all_versions(
 	State(api): State<Services>,
 	Path(crate_name): Path<String>,
 ) -> AppResult<Json<Vec<Version>>> {
@@ -54,39 +48,41 @@ async fn get_versions(
 }
 
 /// Get a [CrateDoc]
-async fn get_crate_doc(
+async fn crate_doc(
 	State(api): State<Services>,
 	Path((crate_name, version_param)): Path<(String, String)>,
 ) -> AppResult<Response> {
 	let version = api
 		.registry()
-		.version_or_latest(&crate_name, &version_param)
+		.resolve_version(&crate_name, &version_param)
 		.await?;
-	let doc = api
-		.crate_doc(&CrateId::new_crates_io(&crate_name, version))
-		.await?;
+
+	let crate_id = CrateId::new_crates_io(&crate_name, version);
+
+	let doc = api.crate_doc(&crate_id).await?;
 	let res = append_no_cache_headers_if_latest(Json(doc), &version_param);
 	Ok(res)
 }
 
-/// Get a [SceneDoc] list for a crate
-async fn get_crate_scene_doc_list(
+/// Get all scenes as a [Vec<SceneDoc>] for a crate
+async fn all_scene_docs(
 	State(api): State<Services>,
 	Path((crate_name, version_param)): Path<(String, String)>,
 ) -> AppResult<Response> {
 	let version = api
 		.registry()
-		.version_or_latest(&crate_name, &version_param)
+		.resolve_version(&crate_name, &version_param)
 		.await?;
-	let docs = api
-		.all_scene_docs(&CrateId::new_crates_io(&crate_name, version))
-		.await?;
+
+	let crate_id = CrateId::new_crates_io(&crate_name, version);
+
+	let docs = api.all_scene_docs(&crate_id).await?;
 	let res = append_no_cache_headers_if_latest(Json(docs), &version_param);
 	Ok(res)
 }
 
 /// Get a [SceneDoc] for a crate
-async fn get_crate_scene_doc(
+async fn scene_doc(
 	State(api): State<Services>,
 	Path((crate_name, version_param, scene_name)): Path<(
 		String,
@@ -96,9 +92,9 @@ async fn get_crate_scene_doc(
 ) -> AppResult<Response> {
 	let version = api
 		.registry()
-		.version_or_latest(&crate_name, &version_param)
+		.resolve_version(&crate_name, &version_param)
 		.await?;
-	let scene_id = SceneId::with_crate_name(&crate_name, version, scene_name);
+	let scene_id = SceneId::new_crates_io(&crate_name, version, scene_name);
 	let doc = api.scene_doc(&scene_id).await?;
 	let res = append_no_cache_headers_if_latest(Json(doc), &version_param);
 	Ok(res)

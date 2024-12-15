@@ -30,7 +30,7 @@ impl SceneId {
 			scene_name: scene_name.into(),
 		}
 	}
-	pub fn with_crate_name(
+	pub fn new_crates_io(
 		crate_name: impl Into<String>,
 		version: Version,
 		scene_name: impl Into<String>,

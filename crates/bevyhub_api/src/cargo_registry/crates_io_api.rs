@@ -6,15 +6,15 @@ use tokio::sync::RwLock;
 
 /// The Crates.io registry
 #[derive(Default, Clone)]
-pub struct CratesIo {
+pub struct CratesIoApi {
 	throttle: Arc<RwLock<Throttle>>,
 }
 
-impl CratesIo {
+impl CratesIoApi {
 	pub fn new() -> Self { Self::default() }
 }
 #[async_trait::async_trait]
-impl CargoRegistry for CratesIo {
+impl CargoRegistry for CratesIoApi {
 	async fn crate_index(&self, crate_name: &str) -> Result<CrateIndex> {
 		let url = crate_index_url(crate_name);
 		// println!("fetching versions for {}", url);
@@ -72,7 +72,7 @@ fn crate_index_url(crate_name: &str) -> String {
 mod test {
 	use crate::prelude::*;
 	use anyhow::Result;
-	use crates_io::crate_index_url;
+	use crates_io_api::crate_index_url;
 	use sweet::*;
 
 	#[test]

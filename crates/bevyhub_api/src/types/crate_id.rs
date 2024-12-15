@@ -6,14 +6,14 @@ use serde::Deserialize;
 use serde::Serialize;
 use ts_rs::TS;
 
-/// A unique identifier for a crate, whether on crate.io or GitHub.
+/// A unique identifier for a specific immutable crate, whether on crate.io or Github.
 /// This is the *minimal* amount of information needed to identify a crate.
 /// For the contents of a Cargo Manifest see [CrateDoc].
 #[derive(Debug, Clone, PartialEq, Eq, Hash, Serialize, Deserialize, TS)]
 #[serde(tag = "kind")]
 pub enum CrateId {
 	CratesIo(CratesIoCrateId),
-	Github(GitHubCrateId),
+	Github(GithubCrateId),
 }
 
 #[derive(Debug, Clone, PartialEq, Eq, Hash, Serialize, Deserialize, TS)]
@@ -34,25 +34,39 @@ impl CratesIoCrateId {
 	}
 }
 
+/// A unique identifier for a crate on Github.
+/// The `commit_hash` ensures that the crate is immutable.
 #[derive(Debug, Clone, PartialEq, Eq, Hash, Serialize, Deserialize, TS)]
-pub struct GitHubCrateId {
+pub struct GithubCrateId {
 	/// ie `mrchantey`
-	owner: String,
+	pub owner: String,
 	/// ie `bevyhub`
-	repo: String,
+	pub repo: String,
+	/// ie `390djjksd092`
+	pub commit_hash: String,
 	/// Defaults to `Cargo.toml` but can be any file in the repo
 	/// ie `crates/bevyhub_api/Cargo.toml`
-	manifest_dir: String,
-	/// Defaults to `main`
-	/// ie `main`
-	branch: String,
-	/// ie `390djjksd092`
-	commit_hash: String,
+	pub manifest_dir: String,
 }
 
-impl GitHubCrateId {
+impl GithubCrateId {
 	pub fn into_repo_url(&self) -> String {
 		format!("https://github.com/{}/{}", self.owner, self.repo)
+	}
+
+	pub fn relative_to_manifest_dir(manifest_dir: &str, path: &str) -> String {
+		let mut parts = manifest_dir.split('/').collect::<Vec<_>>();
+		parts.pop();
+		if parts.is_empty() {
+			path.to_string()
+		} else {
+			format!("{}/{}", parts.join("/"), path)
+		}
+	}
+
+	/// Gets the parent of the manifest_dir and appends `Cargo.lock`
+	pub fn manifest_lock_dir(&self) -> String {
+		Self::relative_to_manifest_dir(&self.manifest_dir, "Cargo.lock")
 	}
 }
 
@@ -60,7 +74,7 @@ impl Into<CrateId> for CratesIoCrateId {
 	fn into(self) -> CrateId { CrateId::CratesIo(self) }
 }
 
-impl Into<CrateId> for GitHubCrateId {
+impl Into<CrateId> for GithubCrateId {
 	fn into(self) -> CrateId { CrateId::Github(self) }
 }
 
@@ -74,6 +88,20 @@ impl CrateId {
 			version,
 		})
 	}
+	pub fn new_github(
+		owner: &str,
+		repo: &str,
+		commit_hash: &str,
+		manifest_dir: Option<&str>,
+	) -> Self {
+		Self::Github(GithubCrateId {
+			owner: owner.to_string(),
+			repo: repo.to_string(),
+			commit_hash: commit_hash.to_string(),
+			manifest_dir: manifest_dir.unwrap_or("Cargo.toml").to_string(),
+		})
+	}
+
 	pub fn into_scene_id(&self, scene_name: impl Into<String>) -> SceneId {
 		SceneId::new(self.clone(), scene_name)
 	}
@@ -85,13 +113,12 @@ impl CrateId {
 				crate_name,
 				version,
 			}) => format!("crates_io/{crate_name}/{version}"),
-			Self::Github(GitHubCrateId {
+			Self::Github(GithubCrateId {
 				owner,
 				repo,
-				branch,
 				commit_hash,
 				..
-			}) => format!("github/{owner}/{repo}/{branch}/{commit_hash}"),
+			}) => format!("github/{owner}/{repo}/{commit_hash}"),
 		}
 	}
 
@@ -127,5 +154,35 @@ impl CratesIoCrateId {
 	}
 	pub fn bevyhub_template_bad_version() -> Self {
 		Self::new("bevyhub_template", Version::new(0, 0, 0))
+	}
+}
+
+
+#[cfg(test)]
+mod test {
+	use crate::prelude::*;
+	use anyhow::Result;
+	use sweet::*;
+
+	#[test]
+	fn relative_to_manifest_dir() -> Result<()> {
+		expect(
+			GithubCrateId::relative_to_manifest_dir(
+				"crates/bevyhub_api/Cargo.toml",
+				"Cargo.lock",
+			)
+			.as_str(),
+		)
+		.to_be("crates/bevyhub_api/Cargo.lock")?;
+		expect(
+			GithubCrateId::relative_to_manifest_dir(
+				"Cargo.toml",
+				"scenes/my-scene.json",
+			)
+			.as_str(),
+		)
+		.to_be("scenes/my-scene.json")?;
+
+		Ok(())
 	}
 }

@@ -33,7 +33,9 @@ impl Services {
 			CrateId::CratesIo(crates_io_crate_id) => {
 				CratesIoFiles::cargo_manifest(self, crates_io_crate_id).await
 			}
-			CrateId::Github(_github_crate_id) => todo!(),
+			CrateId::Github(github_crate_id) => {
+				GithubFiles::cargo_manifest(github_crate_id).await
+			}
 		}
 	}
 	pub async fn cargo_lock(&self, crate_id: &CrateId) -> Result<CargoLock> {
@@ -41,7 +43,9 @@ impl Services {
 			CrateId::CratesIo(crates_io_crate_id) => {
 				CratesIoFiles::cargo_lock(self, crates_io_crate_id).await
 			}
-			CrateId::Github(_github_crate_id) => todo!(),
+			CrateId::Github(github_crate_id) => {
+				GithubFiles::cargo_lock(github_crate_id).await
+			}
 		}
 	}
 }

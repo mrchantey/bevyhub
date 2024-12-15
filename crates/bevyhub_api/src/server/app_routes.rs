@@ -11,7 +11,7 @@ use std::fs;
 
 const APP_PATH: &str = "/home/pete/me/bevyhub-apps";
 
-
+/// currently only used for local development, to avoid network downloads
 pub fn app_routes() -> AppRouter {
 	Router::new().route("/apps/*path", get(get_app))
 }

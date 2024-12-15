@@ -23,7 +23,7 @@ pub async fn server() -> Result<Router> {
 		.merge(app_routes())
 		.merge(scene_routes())
 		.merge(crate_routes())
-		// .merge(crate_routes())
+		.merge(github_routes())
 		.with_state(state)
 		.layer(
 			TraceLayer::new_for_http()
@@ -41,8 +41,10 @@ pub async fn server() -> Result<Router> {
 
 
 async fn root(State(uptime): State<Uptime>) -> Html<String> {
+	let version = CargoManifest::bevyhub_repo_crate_version();
 	Html(format!(
-		"<h1>🥁Welcome to the Bevyhub API🥁</h1><p>{}</p>",
+		"<h1>🥁Welcome to the Bevyhub API🥁</h1><p>verison: {}</p><p>{}</p>",
+		version,
 		uptime.stats()
 	))
 }

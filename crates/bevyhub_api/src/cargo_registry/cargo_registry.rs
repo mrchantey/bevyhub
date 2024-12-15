@@ -23,7 +23,8 @@ pub trait CargoRegistry: 'static + Send + Sync {
 		Ok(versions)
 	}
 
-	async fn version_or_latest(
+	/// Accepts a version string or "latest" and resolves the version
+	async fn resolve_version(
 		&self,
 		crate_name: &str,
 		version: &str,
@@ -55,7 +56,7 @@ pub trait CargoRegistry: 'static + Send + Sync {
 #[derive(Clone)]
 pub enum CargoRegistryEnum {
 	Cached(LocalCacheRegistry),
-	CratesIo(CratesIo),
+	CratesIo(CratesIoApi),
 }
 
 impl CargoRegistryEnum {
@@ -65,10 +66,10 @@ impl CargoRegistryEnum {
 				Ok(Self::Cached(LocalCacheRegistry::default()))
 			}
 			ApiEnvironment::Staging => {
-				Ok(Self::CratesIo(CratesIo::default()))
+				Ok(Self::CratesIo(CratesIoApi::default()))
 				// Ok(Self::Cached(LocalCacheRegistry::read_only()))
 			}
-			ApiEnvironment::Prod => Ok(Self::CratesIo(CratesIo::default())),
+			ApiEnvironment::Prod => Ok(Self::CratesIo(CratesIoApi::default())),
 		}
 	}
 

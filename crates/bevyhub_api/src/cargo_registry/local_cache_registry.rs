@@ -1,5 +1,5 @@
 use super::cargo_registry::CargoRegistry;
-use super::crates_io::CratesIo;
+use super::crates_io_api::CratesIoApi;
 use crate::prelude::*;
 use anyhow::Result;
 use axum::body::Bytes;
@@ -9,7 +9,7 @@ use tokio::fs;
 /// First attempts to load from fs before hitting crates.io
 #[derive(Default, Clone)]
 pub struct LocalCacheRegistry {
-	crates_io: CratesIo,
+	crates_io: CratesIoApi,
 	/// Only read from local, but dont write, useful for staging
 	read_only: bool,
 }
@@ -18,7 +18,7 @@ impl LocalCacheRegistry {
 	// was used by staging, for staging tests we shouldnt write to the cache?
 	pub fn read_only() -> Self {
 		Self {
-			crates_io: CratesIo::default(),
+			crates_io: CratesIoApi::default(),
 			read_only: true,
 		}
 	}
