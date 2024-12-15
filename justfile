@@ -62,6 +62,7 @@ build-wasm *args:
 	--copy-scenes crates/bevyhub_template/scenes \
 	--copy-registries crates/bevyhub_template/target/registries {{args}}
 
+# use this to verify changes to the cli are working
 build-wasm-test *args:
 	just cli build \
 	-p bevyhub_template --example app \

@@ -3,7 +3,7 @@
   "entities": {
     "4294967307": {
       "components": {
-        "beetmash_scene::utils::bundle_placeholder::BundlePlaceholder": {
+        "bevyhub_scene::utils::bundle_placeholder::BundlePlaceholder": {
           "Pbr": {
             "mesh": {
               "Plane3d": {

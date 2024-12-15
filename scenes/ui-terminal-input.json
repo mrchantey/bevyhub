@@ -215,7 +215,6 @@
     },
     "4294967308": {
       "components": {
-        "beetmash_core::components::ui_terminal::OutputContainer": {},
         "bevy_core::name::Name": "Output Container",
         "bevy_hierarchy::components::parent::Parent": 4294967307,
         "bevy_render::view::visibility::InheritedVisibility": false,
@@ -421,7 +420,8 @@
           "offset_x": 0.0,
           "offset_y": 0.0
         },
-        "bevy_ui::ui_node::ZIndex": 0
+        "bevy_ui::ui_node::ZIndex": 0,
+        "bevyhub_core::components::ui_terminal::OutputContainer": {}
       }
     },
     "4294967309": {
@@ -705,7 +705,6 @@
     },
     "4294967311": {
       "components": {
-        "beetmash_core::components::ui_terminal::InputContainer": {},
         "bevy_hierarchy::components::parent::Parent": 4294967309,
         "bevy_text::text::TextColor": {
           "LinearRgba": {
@@ -726,7 +725,8 @@
           "font_size": 32.0,
           "font_smoothing": "AntiAliased"
         },
-        "bevy_text::text::TextSpan": ""
+        "bevy_text::text::TextSpan": "",
+        "bevyhub_core::components::ui_terminal::InputContainer": {}
       }
     }
   }

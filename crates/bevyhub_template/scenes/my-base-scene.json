@@ -3,7 +3,6 @@
   "entities": {
     "4294967302": {
       "components": {
-        "bevyhub_scene::utils::bundle_placeholder::BundlePlaceholder": "PointLight",
         "bevy_core::name::Name": "Light",
         "bevy_transform::components::global_transform::GlobalTransform": [
           1.0,
@@ -36,12 +35,12 @@
             1.0,
             1.0
           ]
-        }
+        },
+        "bevyhub_scene::utils::bundle_placeholder::BundlePlaceholder": "PointLight"
       }
     },
     "4294967303": {
       "components": {
-        "bevyhub_scene::utils::bundle_placeholder::BundlePlaceholder": "Camera3d",
         "bevy_core::name::Name": "Camera",
         "bevy_transform::components::global_transform::GlobalTransform": [
           1.0,
@@ -74,7 +73,8 @@
             1.0,
             1.0
           ]
-        }
+        },
+        "bevyhub_scene::utils::bundle_placeholder::BundlePlaceholder": "Camera3d"
       }
     }
   }

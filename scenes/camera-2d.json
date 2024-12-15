@@ -3,7 +3,7 @@
   "entities": {
     "4294967307": {
       "components": {
-        "beetmash_scene::utils::bundle_placeholder::BundlePlaceholder": "Camera2d"
+        "bevyhub_scene::utils::bundle_placeholder::BundlePlaceholder": "Camera2d"
       }
     }
   }

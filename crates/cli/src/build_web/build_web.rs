@@ -93,15 +93,22 @@ instead of html and other web assets.
 	fn run(&self, args: &clap::ArgMatches) -> Result<()> {
 		let args = Args::from_args(args);
 
-		println!("Building Bevyhub Web app...\n{:#?}", args);
-		
+		println!("🚀 Building Bevyhub Web app...\n{:#?}", args);
+
+		println!("🚀 Running Cargo Build");
 		run_cargo_build(&args)?;
+		run_print_size("🧪 Cargo Build Succeeded - Size: ", &args.cargo_build_wasm_path())?;
+		println!("🚀 Running Wasm Bindgen");
 		run_wasm_bindgen(&args)?;
+		run_print_size("🧪 Wasm Bindgen Succeeded - Size: ", &args.bindgen_path_wasm())?;
+		println!("🚀 Running Wasm Opt");
 		run_wasm_opt(&args)?;
+		run_print_size("🧪 Wasm Opt Succeeded - Size: ", &args.bindgen_path_wasm())?;
+		println!("🚀 Copying Local Files");
 		run_copy_local(&args)?;
 		// run_commit_local(&args)?;
 
-		println!("Build Succeeded");
+		println!("🚀 Build Succeeded");
 		Ok(())
 	}
 }
@@ -164,10 +171,10 @@ impl Args {
 		path.to_string_lossy().to_string()
 	}
 
-	fn wasm_bindgen_path_wasm(&self) -> String {
+	fn bindgen_path_wasm(&self) -> String {
 		format!("{}/{}_bg.wasm", self.out_dir, self.app_name)
 	}
-	fn wasm_bindgen_path_js(&self) -> String {
+	fn bindgen_path_js(&self) -> String {
 		format!("{}/{}.js", self.out_dir, self.app_name)
 	}
 }
@@ -195,7 +202,6 @@ fn run_cargo_build(args: &Args) -> Result<()> {
 	if !status.success() {
 		anyhow::bail!("cargo build failed");
 	}
-	run_print_size("Size - cargo build", &args.cargo_build_wasm_path())?;
 
 	Ok(())
 }
@@ -220,13 +226,12 @@ fn run_wasm_bindgen(args: &Args) -> Result<()> {
 		&wasm_path,
 	];
 	// println!("wasm-bindgen {}", build_args.join(" "));
-
+	
 	let status = Command::new("wasm-bindgen").args(&build_args).status()?;
 	if !status.success() {
 		anyhow::bail!("wasm-bindgen failed");
 	}
-
-	run_print_size("Size - wasm-bindgen", &args.wasm_bindgen_path_wasm())?;
+	
 
 	Ok(())
 }
@@ -236,7 +241,7 @@ fn run_wasm_opt(args: &Args) -> Result<()> {
 		return Ok(());
 	}
 
-	let wasm_bindgen_path = args.wasm_bindgen_path_wasm();
+	let wasm_bindgen_path = args.bindgen_path_wasm();
 
 	let status = Command::new("wasm-opt")
 		.args(&["-Oz", "--output", &wasm_bindgen_path, &wasm_bindgen_path])
@@ -245,7 +250,6 @@ fn run_wasm_opt(args: &Args) -> Result<()> {
 		anyhow::bail!("wasm-opt failed");
 	}
 
-	run_print_size("Size - wasm-opt", &args.wasm_bindgen_path_wasm())?;
 
 	Ok(())
 }
@@ -275,11 +279,11 @@ fn run_copy_local(args: &Args) -> Result<()> {
 	let target_dir = PathBuf::from(target_dir).canonicalize()?.join(crate_name);
 	fs::create_dir_all(&target_dir).ok();
 	fs::copy(
-		&args.wasm_bindgen_path_wasm(),
+		&args.bindgen_path_wasm(),
 		target_dir.join(format!("{}_bg.wasm", args.app_name)),
 	)?;
 	fs::copy(
-		&args.wasm_bindgen_path_js(),
+		&args.bindgen_path_js(),
 		target_dir.join(format!("{}.js", args.app_name)),
 	)?;
 
