@@ -7,7 +7,7 @@ use bevy::window::WindowPlugin;
 const DEFAULT_ASSET_PATH: &str = "assets";
 
 /// Opinionated [DefaultPlugins] to work well with scene-based workflows
-/// and uploading to [bevyhub.org](https://bevyhub.org)
+/// and uploading to [bevyhub.dev](https://bevyhub.dev)
 pub struct BevyhubDefaultPlugins {
 	#[allow(unused)]
 	pub native_asset_path: String,
@@ -132,7 +132,7 @@ fn close_on_esc(
 
 
 
-/// Ensure your app looks beautiful on bevyhub.org
+/// Ensure your app looks beautiful on bevyhub.dev
 pub fn bevyhub_window_plugin() -> WindowPlugin {
 	WindowPlugin {
 		primary_window: Some(Window {

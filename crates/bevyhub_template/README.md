@@ -1,9 +1,9 @@
 # Bevyhub Template
 
-- [docs](https://bevyhub.org/docs/bevyhub)
+- [docs](https://bevyhub.dev/docs/bevyhub)
 - [github](https://github.com/mrchantey/bevyhub)
 
-A demonstration of the workflow for publishing Bevy apps and scenes to [bevyhub](https://bevyhub.org).
+A demonstration of the workflow for publishing Bevy apps and scenes to [bevyhub](https://bevyhub.dev).
 
 
 ### Optimization table

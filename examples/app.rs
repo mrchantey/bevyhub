@@ -1,4 +1,4 @@
-//! This is published as an app to bevyhub.org
+//! This is published as an app to bevyhub.dev
 use bevyhub::prelude::*;
 use bevy::prelude::*;
 

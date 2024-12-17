@@ -5,7 +5,7 @@ use std::path::PathBuf;
 
 #[derive(Debug, Clone)]
 pub struct SceneExportConfig {
-	/// The format to export to, currently bevyhub.org only supports json.
+	/// The format to export to, currently bevyhub.dev only supports json.
 	pub format: SceneFormat,
 	pub dir: PathBuf,
 	pub clear_target_dir: bool,

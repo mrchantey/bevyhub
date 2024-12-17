@@ -28,7 +28,7 @@ name = "hello-world"
 # you may like to create base sceness upon which others can build
 [[package.metadata.scene]]
 name = "my-base-scene"
-# add some metadata so it looks great on bevyhub.org
+# add some metadata so it looks great on bevyhub.dev
 description = "Simply default plugins, a light and a 3d camera with a sensible offset."
 thumb-text = "🎥"
 # here we can specify the path to the scene file
