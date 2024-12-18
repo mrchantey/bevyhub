@@ -2,6 +2,15 @@
 name = "bevyhub_api"
 version.workspace = true
 edition.workspace = true
+description = "The bevyhub scene cache api."
+documentation.workspace = true
+readme = "README.md"
+homepage.workspace = true
+repository.workspace = true
+license.workspace = true
+keywords.workspace = true
+categories.workspace = true
+publish = true
 
 [features]
 default = []

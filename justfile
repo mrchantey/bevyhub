@@ -90,28 +90,29 @@ test-ci *args:
 	cargo test --workspace -- --skip mongo_sets_latest {{args}}
 
 assets-push:
-	aws s3 sync ./assets s3://beetmash-public/assets --delete
+	aws s3 sync ./assets s3://bevyhub-public/assets --delete
 	tar -czvf ./assets.tar.gz ./assets
-	aws s3 cp ./assets.tar.gz s3://beetmash-public/assets.tar.gz
+	aws s3 cp ./assets.tar.gz s3://bevyhub-public/assets.tar.gz
 	rm ./assets.tar.gz
 
 assets-pull:
-	curl -o ./assets.tar.gz https://beetmash-public.s3.us-west-2.amazonaws.com/assets.tar.gz
+	curl -o ./assets.tar.gz https://bevyhub-public.s3.us-west-2.amazonaws.com/assets.tar.gz
 	tar -xzvf ./assets.tar.gz
 	rm ./assets.tar.gz
 
 publish crate *args:
 	cargo publish -p {{crate}} --allow-dirty --no-verify {{args}}
-	sleep 2
+	sleep 1
 
 publish-all *args:
-	just publish bevyhub_scene 	 {{args}} || true
-	just publish bevyhub_net 		 {{args}} || true
-	just publish bevyhub_core 		 {{args}} || true
-	just publish bevyhub 				 {{args}} || true
+	just publish bevyhub_scene 	 	{{args}} 	|| true
+	just publish bevyhub_net 		 	{{args}} 	|| true
+	just publish bevyhub_core 		{{args}} 	|| true
+	just publish bevyhub 				 	{{args}} 	|| true
 	just publish bevyhub_template {{args}}	|| true
+	just publish bevyhub_api 		 	{{args}}	|| true
+	just publish bevyhub-cli 		 	{{args}}	|| true
 # just publish bevyhub_server 	 {{args}} || true
-# just publish bevyhub-cli 		 {{args}}	|| true
 
 
 patch:

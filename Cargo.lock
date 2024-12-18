@@ -1898,7 +1898,7 @@ dependencies = [
 
 [[package]]
 name = "bevyhub"
-version = "0.0.1-rc.3"
+version = "0.0.1-rc.2"
 dependencies = [
  "anyhow",
  "bevy",
@@ -1911,7 +1911,7 @@ dependencies = [
 
 [[package]]
 name = "bevyhub-cli"
-version = "0.0.1-rc.3"
+version = "0.0.1-rc.2"
 dependencies = [
  "anyhow",
  "bevyhub_api",
@@ -1927,7 +1927,7 @@ dependencies = [
 
 [[package]]
 name = "bevyhub_api"
-version = "0.0.1-rc.3"
+version = "0.0.1-rc.2"
 dependencies = [
  "anyhow",
  "async-trait",
@@ -1960,7 +1960,7 @@ dependencies = [
 
 [[package]]
 name = "bevyhub_core"
-version = "0.0.1-rc.3"
+version = "0.0.1-rc.2"
 dependencies = [
  "anyhow",
  "bevy",
@@ -1975,7 +1975,7 @@ dependencies = [
 
 [[package]]
 name = "bevyhub_net"
-version = "0.0.1-rc.3"
+version = "0.0.1-rc.2"
 dependencies = [
  "anyhow",
  "bevy",
@@ -2004,7 +2004,7 @@ dependencies = [
 
 [[package]]
 name = "bevyhub_scene"
-version = "0.0.1-rc.3"
+version = "0.0.1-rc.2"
 dependencies = [
  "anyhow",
  "bevy",
@@ -2020,7 +2020,7 @@ dependencies = [
 
 [[package]]
 name = "bevyhub_server"
-version = "0.0.1-rc.3"
+version = "0.0.1-rc.2"
 dependencies = [
  "anyhow",
  "axum",
@@ -2046,7 +2046,7 @@ dependencies = [
 
 [[package]]
 name = "bevyhub_template"
-version = "0.0.1-rc.3"
+version = "0.0.1-rc.2"
 dependencies = [
  "bevy",
  "bevyhub",
