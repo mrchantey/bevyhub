@@ -1,19 +1,23 @@
 //! Test the output of the [SceneGroupExporter] and [TypeRegistryExporter]
 //! Files are exported to `target/scenes` and `target/type_registries`
 use anyhow::Result;
-use bevyhub_scene::prelude::*;
 use bevy::prelude::*;
+use bevyhub_scene::prelude::*;
 use std::borrow::Cow;
 
 fn main() -> Result<()> {
 	SceneGroupExporter::new_no_filter(register_types)
+		.with_config(SceneExportConfig {
+			clear_target_dir: false,
+			..default()
+		})
 		.with_checks(
 			DynamicSceneChecks::default().with_num_ignored_resources(6),
 		)
 		.add_scene("test_scene", scene)
 		.export()?;
 	TypeRegistryExporter::new(register_types)
-		.with_name("test_scene_registry")
+		.with_name("test_scene_registry.json")
 		.export()?;
 
 	Ok(())

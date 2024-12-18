@@ -31,6 +31,7 @@ cli *args:
 
 export-scenes *args:
 	cargo run --example export_scenes {{args}}
+	cargo run -p bevyhub_scene --example export_test_scene {{args}}
 	cd crates/bevyhub_template && cargo run --example export_scenes {{args}}
 
 ts-dst:= '../bevyhub-site/packages/editor/src/serdeTypes/generated'

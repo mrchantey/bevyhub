@@ -2,7 +2,9 @@ use crate::prelude::*;
 use anyhow::Result;
 
 impl Services {
-	/// unpack the [crate_doc] and every [scene_doc] in the crate to the document db
+	/// unpack the [crate_doc] and every [scene_doc] in the crate to the document db.
+	/// This uses the [Services::cargo_manifest] function to resolve from
+	/// crates.io or github.
 	pub async fn unpack_crate_to_db(
 		&self,
 		crate_id: &CrateId,

@@ -34,10 +34,10 @@ thumb-text = "🎥"
 # here we can specify the path to the scene file
 path = "scenes/my-base-scene.json"
 # specifying the path to a wasm app is a great way to share a demo of your scene
-app.js-url = "https://mrchantey.github.io/bevyhub-apps/bevyhub_template/app.js"
-app.wasm-url = "https://mrchantey.github.io/bevyhub-apps/bevyhub_template/app_bg.wasm"
-app.type-registry-url = "https://mrchantey.github.io/bevyhub-apps/bevyhub_template/registries/type_registry.json"
-app.replication-registry-url = "https://mrchantey.github.io/bevyhub-apps/bevyhub_template/registries/replication_registry.json"
+app.js-url = "https://raw.githubusercontent.com/mrchantey/bevyhub-apps/refs/heads/main/bevyhub_template/app.js"
+app.wasm-url = "https://raw.githubusercontent.com/mrchantey/bevyhub-apps/refs/heads/main/bevyhub_template/app_bg.wasm"
+app.type-registry-url = "https://raw.githubusercontent.com/mrchantey/bevyhub-apps/refs/heads/main/bevyhub_template/registries/type_registry.json"
+app.replication-registry-url = "https://raw.githubusercontent.com/mrchantey/bevyhub-apps/refs/heads/main/bevyhub_template/registries/replication_registry.json"
 
 ### 🚀 3 - A demo scene
 
