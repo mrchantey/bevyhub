@@ -2,7 +2,7 @@ default:
 	just --list --unsorted
 
 export-scenes:
-	cargo run --example export_scenes
+	cargo run --example export-bevyhub-template
 
 run:
 	cargo run --example app -- scenes/my-base-scene.json scenes/my-beautiful-scene.json

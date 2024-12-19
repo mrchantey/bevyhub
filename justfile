@@ -12,6 +12,8 @@ init-repo:
 app *scenes:
 	cargo run --example app -- {{scenes}}
 
+api:
+	cd crates/bevyhub_api && just run
 
 app-terminal:
 	just app \

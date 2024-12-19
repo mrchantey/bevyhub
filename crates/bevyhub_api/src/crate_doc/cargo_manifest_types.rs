@@ -274,6 +274,21 @@ mod test {
 	use cargo_manifest_types::CargoManifestExt;
 	use sweet::*;
 
+	const MINIMAL_CRATE: &str = r#"
+[package]
+name = "hello-bevyhub"
+version = "0.1.0"
+edition = "2024"
+"#;
+
+
+// the edition must be found in the cargo-manifest crate
+	#[test]
+	fn minimal_manifest() -> Result<()> {
+		let _val: CargoManifest = toml::from_str(MINIMAL_CRATE)?;
+		Ok(())
+	}
+
 	#[test]
 	fn works() -> Result<()> {
 		let manifest = CargoManifest::bevyhub_template();
