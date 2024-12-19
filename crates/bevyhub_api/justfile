@@ -69,7 +69,7 @@ deploy *args:
 	--region {{region}} \
 	--verbose \
 	{{args}}
-	just mongo-purge-prod
+# just mongo-purge-prod
 
 # cargo test --test bevyhub-api -- {{args}}
 

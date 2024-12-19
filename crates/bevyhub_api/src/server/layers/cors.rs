@@ -9,6 +9,7 @@ use axum::response::IntoResponse;
 use axum::response::Response;
 
 /// TODO handle unwrap
+/// Why are we allowing cors?
 pub async fn cors(req: Request<Body>, next: Next) -> AppResult<Response> {
 	let origin = req
 		.headers()

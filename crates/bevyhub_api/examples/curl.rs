@@ -1,6 +1,5 @@
 use anyhow::Result;
-use bevyhub_api::prelude::ApiEnvironment;
-use bevyhub_api::prelude::REQWEST_CLIENT;
+use bevyhub_api::prelude::*;
 use serde_json::Value;
 
 const LOCAL_HOST: &str = "http://localhost:3000";
