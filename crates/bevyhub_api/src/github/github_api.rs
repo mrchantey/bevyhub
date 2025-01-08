@@ -133,47 +133,47 @@ impl GithubApi {
 #[cfg(test)]
 mod test {
 	use crate::prelude::*;
-	use anyhow::Result;
-	use sweet::*;
+	use sweet::prelude::*;
 
 	const COMMIT_HASH: &str = "61eb2f523bfbfb41778e67770f1d115988622b80";
 
 	#[tokio::test]
-	async fn file() -> Result<()> {
+	async fn file() {
 		let json = GithubApi::json(
 			"mrchantey",
 			"bevyhub",
 			"main",
 			"scenes/space-scene.json",
 		)
-		.await?;
-		expect(json.get("resources")).to_be_some()?;
-		Ok(())
+		.await
+		.unwrap();
+		expect(json.get("resources")).to_be_some();
 	}
 	#[tokio::test]
-	async fn file_from_hash() -> Result<()> {
+	async fn file_from_hash() {
 		let json = GithubApi::json(
 			"mrchantey",
 			"bevyhub",
 			COMMIT_HASH,
 			"scenes/space-scene.json",
 		)
-		.await?;
-		expect(json.get("resources")).to_be_some()?;
-		Ok(())
+		.await
+		.unwrap();
+		expect(json.get("resources")).to_be_some();
 	}
 
 	#[tokio::test]
-	async fn latest_commit() -> Result<()> {
+	async fn latest_commit() {
 		let res = GithubApi::latest_commit_hash("mrchantey", "bevyhub", "main")
-			.await?;
-		expect(res.len()).to_be_greater_than(16)?;
-		Ok(())
+			.await
+			.unwrap();
+		expect(res.len()).to_be_greater_than(16);
 	}
 	#[tokio::test]
-	async fn default_branch() -> Result<()> {
-		let res = GithubApi::default_branch("mrchantey", "bevyhub").await?;
-		expect(res.as_str()).to_be("main")?;
-		Ok(())
+	async fn default_branch() {
+		let res = GithubApi::default_branch("mrchantey", "bevyhub")
+			.await
+			.unwrap();
+		expect(res.as_str()).to_be("main");
 	}
 }

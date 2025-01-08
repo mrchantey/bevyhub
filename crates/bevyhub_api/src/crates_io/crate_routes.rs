@@ -7,13 +7,14 @@ use axum::response::Json;
 use axum::response::Response;
 use axum::routing::get;
 use axum::Router;
+use forky::server::layers;
 use semver::Version;
 
 #[rustfmt::skip]
 pub fn crate_routes() -> AppRouter {
 	Router::new()
 		.route("/crates/:crate_name/versions",
-			get(all_versions).layer(middleware::from_fn(no_cache)))
+			get(all_versions).layer(middleware::from_fn(layers::no_cache)))
 		.route("/crates/:crate_name/versions/:version/file/*path",
 			get(file))
 		.route("/crates/:crate_name/versions/:version", 

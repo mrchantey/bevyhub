@@ -84,16 +84,14 @@ fn get_version(path: &Path) -> Result<String> {
 mod test {
 	// use crate::prelude::*;
 	use super::get_version;
-	use anyhow::Result;
 	use std::path::PathBuf;
 	use std::str::FromStr;
-	use sweet::*;
+	use sweet::prelude::*;
 
 	#[test]
-	fn works() -> Result<()> {
-		expect(get_version(&PathBuf::from_str(".")?)) // cli
-			.to_be_ok()?;
-		expect(get_version(&PathBuf::from_str("../../")?)).to_be_ok()?; // bevyhub_api
-		Ok(())
+	fn works() {
+		expect(get_version(&PathBuf::from_str(".").unwrap())) // cli
+			.to_be_ok();
+		expect(get_version(&PathBuf::from_str("../../").unwrap())).to_be_ok(); // bevyhub_api
 	}
 }

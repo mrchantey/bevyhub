@@ -97,7 +97,6 @@ impl<T: HasDocId> MemoryCollection<T> {
 
 fn compare_recursive(doc: &Document, filter: &Document) -> bool {
 	filter.iter().all(|(key, value)| {
-
 		let (doc, key) = match parse_key_parts(doc, key) {
 			Some(val) => val,
 			None => return false,
@@ -256,7 +255,7 @@ mod test {
 	use crate::prelude::*;
 	use anyhow::Result;
 	use mongodb::bson::doc;
-	use sweet::*;
+	use sweet::prelude::*;
 
 	#[tokio::test]
 	async fn works() -> Result<()> {
@@ -265,9 +264,9 @@ mod test {
 
 		collection.insert(&doc! {"_id":"foo"}).await?;
 		expect(collection.map.write().await.get(&DocId::new("foo")))
-			.to_be_some()?;
-		expect(collection.get(&DocId::new("foo")).await?).to_be_some()?;
-		expect(collection.get(&DocId::new("bar")).await?).to_be_none()?;
+			.to_be_some();
+		expect(collection.get(&DocId::new("foo")).await?).to_be_some();
+		expect(collection.get(&DocId::new("bar")).await?).to_be_none();
 
 		Ok(())
 	}
@@ -287,16 +286,16 @@ mod test {
 			})
 			.await?;
 
-		expect(collection.count(doc! {"name":"bill"}).await?).to_be(0)?;
-		expect(collection.count(doc! {"name":"bob"}).await?).to_be(1)?;
+		expect(collection.count(doc! {"name":"bill"}).await?).to_be(0);
+		expect(collection.count(doc! {"name":"bob"}).await?).to_be(1);
 		expect(collection.count(doc! { "address.number": 1234 }).await?)
-			.to_be(1)?;
+			.to_be(1);
 		expect(
 			collection
 				.count(doc! { "address":{"number": 1234} })
 				.await?,
 		)
-		.to_be(1)?;
+		.to_be(1);
 		expect(
 			collection
 				.count(doc! {
@@ -309,10 +308,10 @@ mod test {
 				})
 				.await?,
 		)
-		.to_be(1)?;
+		.to_be(1);
 		expect(collection.count(doc! {"address":{"$ne": null}}).await?)
-			.to_be(1)?;
-		expect(collection.count(doc! {"age":{"$eq": null}}).await?).to_be(1)?;
+			.to_be(1);
+		expect(collection.count(doc! {"age":{"$eq": null}}).await?).to_be(1);
 
 		Ok(())
 	}

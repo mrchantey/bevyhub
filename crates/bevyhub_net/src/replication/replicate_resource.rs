@@ -91,7 +91,7 @@ mod test {
 	use bevy::prelude::*;
 	use serde::Deserialize;
 	use serde::Serialize;
-	use sweet::*;
+	use sweet::prelude::*;
 
 
 	#[derive(Debug, Clone, Resource, Serialize, Deserialize, PartialEq)]
@@ -115,23 +115,22 @@ mod test {
 		let reg_id = RegistrationId::new_with(0);
 
 		let msg_out = app.world_mut().resource_mut::<MessageOutgoing>();
-		expect(msg_out.len()).to_be(3)?;
+		expect(msg_out.len()).to_be(3);
 		expect(&msg_out[0]).to_be(
-			&&Message::InsertResource {
+			&Message::InsertResource {
 				reg_id,
 				payload: MessagePayload::new(&MyResource(7))?,
 			}
 			.into(),
-		)?;
+		);
 		expect(&msg_out[1]).to_be(
-			&&Message::ChangeResource {
+			&Message::ChangeResource {
 				reg_id: RegistrationId::new_with(0),
 				payload: MessagePayload::new(&MyResource(8))?,
 			}
 			.into(),
-		)?;
-		expect(&msg_out[2])
-			.to_be(&&Message::RemoveResource { reg_id }.into())?;
+		);
+		expect(&msg_out[2]).to_be(&Message::RemoveResource { reg_id }.into());
 
 		Ok(())
 	}
@@ -155,26 +154,28 @@ mod test {
 		Message::loopback(app1.world_mut(), app2.world_mut());
 
 		let msg_in = app2.world_mut().resource_mut::<MessageIncoming>();
-		expect(msg_in.len()).to_be(2)?;
+		expect(msg_in.len()).to_be(2);
 
 		expect(&msg_in[0]).to_be(
-			&&Message::InsertResource {
+			&Message::InsertResource {
 				reg_id: RegistrationId::new_with(0),
 				payload: MessagePayload::new(&MyResource(7))?,
 			}
 			.into(),
-		)?;
+		);
 		expect(&msg_in[1]).to_be(
-			&&Message::ChangeResource {
+			&Message::ChangeResource {
 				reg_id: RegistrationId::new_with(0),
 				payload: MessagePayload::new(&MyResource(8))?,
 			}
 			.into(),
-		)?;
+		);
 
 		app2.update();
 
-		expect(app2.world()).resource()?.to_be(&MyResource(8))?;
+		expect(app2.world())
+			.resource::<MyResource>()
+			.to_be(&MyResource(8));
 
 		Ok(())
 	}

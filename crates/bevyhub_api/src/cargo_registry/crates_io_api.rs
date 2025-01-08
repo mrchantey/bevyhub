@@ -71,15 +71,12 @@ fn crate_index_url(crate_name: &str) -> String {
 #[cfg(test)]
 mod test {
 	use crate::prelude::*;
-	use anyhow::Result;
 	use crates_io_api::crate_index_url;
-	use sweet::*;
+	use sweet::prelude::*;
 
 	#[test]
-	fn works() -> Result<()> {
+	fn works() {
 		expect(crate_index_url("bevyhub_api").as_str())
-			.to_be("https://index.crates.io/be/vy/bevyhub_api")?;
-
-		Ok(())
+			.to_be("https://index.crates.io/be/vy/bevyhub_api");
 	}
 }

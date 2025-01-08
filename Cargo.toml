@@ -16,13 +16,13 @@ opt-level = 3
 [workspace.package]
 version = "0.0.1-rc.4"
 edition = "2021"
-description = "The number one bevy scene registry."
+description = "Bevy tools for Bevy developers."
 documentation = "https://bevyhub.dev/docs"
 readme = "README.md"
 homepage = "https://bevyhub.dev"
 repository = "https://github.com/mrchantey/bevyhub"
 license = "MIT OR Apache-2.0"
-keywords = ["bevyhub", "behavior", "game-ai", "robotics"]
+keywords = ["bevy", "bevyhub", "behavior", "game-ai", "robotics"]
 categories = [
 	"science::robotics",
 	"game-development",
@@ -58,40 +58,41 @@ bevyhub_server = { path = "crates/bevyhub_server", version = "0.0.1-rc.4" }
 
 #💡 local-relative
 # sweet = { version = "0.1.51", path = "../sweet", features = ["bevy"] }
-forky = { version = "0.2", features = ["bevy", "web"] }
+# forky = { version = "0.2", features = ["bevy", "web"] }
 
 #💡 local-published
+forky = { path = "../forky", features = ["bevy", "web"] }
 # sweet = { path = "../sweet", version = "0.2.0-rc.3", features = ["bevy"] }
-sweet = { version = "0.2", features = ["bevy"] }
+sweet = { path = "../sweet", features = ["bevy"] }
+# sweet = { version = "0.2", features = ["bevy"] }
 
 #💡 Utility
-anyhow = "1.0.75"
-console_log = { version = "1.0", features = ["color"] }
-extend = "1.1.2"
+anyhow = "1"
+extend = "1"
 log = "0.4"
 pretty_env_logger = "0.4"
 rand = "0.8"
-strum = { version = "0.26.0", features = ["derive"] }
-strum_macros = "0.26.0"
+strum = { version = "0.26", features = ["derive"] }
+strum_macros = "0.26"
 
 #💡 Cargo
 toml = "0.8"
 cargo-manifest = "0.17"
-semver = { version = "1.0", features = ["serde"] }
+semver = { version = "1", features = ["serde"] }
 
 #💡 IO
 serde = { version = "1", features = ["derive"] }
 serde_json = { version = "1" }
 
 #💡 Async
-async-trait = "0.1.81"
+async-trait = "0.1"
 futures = "0.3"
 futures-util = { version = "0.3", default-features = false, features = [
 	"sink",
 	"std",
 ] }
-tokio = { version = "1.35", features = ["full"] }
-tokio-tungstenite = { version = "0.21" }
+tokio = { version = "1", features = ["full"] }
+tokio-tungstenite = { version = "0.26" }
 
 
 #💡 Web

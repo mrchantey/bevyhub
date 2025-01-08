@@ -85,16 +85,13 @@ impl HasDocId for Document {
 #[cfg(test)]
 mod test {
 	use crate::prelude::*;
-	use anyhow::Result;
 	use mongodb::bson::doc;
-	use sweet::*;
+	use sweet::prelude::*;
 
 	#[test]
-	fn document() -> Result<()> {
+	fn document() {
 		let my_doc = doc! { "_id": "foo" };
 		let id = my_doc.doc_id();
-		expect(id).to_be(DocId::new("foo"))?;
-
-		Ok(())
+		expect(id).to_be(DocId::new("foo"));
 	}
 }

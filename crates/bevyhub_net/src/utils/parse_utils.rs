@@ -22,7 +22,7 @@ mod test {
 	use anyhow::Result;
 	use serde::Deserialize;
 	use serde::Serialize;
-	use sweet::*;
+	use sweet::prelude::*;
 
 	#[derive(Debug, Clone, Serialize, Deserialize, PartialEq)]
 	struct MyStruct {
@@ -41,7 +41,7 @@ mod test {
 		let json = crate::utils::ron_to_json(&ron_str)?;
 		let ron_str2 = crate::utils::json_to_ron(&json)?;
 		let val2 = ron::de::from_str::<MyStruct>(&ron_str2)?;
-		expect(val).to_be(val2)?;
+		expect(val).to_be(val2);
 
 		println!("{}", ron_str);
 		println!("{}", json);

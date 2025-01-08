@@ -157,7 +157,7 @@ impl CratesIoCrateId {
 mod test {
 	use crate::prelude::*;
 	use anyhow::Result;
-	use sweet::*;
+	use sweet::prelude::*;
 
 	#[test]
 	fn relative_to_manifest_dir() -> Result<()> {
@@ -168,7 +168,7 @@ mod test {
 			)
 			.as_str(),
 		)
-		.to_be("crates/bevyhub_api/Cargo.lock")?;
+		.to_be("crates/bevyhub_api/Cargo.lock");
 		expect(
 			GithubCrateId::relative_to_manifest_dir(
 				"Cargo.toml",
@@ -176,7 +176,7 @@ mod test {
 			)
 			.as_str(),
 		)
-		.to_be("scenes/my-scene.json")?;
+		.to_be("scenes/my-scene.json");
 
 		Ok(())
 	}

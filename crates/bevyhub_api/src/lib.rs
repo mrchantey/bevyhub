@@ -1,4 +1,8 @@
-#![feature(async_fn_traits, const_trait_impl, async_closure)]
+#![cfg_attr(test, feature(test, custom_test_frameworks))]
+#![cfg_attr(test, test_runner(sweet::test_runner))]
+
+
+#![feature(async_fn_traits, const_trait_impl)]
 #![allow(async_fn_in_trait)]
 pub mod cargo_registry;
 pub mod crate_doc;
@@ -20,8 +24,8 @@ pub mod prelude {
 	pub use crate::github::*;
 	pub use crate::object_storage::*;
 	pub use crate::scene_doc::*;
-	pub use crate::server::layers::*;
 	pub use crate::server::*;
 	pub use crate::services::*;
 	pub use crate::types::*;
+	pub use forky::prelude::ApiEnvironment;
 }

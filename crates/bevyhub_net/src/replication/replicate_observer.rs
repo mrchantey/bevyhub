@@ -49,11 +49,11 @@ fn outgoing_send<T: Event + Serialize>(
 mod test {
 	use crate::prelude::*;
 	use anyhow::Result;
-	use bevyhub_scene::prelude::*;
 	use bevy::prelude::*;
+	use bevyhub_scene::prelude::*;
 	use serde::Deserialize;
 	use serde::Serialize;
-	use sweet::*;
+	use sweet::prelude::*;
 
 	#[derive(Debug, Clone, Event, Serialize, Deserialize, PartialEq)]
 	pub struct MyEvent(pub i32);
@@ -69,14 +69,14 @@ mod test {
 		app.update();
 
 		let msg_out = app.world_mut().resource_mut::<MessageOutgoing>();
-		expect(msg_out.len()).to_be(1)?;
+		expect(msg_out.len()).to_be(1);
 		expect(&msg_out[0]).to_be(
 			&Message::SendObserver {
 				reg_id: RegistrationId::new_with(0),
 				payload: MessagePayload::new(&MyEvent(7))?,
 			}
 			.into(),
-		)?;
+		);
 
 		Ok(())
 	}
@@ -99,14 +99,14 @@ mod test {
 
 
 		let msg_in = app2.world_mut().resource_mut::<MessageIncoming>();
-		expect(msg_in.len()).to_be(1)?;
+		expect(msg_in.len()).to_be(1);
 
 		let on_trigger = observe_triggers::<MyEvent>(app2.world_mut());
 
 		app2.update();
 
-		expect(&on_trigger).to_have_been_called_times(1)?;
-		expect(&on_trigger).to_have_returned_nth_with(0, &MyEvent(7))?;
+		expect(&on_trigger).to_have_been_called_times(1);
+		expect(&on_trigger).to_have_returned_nth_with(0, &MyEvent(7));
 
 		Ok(())
 	}

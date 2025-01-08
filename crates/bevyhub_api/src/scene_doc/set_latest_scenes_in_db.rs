@@ -150,7 +150,7 @@ mod test {
 	use crate::prelude::*;
 	use anyhow::Result;
 	use mongodb::bson::doc;
-	use sweet::*;
+	use sweet::prelude::*;
 
 	//TODO this test is inadequate, just checks whether some happened to be latest
 	// which does mean the above function at least ran
@@ -170,7 +170,7 @@ mod test {
 				.await?
 				.len(),
 		)
-		.to_be_greater_than(1)?;
+		.to_be_greater_than(1);
 
 		Ok(())
 	}

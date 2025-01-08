@@ -4,9 +4,10 @@ mod test {
 	use bevyhub_api::prelude::*;
 	use mongodb::bson::doc;
 	use semver::Version;
-	use sweet::*;
+	use sweet::prelude::*;
 
 	#[tokio::test]
+	#[ignore = "Hits mongo db"]
 	async fn mongo_sets_latest() -> Result<()> {
 		if ApiEnvironment::get() == ApiEnvironment::Local {
 			anyhow::bail!("This test is only for remote environments, try setting API_ENV=staging or API_ENV=[staging,prod]");
@@ -25,7 +26,7 @@ mod test {
 				.await?
 				.len(),
 		)
-		.to_be(0)?;
+		.to_be(0);
 
 		let _crate1 = services
 			.crate_doc(&CrateId::new_crates_io(
@@ -45,7 +46,7 @@ mod test {
 				.await?
 				.len(),
 		)
-		.to_be(3)?;
+		.to_be(3);
 
 		let _crate1 = services
 			.crate_doc(&CrateId::new_crates_io(
@@ -65,7 +66,7 @@ mod test {
 				.await?
 				.len(),
 		)
-		.to_be(6)?;
+		.to_be(6);
 
 		expect(
 			services
@@ -81,7 +82,7 @@ mod test {
 				.await?
 				.len(),
 		)
-		.to_be(3)?;
+		.to_be(3);
 
 
 		Ok(())

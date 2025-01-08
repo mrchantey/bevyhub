@@ -8,13 +8,14 @@ use axum::response::Response;
 use axum::routing::get;
 use axum::Json;
 use axum::Router;
+use forky::server::layers;
 use serde::Deserialize;
 
 #[rustfmt::skip]
 pub fn github_routes() -> AppRouter {
 	Router::new()
 		.route("/github/:owner/:repo/ref/:gh_ref/latest_commit",
-			get(latest_commit).layer(middleware::from_fn(no_cache)))
+			get(latest_commit).layer(middleware::from_fn(layers::no_cache)))
 		.route("/github/:owner/:repo/ref/:gh_ref/file/*path",
 			get(file))
 		.route("/github/:owner/:repo/ref/:gh_ref", 
@@ -155,3 +156,4 @@ async fn scene_doc(
 		append_no_cache_headers_if_latest_or_branch(Json(doc), &gh_ref_param);
 	Ok(res)
 }
+

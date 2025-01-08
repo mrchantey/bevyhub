@@ -116,7 +116,7 @@ mod test {
 	use bevy::prelude::*;
 	use serde::Deserialize;
 	use serde::Serialize;
-	use sweet::*;
+	use sweet::prelude::*;
 
 	#[derive(Debug, Clone, Component, Serialize, Deserialize, PartialEq)]
 	pub struct MyComponent(pub i32);
@@ -143,8 +143,8 @@ mod test {
 		app.update();
 
 		let msg_out = app.world_mut().resource_mut::<MessageOutgoing>();
-		expect(msg_out.len()).to_be(5)?;
-		expect(&msg_out[0]).to_be(&Message::Spawn { entity }.into())?;
+		expect(msg_out.len()).to_be(5);
+		expect(&msg_out[0]).to_be(&Message::Spawn { entity }.into());
 		expect(&msg_out[1]).to_be(
 			&Message::Add {
 				entity,
@@ -152,7 +152,7 @@ mod test {
 				payload: MessagePayload::new(&MyComponent(7))?,
 			}
 			.into(),
-		)?;
+		);
 		expect(&msg_out[2]).to_be(
 			&Message::Change {
 				entity,
@@ -160,8 +160,8 @@ mod test {
 				payload: MessagePayload::new(&MyComponent(8))?,
 			}
 			.into(),
-		)?;
-		expect(&msg_out[3]).to_be(&Message::Despawn { entity }.into())?;
+		);
+		expect(&msg_out[3]).to_be(&Message::Despawn { entity }.into());
 
 		Ok(())
 	}
@@ -184,7 +184,7 @@ mod test {
 		Message::loopback(app1.world_mut(), app2.world_mut());
 
 		let msg_in = app2.world_mut().resource_mut::<MessageIncoming>();
-		expect(msg_in.len()).to_be(2)?;
+		expect(msg_in.len()).to_be(2);
 
 		app2.update();
 		expect(
@@ -193,8 +193,8 @@ mod test {
 				.iter(app2.world())
 				.next(),
 		)
-		.as_some()?
-		.to_be(&MyComponent(7))?;
+		.as_some()
+		.to_be(&MyComponent(7));
 
 		// CHANGE
 		app1.world_mut().entity_mut(entity1).insert(MyComponent(8));
@@ -207,8 +207,8 @@ mod test {
 				.iter(app2.world())
 				.next(),
 		)
-		.as_some()?
-		.to_be(&MyComponent(8))?;
+		.as_some()
+		.to_be(&MyComponent(8));
 
 		// REMOVE
 		app1.world_mut().entity_mut(entity1).remove::<MyComponent>();
@@ -221,7 +221,7 @@ mod test {
 				.iter(app2.world())
 				.next(),
 		)
-		.to_be_none()?;
+		.to_be_none();
 
 		Ok(())
 	}

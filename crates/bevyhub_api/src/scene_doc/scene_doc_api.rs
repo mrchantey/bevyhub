@@ -51,7 +51,7 @@ impl Services {
 			.await?
 			.try_collect()
 			.await?;
-	
+
 		if scenes.len() > 0
 			|| self.db().crates().has(&crate_id.into_doc_id()).await?
 		{
@@ -68,7 +68,7 @@ impl Services {
 mod test {
 	use crate::prelude::*;
 	use anyhow::Result;
-	use sweet::*;
+	use sweet::prelude::*;
 
 	#[tokio::test]
 	async fn works() -> Result<()> {
@@ -76,13 +76,13 @@ mod test {
 		let result = api
 			.all_scene_docs(&CrateId::bevyhub_template_bad_version())
 			.await;
-		expect(result).to_be_err()?;
+		expect(result).to_be_err();
 		expect(
 			api.all_scene_docs(&CrateId::bevyhub_template())
 				.await?
 				.len(),
 		)
-		.to_be(3)?;
+		.to_be(3);
 
 		Ok(())
 	}

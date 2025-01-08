@@ -102,29 +102,27 @@ impl CratesIoFiles {
 #[cfg(test)]
 mod test {
 	use crate::prelude::*;
-	use anyhow::Result;
 	use flate2::read::GzDecoder;
 	use std::io::Cursor;
-	use sweet::*;
+	use sweet::prelude::*;
 	use tar::Archive;
 
 	#[tokio::test]
-	async fn tarball() -> Result<()> {
-		let api = Services::init().await?;
+	async fn tarball() {
+		let api = Services::init().await.unwrap();
 		let tarball = api
 			.registry()
 			.tarball(&CratesIoCrateId::bevyhub_template())
-			.await?;
+			.await.unwrap();
 
 		let decoder = GzDecoder::new(Cursor::new(tarball));
 		let mut arch = Archive::new(decoder);
-		expect(arch.entries()?.count()).to_be_greater_than(10)?;
+		expect(arch.entries().unwrap().count()).to_be_greater_than(10);
 
 		// for file in arch.entries()? {
 		// 	let file = file?;
 		// 	let path = file.header().path()?;
 		// 	println!("file: {}", path.to_string_lossy());
 		// }
-		Ok(())
 	}
 }

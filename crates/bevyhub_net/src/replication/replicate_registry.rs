@@ -150,7 +150,7 @@ mod test {
 	use serde::Deserialize;
 	use serde::Serialize;
 	use serde_json::Value;
-	use sweet::*;
+	use sweet::prelude::*;
 
 
 	#[derive(Debug, Default, Component, Serialize, Deserialize)]
@@ -172,19 +172,19 @@ mod test {
 		let json = registry.types_to_json();
 		let json: Value = serde_json::from_str(&json)?;
 		if let Value::Object(map) = &json {
-			expect(map.len()).to_be(3)?;
+			expect(map.len()).to_be(3);
 			expect(map.get(
 				"bevyhub_net::replication::replicate_registry::test::MyEvent",
 			))
-			.to_be(Some(&Value::Number(0.into())))?;
+			.to_be(Some(&Value::Number(0.into())));
 			expect(map.get(
 				"bevyhub_net::replication::replicate_registry::test::MyResource",
 			))
-			.to_be(Some(&Value::Number(2.into())))?;
+			.to_be(Some(&Value::Number(2.into())));
 			expect(map.get(
 				"bevyhub_net::replication::replicate_registry::test::MyComponent",
 			))
-			.to_be(Some(&Value::Number(1.into())))?;
+			.to_be(Some(&Value::Number(1.into())));
 		} else {
 			panic!("Expected object");
 		}

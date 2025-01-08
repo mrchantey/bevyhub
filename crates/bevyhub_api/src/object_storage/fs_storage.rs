@@ -89,7 +89,7 @@ mod test {
 	use anyhow::Result;
 	use axum::body::Bytes;
 	use fs_storage::read_dir_recursive;
-	use sweet::*;
+	use sweet::prelude::*;
 
 	#[tokio::test]
 	async fn works() -> Result<()> {
@@ -97,23 +97,23 @@ mod test {
 		let key = "foo.txt";
 		let value = Bytes::from("bar");
 		storage.delete(key).await.ok();
-		expect(storage.exists(key).await?).to_be_false()?;
+		expect(storage.exists(key).await?).to_be_false();
 
 		storage.put(key, value.clone()).await?;
 
 		let list = storage.list("fo").await?;
 		// println!("{:?}", list);
-		expect(&list).any(|other| other.name.contains(key))?;
+		expect(&list).any(|other| other.name.contains(key));
 		let list = storage.list("bar").await?;
-		expect(&list).not().any(|other| other.name.contains(key))?;
+		expect(&list).not().any(|other| other.name.contains(key));
 
 
 		let bytes = storage.get(key).await?;
-		expect(bytes).to_be(value)?;
+		expect(bytes).to_be(value);
 
-		expect(storage.exists(key).await?).to_be_true()?;
+		expect(storage.exists(key).await?).to_be_true();
 		storage.delete(key).await.ok();
-		expect(storage.exists(key).await?).to_be_false()?;
+		expect(storage.exists(key).await?).to_be_false();
 
 		Ok(())
 	}
@@ -122,8 +122,8 @@ mod test {
 	async fn test_read_dir_recursive() -> Result<()> {
 		let path = "src";
 		let paths = read_dir_recursive(path);
-		expect(&paths).not().to_be_empty()?;
-		expect(paths.len()).to_be_greater_than(10)?;
+		expect(&paths).not().to_be_empty();
+		expect(paths.len()).to_be_greater_than(10);
 		// for path in paths.iter() {
 		// 	expect(path.to_string_lossy().ends_with(".rs")).to_be_true()?;
 		// }

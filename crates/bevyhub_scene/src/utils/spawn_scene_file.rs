@@ -88,24 +88,23 @@ pub fn handle_spawn_scene(
 #[cfg(test)]
 mod test {
 	use crate::prelude::*;
-	use anyhow::Result;
 	use bevy::log::LogPlugin;
 	use bevy::prelude::*;
-	use sweet::*;
+	use sweet::prelude::*;
 
 	#[derive(Debug, Component, Reflect, PartialEq)]
 	#[reflect(Component)]
 	struct MyStruct(pub u32);
 
 	#[test]
-	fn works() -> Result<()> {
+	fn works() {
 		let mut app = App::new();
 		app.register_type::<MyStruct>();
 
 		app.world_mut().spawn(MyStruct(7));
 		let scene = DynamicScene::from_world(app.world());
 		let str = scene
-			.serialize(&app.world().resource::<AppTypeRegistry>().read())?;
+			.serialize(&app.world().resource::<AppTypeRegistry>().read()).unwrap();
 
 		let mut app2 = App::new();
 
@@ -124,7 +123,7 @@ mod test {
 				.iter(app2.world())
 				.count(),
 		)
-		.to_be(0)?;
+		.to_be(0);
 		app2.update();
 		expect(
 			app2.world_mut()
@@ -132,9 +131,7 @@ mod test {
 				.iter(app2.world())
 				.next(),
 		)
-		.to_be(Some(&MyStruct(7)))?;
-
-		Ok(())
+		.to_be(Some(&MyStruct(7)));
 	}
 }
 

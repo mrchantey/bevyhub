@@ -12,11 +12,12 @@ init-repo:
 # Oregon
 region:="us-west-2"
 
-e2e *args:
-	cargo test --test mongo_sets_latest {{args}}
 
 test *args:
 	just watch 'cargo test --lib -- {{args}}'
+
+test-all:
+	cargo test
 
 test-curl *args:
 	cargo run --example curl {{args}}
@@ -27,10 +28,10 @@ example name *args:
 	cargo run --example {{name}} {{args}}
 
 run:
-	just watch 'cargo run --example server'
+	just watch 'cargo run --example axum_serve'
 
 run-prod:
-	API_ENV=prod just watch 'cargo run --example server'
+	API_ENV=prod just watch 'cargo run --example axum_serve'
 
 cli *args:
 	cargo run -p bevyhub-cli -- {{args}}

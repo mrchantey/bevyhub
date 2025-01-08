@@ -47,10 +47,10 @@ impl CargoRegistry for LocalCacheRegistry {
 		if let Ok(bytes) = fs::read(&path).await {
 			return Ok(bytes.into());
 		}
-		println!(
-			"Local cache - downloading from registry: {}",
-			path.display()
-		);
+		// println!(
+		// 	"Local cache - downloading from registry: {}",
+		// 	path.display()
+		// );
 		let buff = self.crates_io.tarball(crate_id).await?;
 
 		if !self.read_only {
@@ -66,34 +66,32 @@ impl CargoRegistry for LocalCacheRegistry {
 #[cfg(test)]
 mod test {
 	use crate::prelude::*;
-	use anyhow::Result;
 	use semver::Version;
-	use sweet::*;
+	use sweet::prelude::*;
 
 	#[tokio::test]
-	async fn versions() -> Result<()> {
+	async fn versions() {
 		let registry = LocalCacheRegistry::default();
-		let versions = registry.versions("bevyhub_template").await?;
-		expect(versions[0].to_string()).to_be("0.0.1-rc.1".to_string())?;
-		Ok(())
+		let versions = registry.versions("bevyhub_template").await.unwrap();
+		expect(versions[0].to_string()).to_be("0.0.1-rc.1".to_string());
 	}
 	#[tokio::test]
-	async fn crate_index() -> Result<()> {
+	async fn crate_index() {
 		let registry = LocalCacheRegistry::default();
-		let index = registry.crate_index("bevyhub_template").await?;
-		expect(index.len()).to_be_greater_or_equal_to(1)?;
-		Ok(())
+		let index = registry.crate_index("bevyhub_template").await.unwrap();
+		expect(index.len()).to_be_greater_or_equal_to(1);
 	}
+
 	#[tokio::test]
-	async fn tarball() -> Result<()> {
+	async fn tarball() {
 		let registry = LocalCacheRegistry::default();
 		let tarball = registry
 			.tarball(&CratesIoCrateId::new(
 				"bevyhub_template",
 				Version::parse("0.0.1-rc.1").unwrap(),
 			))
-			.await?;
-		expect(tarball.len()).to_be_greater_than(0)?;
-		Ok(())
+			.await
+			.unwrap();
+		expect(tarball.len()).to_be_greater_than(0);
 	}
 }

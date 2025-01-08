@@ -55,7 +55,7 @@ mod test {
 	use bevy::prelude::*;
 	use serde::Deserialize;
 	use serde::Serialize;
-	use sweet::*;
+	use sweet::prelude::*;
 
 	#[derive(Debug, Clone, Event, Serialize, Deserialize, PartialEq)]
 	pub struct MyEvent(pub i32);
@@ -72,14 +72,14 @@ mod test {
 		app.update();
 
 		let msg_out = app.world_mut().resource_mut::<MessageOutgoing>();
-		expect(msg_out.len()).to_be(1)?;
+		expect(msg_out.len()).to_be(1);
 		expect(&msg_out[0]).to_be(
 			&Message::SendEvent {
 				reg_id: RegistrationId::new_with(0),
 				payload: MessagePayload::new(&MyEvent(7))?,
 			}
 			.into(),
-		)?;
+		);
 
 		Ok(())
 	}
@@ -103,7 +103,7 @@ mod test {
 		Message::loopback(app1.world_mut(), app2.world_mut());
 
 		let msg_in = app2.world_mut().resource_mut::<MessageIncoming>();
-		expect(msg_in.len()).to_be(1)?;
+		expect(msg_in.len()).to_be(1);
 
 		app2.update();
 		let events = app2
@@ -112,8 +112,8 @@ mod test {
 			.iter_current_update_events()
 			.collect::<Vec<_>>();
 
-		expect(events.len()).to_be(1)?;
-		expect(events[0]).to_be(&MyEvent(7))?;
+		expect(events.len()).to_be(1);
+		expect(events[0]).to_be(&MyEvent(7));
 		Ok(())
 	}
 }

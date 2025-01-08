@@ -6,6 +6,9 @@ use axum::middleware;
 use axum::response::Html;
 use axum::routing::get;
 use axum::Router;
+use forky::prelude::CorsState;
+use forky::prelude::Uptime;
+use forky::server::layers;
 use tower_http::trace::TraceLayer;
 use tower_http::trace::{
 	self,
@@ -34,7 +37,10 @@ pub async fn server() -> Result<Router> {
 					trace::DefaultOnResponse::new().level(Level::INFO),
 				),
 		)
-		.layer(middleware::from_fn(layers::cors));
+		.layer(middleware::from_fn_with_state(
+			CorsState::new_with_env(vec!["https://bevyhub.dev"]),
+			layers::cors,
+		));
 	// .layer(TraceLayer::new_for_http())
 	Ok(router)
 }

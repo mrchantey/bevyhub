@@ -17,6 +17,7 @@ default = []
 
 [dependencies]
 #💡 Utility
+forky = { workspace = true, features = ["server"] }
 anyhow.workspace = true
 extend.workspace = true
 rand.workspace = true
@@ -41,11 +42,11 @@ lambda_http = "0.12"
 mongodb = "3.0.1"
 
 #💡 Net
-axum = { version = "0.7", features = ["macros"] }
-flate2 = "1.0.30"
+axum = { version = "0.8", features = ["macros"] }
+flate2 = "1"
 reqwest = "0.12"
-tower = "0.4"
-tower-http = { version = "0.5", features = ["trace"] }
+tower = "0.5"
+tower-http = { version = "0.6", features = ["trace"] }
 # specifying feature required to fix openssl build error
 openssl = { version = "0.10", features = ["vendored"] }
 # tracing-subscriber = "0.3"
@@ -54,13 +55,7 @@ openssl = { version = "0.10", features = ["vendored"] }
 serde.workspace = true
 serde_json.workspace = true
 tar = "0.4"
-ts-rs = { version = "9.0.1", features = ["semver-impl"] }
+ts-rs = { version = "10", features = ["semver-impl"] }
 
 [dev-dependencies]
 sweet.workspace = true
-# in prod aws has its own
-
-# [[test]]
-# name = "bevyhub_api"
-# path = "src/test.rs"
-# harness = false

@@ -16,7 +16,7 @@ pub struct LobbyClient {
 }
 
 impl LobbyClient {
-	pub fn new(lobby: Lobby, client: Client, client_id: ClientId) -> Self {
+	pub fn new(lobby: Lobby, client: super::Client, client_id: ClientId) -> Self {
 		let (send, mut recv) = client.socket.split();
 		let recv_task = tokio::spawn(async move {
 			while let Some(Ok(msg)) = recv.next().await {

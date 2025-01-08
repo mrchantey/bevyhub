@@ -51,7 +51,7 @@ mod test {
 	use crate::prelude::*;
 	use anyhow::Result;
 	use bevy::prelude::*;
-	use sweet::*;
+	use sweet::prelude::*;
 
 	#[tokio::test]
 	async fn works() -> Result<()> {
@@ -63,7 +63,7 @@ mod test {
 
 		expect(b.recv()?).to_be(vec![Message::Spawn {
 			entity: Entity::PLACEHOLDER,
-		}])?;
+		}]);
 
 		Ok(())
 	}

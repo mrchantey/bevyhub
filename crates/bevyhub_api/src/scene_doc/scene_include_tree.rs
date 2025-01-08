@@ -151,7 +151,7 @@ impl SceneIncludeTree {
 mod test {
 	use crate::prelude::*;
 	use anyhow::Result;
-	use sweet::*;
+	use sweet::prelude::*;
 
 	#[tokio::test]
 	async fn works() -> Result<()> {
@@ -160,14 +160,14 @@ mod test {
 		let scene = api.scene_doc(&SceneId::my_beautiful_scene()).await?;
 		let tree = &scene.scene_include_tree;
 
-		expect(tree.children.len()).to_be(2)?;
-		expect(&tree.scene_id).to_be(&SceneId::my_beautiful_scene())?;
+		expect(tree.children.len()).to_be(2);
+		expect(&tree.scene_id).to_be(&SceneId::my_beautiful_scene());
 
 		// let str = scene_tree::SceneFile::export_to_string();
 
 		expect(&tree.file).to_be(&SceneFile::Json {
 			path: "scenes/my-beautiful-scene.json".into(),
-		})?;
+		});
 		// expect(&tree.children[0].scene).to_be(&"simple_environment".into())?;
 		// expect(&scene.name).to_be(&"simple_scene".into())?;
 

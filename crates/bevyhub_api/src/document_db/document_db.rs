@@ -1,5 +1,6 @@
 use crate::prelude::*;
 use anyhow::Result;
+use forky::prelude::ApiEnvironment;
 
 /// Trait for storing and retrieving json-like documents,
 /// implemented by [MongoDb] and [MemoryDb]

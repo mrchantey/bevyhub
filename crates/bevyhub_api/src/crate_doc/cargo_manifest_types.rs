@@ -270,9 +270,8 @@ pub impl CargoManifest {
 #[cfg(test)]
 mod test {
 	use crate::prelude::*;
-	use anyhow::Result;
 	use cargo_manifest_types::CargoManifestExt;
-	use sweet::*;
+	use sweet::prelude::*;
 
 	const MINIMAL_CRATE: &str = r#"
 [package]
@@ -282,15 +281,14 @@ edition = "2024"
 "#;
 
 
-// the edition must be found in the cargo-manifest crate
+	// the edition must be found in the cargo-manifest crate
 	#[test]
-	fn minimal_manifest() -> Result<()> {
-		let _val: CargoManifest = toml::from_str(MINIMAL_CRATE)?;
-		Ok(())
+	fn minimal_manifest() {
+		let _val: CargoManifest = toml::from_str(MINIMAL_CRATE).unwrap();
 	}
 
 	#[test]
-	fn works() -> Result<()> {
+	fn works() {
 		let manifest = CargoManifest::bevyhub_template();
 		let metadata = manifest.package.unwrap().metadata.unwrap();
 
@@ -298,35 +296,34 @@ edition = "2024"
 		let my_base_scene = &metadata.scene[1];
 		let my_beautiful_scene = &metadata.scene[2];
 
-		expect(&hello_world.name).to_be(&"hello-world".to_string())?;
+		expect(&hello_world.name).to_be(&"hello-world".to_string());
 		// expect(&hello_world.scene.unwrap().dependencies.len()).to_be(&0)?;
-		expect(my_base_scene.description.clone()).to_be_some()?;
+		expect(my_base_scene.description.clone()).to_be_some();
 		expect(&my_beautiful_scene.include[0])
-			.to_be(&ManifestDependency::Implicit("hello-world".into()))?;
-		expect(&my_beautiful_scene.get_includes().len()).to_be(&2)?;
+			.to_be(&ManifestDependency::Implicit("hello-world".into()));
+		expect(&my_beautiful_scene.get_includes().len()).to_be(&2);
 		expect(&my_beautiful_scene.get_includes()[0])
-			.to_be(&ManifestDependency::Implicit("my-base-scene".into()))?;
-
-		Ok(())
+			.to_be(&ManifestDependency::Implicit("my-base-scene".into()));
 	}
 
 	#[test]
-	fn app_manifest() -> Result<()> {
+	fn app_manifest() {
 		expect(
-			&ManifestApp::Implicit("bar".into()).into_crate_and_scene("foo")?,
+			&ManifestApp::Implicit("bar".into())
+				.into_crate_and_scene("foo")
+				.unwrap(),
 		)
-		.to_be(&("foo".into(), "bar".into()))?;
+		.to_be(&("foo".into(), "bar".into()));
 		expect(
 			&ManifestApp::Implicit("foo/bar".into())
-				.into_crate_and_scene("bazz")?,
+				.into_crate_and_scene("bazz")
+				.unwrap(),
 		)
-		.to_be(&("foo".into(), "bar".into()))?;
+		.to_be(&("foo".into(), "bar".into()));
 		expect(
 			ManifestApp::Implicit("foo/bar/bazz".into())
 				.into_crate_and_scene("bazz"),
 		)
-		.to_be_err()?;
-
-		Ok(())
+		.to_be_err();
 	}
 }

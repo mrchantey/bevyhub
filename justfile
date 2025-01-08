@@ -10,7 +10,7 @@ init-repo:
 	just export-scenes
 
 app *scenes:
-	cargo run --example app -- {{scenes}}
+	cargo run --example bevyhub_app -- {{scenes}}
 
 api:
 	cd crates/bevyhub_api && just run
@@ -51,7 +51,7 @@ build-wasm *args:
 	@echo "🚀 exporting bevyhub"
 	just export-scenes
 	bevyhub build \
-	--example app \
+	--example bevyhub_app \
 	--release \
 	--copy-local ../bevyhub-apps \
 	--copy-scenes scenes \
@@ -68,7 +68,7 @@ build-wasm *args:
 # use this to verify changes to the cli are working
 build-wasm-test *args:
 	just cli build \
-	-p bevyhub_template --example app \
+	-p bevyhub_template --example bevyhub_app \
 	--release	\
 	--copy-local ../bevyhub-apps \
 	--copy-scenes crates/bevyhub_template/scenes \
@@ -88,8 +88,11 @@ test-net *args:
 test-scene *args:
 	just watch 'cargo test -p bevyhub_scene --lib -- {{args}}'
 
-test-ci *args:
-	cargo test --workspace -- --skip mongo_sets_latest {{args}}
+test-all *args:
+	cargo test -p bevyhub_core
+	cargo test -p bevyhub_net
+	cargo test -p bevyhub_scene
+	cd crates/bevyhub_api && just test-all
 
 assets-push:
 	aws s3 sync ./assets s3://bevyhub-public/assets --delete

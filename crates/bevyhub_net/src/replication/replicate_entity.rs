@@ -48,7 +48,7 @@ mod test {
 	use crate::prelude::*;
 	use anyhow::Result;
 	use bevy::prelude::*;
-	use sweet::*;
+	use sweet::prelude::*;
 
 
 
@@ -64,9 +64,9 @@ mod test {
 		app.update();
 
 		let events = app.world_mut().resource_mut::<MessageOutgoing>();
-		expect(events.len()).to_be(2)?;
-		expect(&events[0]).to_be(&Message::Spawn { entity }.into())?;
-		expect(&events[1]).to_be(&Message::Despawn { entity }.into())?;
+		expect(events.len()).to_be(2);
+		expect(&events[0]).to_be(&Message::Spawn { entity }.into());
+		expect(&events[1]).to_be(&Message::Despawn { entity }.into());
 
 		Ok(())
 	}
@@ -95,7 +95,7 @@ mod test {
 		// 1 = observer
 		// 3 = dummy
 		// 4 = replicated
-		expect(entities.len()).to_be(4)?;
+		expect(entities.len()).to_be(4);
 
 		Ok(())
 	}

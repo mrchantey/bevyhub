@@ -48,4 +48,4 @@ jobs:
         override: true
         default: true
     - name: 🔎 Test
-      run: just test-ci
+      run: just test-all

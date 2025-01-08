@@ -1,5 +1,6 @@
 use anyhow::Result;
 use bevyhub_api::prelude::*;
+use forky::prelude::ApiEnvironment;
 use serde_json::Value;
 
 const LOCAL_HOST: &str = "http://localhost:3000";

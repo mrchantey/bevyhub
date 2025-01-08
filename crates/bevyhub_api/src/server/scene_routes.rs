@@ -5,13 +5,14 @@ use axum::middleware;
 use axum::response::Json;
 use axum::routing::get;
 use axum::Router;
+use forky::server::layers;
 use mongodb::bson::Bson;
 use serde::Deserialize;
 
 pub fn scene_routes() -> AppRouter {
 	Router::new().route(
 		"/scenes",
-		get(find_scenes).layer(middleware::from_fn(no_cache)),
+		get(find_scenes).layer(middleware::from_fn(layers::no_cache)),
 	)
 }
 

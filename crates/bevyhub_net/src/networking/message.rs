@@ -214,7 +214,7 @@ impl MessagePayload {
 mod test {
 	use crate::prelude::*;
 	use anyhow::Result;
-	use sweet::*;
+	use sweet::prelude::*;
 
 	#[test]
 	fn works() -> Result<()> {
@@ -230,18 +230,16 @@ mod test {
 		expect(&message).to_be(&Message::SendEvent {
 			reg_id: RegistrationId::new_with(0),
 			payload: MessagePayload::Dual(vec![7, 0, 0, 0], "7".to_string()),
-		})?;
+		});
 		let message = message.with_json_payload()?;
 		expect(&message).to_be(&Message::SendEvent {
 			reg_id: RegistrationId::new_with(0),
 			payload: MessagePayload::Json("7".to_string()),
-		})?;
+		});
 
 		expect(message.with_bytes_payload()).to_be_err_str(
 			"message payload is json, cannot be converted to bytes",
-		)?;
-
-
+		);
 
 		Ok(())
 	}
