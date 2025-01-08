@@ -17,7 +17,8 @@ test *args:
 	just watch 'cargo test --lib -- {{args}}'
 
 test-all:
-	cargo test
+	cargo test --lib
+	cargo test --doc
 
 test-curl *args:
 	cargo run --example curl {{args}}

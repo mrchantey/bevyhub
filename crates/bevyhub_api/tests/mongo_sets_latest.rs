@@ -7,7 +7,6 @@ mod test {
 	use sweet::prelude::*;
 
 	#[tokio::test]
-	#[ignore = "Hits mongo db"]
 	async fn mongo_sets_latest() -> Result<()> {
 		if ApiEnvironment::get() == ApiEnvironment::Local {
 			anyhow::bail!("This test is only for remote environments, try setting API_ENV=staging or API_ENV=[staging,prod]");

@@ -3359,7 +3359,7 @@ dependencies = [
  "forky_bevy",
  "forky_core",
  "forky_fs",
- "forky_server",
+ "forky_net",
  "forky_web",
 ]
 
@@ -3405,7 +3405,7 @@ dependencies = [
 ]
 
 [[package]]
-name = "forky_server"
+name = "forky_net"
 version = "0.2.0-rc.10"
 dependencies = [
  "anyhow",
