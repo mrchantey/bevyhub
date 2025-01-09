@@ -13,15 +13,15 @@ use semver::Version;
 #[rustfmt::skip]
 pub fn crate_routes() -> AppRouter {
 	Router::new()
-		.route("/crates/:crate_name/versions",
+		.route("/crates/{crate_name}/versions",
 			get(all_versions).layer(middleware::from_fn(layers::no_cache)))
-		.route("/crates/:crate_name/versions/:version/file/*path",
+		.route("/crates/{crate_name}/versions/{version}/file/{*path}",
 			get(file))
-		.route("/crates/:crate_name/versions/:version", 
+		.route("/crates/{crate_name}/versions/{version}", 
 			get(crate_doc))
-		.route("/crates/:crate_name/versions/:version/scenes",
+		.route("/crates/{crate_name}/versions/{version}/scenes",
 			get(all_scene_docs))
-		.route("/crates/:crate_name/versions/:version/scenes/:scene_name",
+		.route("/crates/{crate_name}/versions/{version}/scenes/{scene_name}",
 			get(scene_doc))
 }
 

@@ -14,15 +14,15 @@ use serde::Deserialize;
 #[rustfmt::skip]
 pub fn github_routes() -> AppRouter {
 	Router::new()
-		.route("/github/:owner/:repo/ref/:gh_ref/latest_commit",
+		.route("/github/{owner}/{repo}/ref/{gh_ref}/latest_commit",
 			get(latest_commit).layer(middleware::from_fn(layers::no_cache)))
-		.route("/github/:owner/:repo/ref/:gh_ref/file/*path",
+		.route("/github/{owner}/{repo}/ref/{gh_ref}/file/{*path}",
 			get(file))
-		.route("/github/:owner/:repo/ref/:gh_ref", 
+		.route("/github/{owner}/{repo}/ref/{gh_ref}", 
 			get(crate_doc))
-		.route("/github/:owner/:repo/ref/:gh_ref/scenes",
+		.route("/github/{owner}/{repo}/ref/{gh_ref}/scenes",
 			get(all_scene_docs))
-		.route("/github/:owner/:repo/ref/:gh_ref/scenes/:scene_name",
+		.route("/github/{owner}/{repo}/ref/{gh_ref}/scenes/{scene_name}",
 			get(scene_doc))
 }
 
