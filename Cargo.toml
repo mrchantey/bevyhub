@@ -14,7 +14,7 @@ opt-level = 1
 opt-level = 3
 
 [workspace.package]
-version = "0.0.1-rc.4"
+version = "0.0.1-rc.5"
 edition = "2021"
 description = "Bevy tools for Bevy developers."
 documentation = "https://bevyhub.dev/docs"
@@ -48,12 +48,12 @@ exclude = ["crates/bevyhub_esp"]
 
 [workspace.dependencies]
 #💡 internal
-bevyhub = { path = "./", version = "0.0.1-rc.4" }
-bevyhub_api = { path = "crates/bevyhub_api", version = "0.0.1-rc.4" }
-bevyhub_core = { path = "crates/bevyhub_core", version = "0.0.1-rc.4" }
-bevyhub_net = { path = "crates/bevyhub_net", version = "0.0.1-rc.4" }
-bevyhub_scene = { path = "crates/bevyhub_scene", version = "0.0.1-rc.4" }
-bevyhub_server = { path = "crates/bevyhub_server", version = "0.0.1-rc.4" }
+bevyhub = { path = "./", version = "0.0.1-rc.5" }
+bevyhub_api = { path = "crates/bevyhub_api", version = "0.0.1-rc.5" }
+bevyhub_core = { path = "crates/bevyhub_core", version = "0.0.1-rc.5" }
+bevyhub_net = { path = "crates/bevyhub_net", version = "0.0.1-rc.5" }
+bevyhub_scene = { path = "crates/bevyhub_scene", version = "0.0.1-rc.5" }
+bevyhub_server = { path = "crates/bevyhub_server", version = "0.0.1-rc.5" }
 
 
 #💡 local-relative

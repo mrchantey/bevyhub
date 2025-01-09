@@ -1,26 +1,30 @@
 #![feature(exit_status_error)]
-use forky::prelude::Subcommand;
-mod build_web;
+use clap::Parser;
+use clap::Subcommand;
 mod api;
-mod aws;
+mod build_web;
+use anyhow::Result;
 
-fn main() { Cli.run_with_cli_args().unwrap(); }
+fn main() -> Result<()> { BevyhubCli::run() }
 
-struct Cli;
+/// Welcome to the Bevyhub CLI
+#[derive(Parser)]
+#[command(version, about, long_about = None)]
+pub struct BevyhubCli {
+	#[command(subcommand)]
+	command: Commands,
+}
+#[derive(Subcommand)]
+enum Commands {
+	BuildWeb(build_web::BuildBevyhubWeb),
+	Populate(api::PopulateCommand),
+}
 
-impl Subcommand for Cli {
-	fn name(&self) -> &'static str { "Bevyhub CLI" }
-	fn about(&self) -> &'static str { "Welcome to the Bevyhub CLI" }
-
-	fn append_command(&self, command: clap::Command) -> clap::Command {
-		command.subcommand_required(true)
-	}
-
-	fn subcommands(&self) -> Vec<Box<dyn Subcommand>> {
-		vec![
-			Box::new(build_web::BuildBevyhubWeb),
-			Box::new(aws::S3Command),
-			Box::new(api::PopulateCommand),
-		]
+impl BevyhubCli {
+	pub fn run() -> Result<()> {
+		match Self::parse().command {
+			Commands::BuildWeb(cmd) => cmd.run(),
+			Commands::Populate(cmd) => cmd.run(),
+		}
 	}
 }

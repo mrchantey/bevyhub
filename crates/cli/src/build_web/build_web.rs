@@ -1,159 +1,84 @@
 use anyhow::Result;
-use clap::ArgAction;
-use forky::prelude::Subcommand;
+use clap::Parser;
 use std::fs;
 use std::path::PathBuf;
 use std::process::Command;
 
+/// Build an app for Bevyhub Web.
+/// This tool is similar to trunk but with a focus on binaries and scenes
+/// instead of html and other web assets.
+#[derive(Debug, Parser)]
+pub struct BuildBevyhubWeb {
+	#[arg(short, long)]
+	pub example: Option<String>,
+	/// Specify the crate name
+	#[arg(short, long)]
+	package: Option<String>,
 
-pub struct BuildBevyhubWeb;
+	/// Skip cargo build, wasm-bindgen and wasm-opt
+	#[arg(long)]
+	skip_build: bool,
+
+	/// Build for release and optimize
+	#[arg(long)]
+	release: bool,
+
+	/// Build for release and optimize
+	#[arg(short, long, default_value = "target/wasm")]
+	out_dir: String,
+
+	/// Copy wasm files to a local directory
+	#[arg(long)]
+	copy_local: Option<String>,
+
+	/// Copy specified scenes dir to directory specified by copy-local,
+	/// for example `target/scenes`
+	#[arg(long)]
+	copy_scenes: Option<String>,
+
+	/// Copy specified registries dir to directory specified by copy-local,
+	/// for example `target/registries`
+	#[arg(long)]
+	copy_registries: Option<String>,
+}
 
 
-impl Subcommand for BuildBevyhubWeb {
-	fn name(&self) -> &'static str { "build" }
 
-	fn about(&self) -> &'static str {
-		r#"
-Build an app for Bevyhub Web.
-This tool is similar to trunk but with a focus on binaries and scenes
-instead of html and other web assets.
-"#
-	}
 
-	fn append_command(&self, command: clap::Command) -> clap::Command {
-		command
-			.arg(
-				clap::Arg::new("example")
-					.short('e')
-					.long("example")
-					.required(false)
-					.action(ArgAction::Set)
-					.help("Specify the example name"),
-			)
-			.arg(
-				clap::Arg::new("package")
-					.short('p')
-					.long("package")
-					.required(false)
-					.action(ArgAction::Set)
-					.help("Specify the crate name"),
-			)
-			.arg(
-				clap::Arg::new("skip-build")
-					.long("skip-build")
-					.required(false)
-					.action(ArgAction::SetTrue)
-					.help("Skip cargo build, wasm-bindgen and wasm-opt"),
-			)
-			.arg(
-				clap::Arg::new("release")
-					.long("release")
-					.required(false)
-					.action(ArgAction::SetTrue)
-					.help("Build for release and optimize"),
-			)
-			.arg(
-				clap::Arg::new("out-dir")
-					.short('o')
-					.long("out-dir")
-					.default_value("target/wasm")
-					.action(ArgAction::Set)
-					.help("Build for release and optimize"),
-			)
-			.arg(
-				clap::Arg::new("copy-local")
-					.long("copy-local")
-					.action(ArgAction::Set)
-					.help("Copy wasm files to a local directory"),
-			)
-			.arg(
-				clap::Arg::new("copy-scenes")
-					.long("copy-scenes")
-					.action(ArgAction::Set)
-					.help("Copy scenes to directory specified by copy-local"),
-			)
-			.arg(
-				clap::Arg::new("copy-registries")
-					.long("copy-registries")
-					.action(ArgAction::Set)
-					.help(
-						"Copy registries to directory specified by copy-local",
-					),
-			)
-		// .arg(
-		// 	clap::Arg::new("commit-local")
-		// 		.long("commit-local")
-		// 		.required(false)
-		// 		.action(ArgAction::SetTrue)
-		// 		.help("Commit all and push in directory specified by copy-local"),
-		// )
-	}
 
+impl BuildBevyhubWeb {
 	// untested, i prefer justfile
-	fn run(&self, args: &clap::ArgMatches) -> Result<()> {
-		let args = Args::from_args(args);
-
-		println!("🚀 Building Bevyhub Web app...\n{:#?}", args);
+	pub fn run(self) -> Result<()> {
+		println!("🚀 Building Bevyhub Web app...\n{:#?}", &self);
 
 		println!("🚀 Running Cargo Build");
-		run_cargo_build(&args)?;
-		run_print_size("🧪 Cargo Build Succeeded - Size: ", &args.cargo_build_wasm_path())?;
+		self.run_cargo_build()?;
+		run_print_size(
+			"🧪 Cargo Build Succeeded - Size: ",
+			&self.cargo_build_wasm_path(),
+		)?;
 		println!("🚀 Running Wasm Bindgen");
-		run_wasm_bindgen(&args)?;
-		run_print_size("🧪 Wasm Bindgen Succeeded - Size: ", &args.bindgen_path_wasm())?;
+		self.run_wasm_bindgen()?;
+		run_print_size(
+			"🧪 Wasm Bindgen Succeeded - Size: ",
+			&self.bindgen_path_wasm(),
+		)?;
 		println!("🚀 Running Wasm Opt");
-		run_wasm_opt(&args)?;
-		run_print_size("🧪 Wasm Opt Succeeded - Size: ", &args.bindgen_path_wasm())?;
+		self.run_wasm_opt()?;
+		run_print_size(
+			"🧪 Wasm Opt Succeeded - Size: ",
+			&self.bindgen_path_wasm(),
+		)?;
 		println!("🚀 Copying Local Files");
-		run_copy_local(&args)?;
+		self.run_copy_local()?;
 		// run_commit_local(&args)?;
 
 		println!("🚀 Build Succeeded");
 		Ok(())
 	}
-}
 
-#[derive(Debug, Clone)]
-struct Args {
-	crate_name: Option<String>,
-	example: Option<String>,
-	app_name: String,
-	release: bool,
-	out_dir: String,
-	copy_local: Option<String>,
-	copy_scenes: Option<String>,
-	copy_registries: Option<String>,
-	// commit_local: bool,
-	skip_build: bool,
-}
+	fn app_name(&self) -> &str { self.package.as_deref().unwrap_or("main") }
 
-impl Args {
-	fn from_args(args: &clap::ArgMatches) -> Self {
-		let example = args.get_one::<String>("example").cloned();
-		let crate_name = args.get_one::<String>("package").cloned();
-		let out_dir = args.get_one::<String>("out-dir").unwrap().clone();
-		let release = args.get_flag("release");
-		let skip_build = args.get_flag("skip-build");
-		let app_name = example.clone().unwrap_or_else(|| "main".into());
-		let copy_local = args.get_one::<String>("copy-local").cloned();
-		let copy_scenes = args.get_one::<String>("copy-scenes").cloned();
-		let copy_registries =
-			args.get_one::<String>("copy-registries").cloned();
-		// let commit_local = args.get_flag("commit-local");
-
-		Self {
-			example,
-			crate_name,
-			out_dir,
-			skip_build,
-			release,
-			app_name,
-			copy_local,
-			copy_scenes,
-			copy_registries,
-			// commit_local,
-		}
-	}
 	fn cargo_build_wasm_path(&self) -> String {
 		let build_config = if self.release { "release" } else { "debug" };
 
@@ -166,93 +91,133 @@ impl Args {
 		if let Some(example) = &self.example {
 			path.push(format!("examples/{}.wasm", example));
 		} else {
-			path.push(format!("{}.wasm", self.app_name));
+			path.push(format!("{}.wasm", self.app_name()));
 		}
 		path.to_string_lossy().to_string()
 	}
 
 	fn bindgen_path_wasm(&self) -> String {
-		format!("{}/{}_bg.wasm", self.out_dir, self.app_name)
+		format!("{}/{}_bg.wasm", self.out_dir, self.app_name())
 	}
 	fn bindgen_path_js(&self) -> String {
-		format!("{}/{}.js", self.out_dir, self.app_name)
+		format!("{}/{}.js", self.out_dir, self.app_name())
+	}
+	fn run_cargo_build(&self) -> Result<()> {
+		if self.skip_build {
+			return Ok(());
+		}
+
+		let mut build_args =
+			vec!["build", "--target", "wasm32-unknown-unknown"];
+		if let Some(package) = &self.package {
+			build_args.push("-p");
+			build_args.push(package);
+		}
+		if self.release {
+			build_args.push("--release");
+		}
+		if let Some(example) = &self.example {
+			build_args.push("--example");
+			build_args.push(example);
+		}
+
+		// Build the project
+		let status = Command::new("cargo").args(&build_args).status()?;
+		if !status.success() {
+			anyhow::bail!("cargo build failed");
+		}
+
+		Ok(())
+	}
+
+
+	fn run_wasm_bindgen(&self) -> Result<()> {
+		if self.skip_build {
+			return Ok(());
+		}
+
+		fs::create_dir_all(&self.out_dir).ok();
+		let wasm_path = self.cargo_build_wasm_path();
+
+		let build_args = [
+			"--out-name",
+			&self.app_name(),
+			"--out-dir",
+			&self.out_dir,
+			"--target",
+			"web",
+			"--no-typescript",
+			&wasm_path,
+		];
+		// println!("wasm-bindgen {}", build_args.join(" "));
+
+		let status = Command::new("wasm-bindgen").args(&build_args).status()?;
+		if !status.success() {
+			anyhow::bail!("wasm-bindgen failed");
+		}
+
+		Ok(())
+	}
+
+	fn run_wasm_opt(&self) -> Result<()> {
+		if self.skip_build || !self.release {
+			return Ok(());
+		}
+
+		let wasm_bindgen_path = self.bindgen_path_wasm();
+
+		let status = Command::new("wasm-opt")
+			.args(&["-Oz", "--output", &wasm_bindgen_path, &wasm_bindgen_path])
+			.status()?;
+		if !status.success() {
+			anyhow::bail!("wasm-opt failed");
+		}
+
+
+		Ok(())
+	}
+	fn run_copy_local(&self) -> Result<()> {
+		let Some(target_dir) = &self.copy_local else {
+			return Ok(());
+		};
+
+		let crate_name = self.package.clone().unwrap_or_else(|| {
+			std::env::current_dir()
+				.unwrap()
+				.file_name()
+				.unwrap()
+				.to_string_lossy()
+				.to_string()
+		});
+		let target_dir =
+			PathBuf::from(target_dir).canonicalize()?.join(crate_name);
+		fs::create_dir_all(&target_dir).ok();
+		fs::copy(
+			&self.bindgen_path_wasm(),
+			target_dir.join(format!("{}_bg.wasm", self.app_name())),
+		)?;
+		fs::copy(
+			&self.bindgen_path_js(),
+			target_dir.join(format!("{}.js", self.app_name())),
+		)?;
+
+		if let Some(scenes_dir_src) = &self.copy_scenes {
+			forky::fs::utility::fs::copy_recursive(
+				scenes_dir_src,
+				target_dir.join("scenes"),
+			)?;
+		}
+		if let Some(registries_dir_src) = &self.copy_registries {
+			forky::fs::utility::fs::copy_recursive(
+				registries_dir_src,
+				target_dir.join("registries"),
+			)?;
+		}
+
+		Ok(())
 	}
 }
 
-fn run_cargo_build(args: &Args) -> Result<()> {
-	if args.skip_build {
-		return Ok(());
-	}
-
-	let mut build_args = vec!["build", "--target", "wasm32-unknown-unknown"];
-	if let Some(crate_name) = &args.crate_name {
-		build_args.push("-p");
-		build_args.push(crate_name);
-	}
-	if args.release {
-		build_args.push("--release");
-	}
-	if let Some(example) = &args.example {
-		build_args.push("--example");
-		build_args.push(example);
-	}
-
-	// Build the project
-	let status = Command::new("cargo").args(&build_args).status()?;
-	if !status.success() {
-		anyhow::bail!("cargo build failed");
-	}
-
-	Ok(())
-}
-
-
-fn run_wasm_bindgen(args: &Args) -> Result<()> {
-	if args.skip_build {
-		return Ok(());
-	}
-
-	fs::create_dir_all(&args.out_dir).ok();
-	let wasm_path = args.cargo_build_wasm_path();
-
-	let build_args = [
-		"--out-name",
-		&args.app_name,
-		"--out-dir",
-		&args.out_dir,
-		"--target",
-		"web",
-		"--no-typescript",
-		&wasm_path,
-	];
-	// println!("wasm-bindgen {}", build_args.join(" "));
-	
-	let status = Command::new("wasm-bindgen").args(&build_args).status()?;
-	if !status.success() {
-		anyhow::bail!("wasm-bindgen failed");
-	}
-	
-
-	Ok(())
-}
-
-fn run_wasm_opt(args: &Args) -> Result<()> {
-	if args.skip_build || !args.release {
-		return Ok(());
-	}
-
-	let wasm_bindgen_path = args.bindgen_path_wasm();
-
-	let status = Command::new("wasm-opt")
-		.args(&["-Oz", "--output", &wasm_bindgen_path, &wasm_bindgen_path])
-		.status()?;
-	if !status.success() {
-		anyhow::bail!("wasm-opt failed");
-	}
-
-
-	Ok(())
-}
 
 fn run_print_size(prefix: &str, path: &str) -> Result<()> {
 	let metadata = fs::metadata(path)?;
@@ -263,45 +228,6 @@ fn run_print_size(prefix: &str, path: &str) -> Result<()> {
 }
 
 
-fn run_copy_local(args: &Args) -> Result<()> {
-	let Some(target_dir) = &args.copy_local else {
-		return Ok(());
-	};
-
-	let crate_name = args.crate_name.clone().unwrap_or_else(|| {
-		std::env::current_dir()
-			.unwrap()
-			.file_name()
-			.unwrap()
-			.to_string_lossy()
-			.to_string()
-	});
-	let target_dir = PathBuf::from(target_dir).canonicalize()?.join(crate_name);
-	fs::create_dir_all(&target_dir).ok();
-	fs::copy(
-		&args.bindgen_path_wasm(),
-		target_dir.join(format!("{}_bg.wasm", args.app_name)),
-	)?;
-	fs::copy(
-		&args.bindgen_path_js(),
-		target_dir.join(format!("{}.js", args.app_name)),
-	)?;
-
-	if let Some(scenes_dir_src) = &args.copy_scenes {
-		forky::fs::utility::fs::copy_recursive(
-			scenes_dir_src,
-			target_dir.join("scenes"),
-		)?;
-	}
-	if let Some(registries_dir_src) = &args.copy_registries {
-		forky::fs::utility::fs::copy_recursive(
-			registries_dir_src,
-			target_dir.join("registries"),
-		)?;
-	}
-
-	Ok(())
-}
 
 // fn run_commit_local(args: &Args) -> Result<()> {
 // 	if !args.commit_local {

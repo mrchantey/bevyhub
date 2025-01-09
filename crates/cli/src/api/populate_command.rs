@@ -1,54 +1,35 @@
 use super::*;
 use anyhow::Result;
 use bevyhub_api::prelude::*;
-use clap::Arg;
-use clap::ArgAction;
-use clap::ArgMatches;
-use clap::Command;
-use forky::prelude::Subcommand;
+use clap::Parser;
 
-
-
-/// Populate the db and storage
+/// Populate the db and storage with some test data
 /// Note that populating Production will hit crates.io
 /// meaning all packages must actually be published
-pub struct PopulateCommand;
+#[derive(Parser)]
+pub struct PopulateCommand {
+	/// number of files to create
+	#[arg()]
+	paths: Vec<String>,
+	/// repackage tarballs even if they exist, useful if the crate source has changed
+	#[arg(short, long)]
+	force_tarball: bool,
+}
 
 
-impl Subcommand for PopulateCommand {
-	fn name(&self) -> &'static str { "populate" }
-	fn about(&self) -> &'static str { "Populate the api with some test data" }
-	fn append_command(&self, command: Command) -> Command {
-		command
-			.arg(
-				Arg::new("paths")
-					.help("number of files to create")
-					.required(true)
-					.action(ArgAction::Append),
-			)
-			.arg(
-				Arg::new("force-tarball")
-					.help("repackage tarballs even if they exist, useful if the crate source has changed")
-					.action(ArgAction::SetTrue)
-					.short('f')
-					.long("force-tarball"),
-			)
-	}
-
-	fn run(&self, args: &ArgMatches) -> Result<()> {
+impl PopulateCommand {
+	pub fn run(self) -> Result<()> {
 		tokio::runtime::Runtime::new()?.block_on(async move {
-			let force = args.get_flag("force-tarball");
-
-			let crate_ids = args
-				.get_many::<String>("paths")
-				.unwrap_or_default()
+			let crate_ids = self
+				.paths
+				.iter()
 				.map(|p| LocalCrateId::parse(p))
 				.collect::<Result<Vec<_>>>()?;
 
 			let mut num_skipped = 0;
 			let mut num_packaged = 0;
 			for id in crate_ids.iter() {
-				if !package_locally_if_needed(id, force)? {
+				if !package_locally_if_needed(id, self.force_tarball)? {
 					num_skipped += 1;
 				} else {
 					num_packaged += 1;
