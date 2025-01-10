@@ -17,7 +17,7 @@ default = []
 
 [dependencies]
 #💡 Utility
-forky = { workspace = true, features = ["net", "server"] }
+forky = { workspace = true, features = ["net", "axum", "reqwest"] }
 anyhow.workspace = true
 extend.workspace = true
 rand.workspace = true

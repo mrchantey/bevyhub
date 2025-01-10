@@ -1945,7 +1945,7 @@ dependencies = [
  "bevyhub_core",
  "bevyhub_net",
  "bevyhub_scene",
- "forky",
+ "forky 0.2.0-rc.10",
  "serde_json",
 ]
 
@@ -1957,7 +1957,7 @@ dependencies = [
  "bevyhub_api",
  "cargo-manifest",
  "clap",
- "forky",
+ "forky 0.2.0-rc.10",
  "futures",
  "semver",
  "sweet",
@@ -1977,7 +1977,7 @@ dependencies = [
  "cargo-manifest",
  "extend",
  "flate2",
- "forky",
+ "forky 0.2.0-rc.10",
  "futures",
  "futures-util",
  "lambda_http",
@@ -2008,7 +2008,7 @@ dependencies = [
  "bevyhub_net",
  "bevyhub_scene",
  "extend",
- "forky",
+ "forky 0.2.0-rc.10",
  "log",
  "serde",
  "sweet",
@@ -2024,7 +2024,7 @@ dependencies = [
  "bincode",
  "extend",
  "flume",
- "forky",
+ "forky 0.2.0-rc.10",
  "futures-util",
  "js-sys",
  "log",
@@ -2051,7 +2051,7 @@ dependencies = [
  "bevy",
  "bevy_reflect",
  "extend",
- "forky",
+ "forky 0.2.0-rc.10",
  "log",
  "serde",
  "serde_json",
@@ -2068,7 +2068,7 @@ dependencies = [
  "axum-extra",
  "bevyhub_net",
  "extend",
- "forky",
+ "forky 0.2.0-rc.10",
  "futures",
  "futures-util",
  "headers",
@@ -3357,10 +3357,20 @@ name = "forky"
 version = "0.2.0-rc.10"
 dependencies = [
  "forky_bevy",
- "forky_core",
- "forky_fs",
+ "forky_core 0.2.0-rc.10",
+ "forky_fs 0.2.0-rc.10",
  "forky_net",
- "forky_web",
+ "forky_web 0.2.0-rc.10",
+]
+
+[[package]]
+name = "forky"
+version = "0.2.0-rc.10"
+source = "git+https://github.com/mrchantey/forky#ddc675dc9f7aaff2d8dedec7c968146d668285cc"
+dependencies = [
+ "forky_core 0.2.0-rc.10 (git+https://github.com/mrchantey/forky)",
+ "forky_fs 0.2.0-rc.10 (git+https://github.com/mrchantey/forky)",
+ "forky_web 0.2.0-rc.10 (git+https://github.com/mrchantey/forky)",
 ]
 
 [[package]]
@@ -3370,8 +3380,8 @@ dependencies = [
  "anyhow",
  "bevy",
  "extend",
- "forky_core",
- "forky_web",
+ "forky_core 0.2.0-rc.10",
+ "forky_web 0.2.0-rc.10",
  "js-sys",
  "rand",
 ]
@@ -3386,6 +3396,16 @@ dependencies = [
 ]
 
 [[package]]
+name = "forky_core"
+version = "0.2.0-rc.10"
+source = "git+https://github.com/mrchantey/forky#ddc675dc9f7aaff2d8dedec7c968146d668285cc"
+dependencies = [
+ "anyhow",
+ "extend",
+ "rand",
+]
+
+[[package]]
 name = "forky_fs"
 version = "0.2.0-rc.10"
 dependencies = [
@@ -3393,7 +3413,27 @@ dependencies = [
  "clap",
  "crossterm",
  "extend",
- "forky_core",
+ "forky_core 0.2.0-rc.10",
+ "futures",
+ "gag",
+ "glob",
+ "hex",
+ "notify",
+ "notify-debouncer-full",
+ "sha2",
+ "tokio",
+]
+
+[[package]]
+name = "forky_fs"
+version = "0.2.0-rc.10"
+source = "git+https://github.com/mrchantey/forky#ddc675dc9f7aaff2d8dedec7c968146d668285cc"
+dependencies = [
+ "anyhow",
+ "clap",
+ "crossterm",
+ "extend",
+ "forky_core 0.2.0-rc.10 (git+https://github.com/mrchantey/forky)",
  "futures",
  "gag",
  "glob",
@@ -3412,7 +3452,7 @@ dependencies = [
  "axum 0.8.1",
  "bytes",
  "extend",
- "forky_core",
+ "forky_core 0.2.0-rc.10",
  "http 1.2.0",
  "http-body 1.0.1",
  "http-body-util",
@@ -3428,7 +3468,22 @@ dependencies = [
  "anyhow",
  "console_error_panic_hook",
  "extend",
- "forky_core",
+ "forky_core 0.2.0-rc.10",
+ "js-sys",
+ "wasm-bindgen",
+ "wasm-bindgen-futures",
+ "web-sys",
+]
+
+[[package]]
+name = "forky_web"
+version = "0.2.0-rc.10"
+source = "git+https://github.com/mrchantey/forky#ddc675dc9f7aaff2d8dedec7c968146d668285cc"
+dependencies = [
+ "anyhow",
+ "console_error_panic_hook",
+ "extend",
+ "forky_core 0.2.0-rc.10 (git+https://github.com/mrchantey/forky)",
  "js-sys",
  "wasm-bindgen",
  "wasm-bindgen-futures",
@@ -6846,7 +6901,7 @@ dependencies = [
  "console_log",
  "extend",
  "flume",
- "forky",
+ "forky 0.2.0-rc.10 (git+https://github.com/mrchantey/forky)",
  "futures",
  "getrandom",
  "glob",
