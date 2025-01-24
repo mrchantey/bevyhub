@@ -42,7 +42,6 @@ members = [
 	"crates/bevyhub_api",
 	"crates/cli",
 ]
-
 exclude = ["crates/bevyhub_esp"]
 
 
@@ -61,9 +60,15 @@ bevyhub_server = { path = "crates/bevyhub_server", version = "0.0.1-rc.5" }
 # forky = { version = "0.2", features = ["bevy", "web"] }
 
 #💡 local-published
-forky = { path = "../forky", features = ["bevy", "web"] }
+forky = { git = "https://github.com/mrchantey/forky", default-features = false, features = [
+	"bevy",
+	"web",
+] }
 # sweet = { path = "../sweet", version = "0.2.0-rc.3", features = ["bevy"] }
-sweet = { path = "../sweet", features = ["bevy"] }
+sweet = { git = "https://github.com/mrchantey/sweet", default-features = false, features = [
+	"test",
+	"bevy",
+] }
 # sweet = { version = "0.2", features = ["bevy"] }
 
 #💡 Utility
@@ -123,15 +128,14 @@ categories.workspace = true
 include = ["CHANGELOG.md", "README.md", "/src", "/examples", "/scenes"]
 
 [features]
-default = ["net", "render"]
+# default = ["net", "render"]
 net = ["dep:bevyhub_net"]
-render = ["scene", "bevyhub_core/render"]
+core = ["net", "scene", "dep:bevyhub_core"]
 tokio = ["bevyhub_net/tokio"]
-test = ["bevyhub_core/test", "bevyhub_scene/test"]
-scene = ["dep:bevyhub_scene", "bevyhub_core/scene"]
+scene = ["dep:bevyhub_scene"]
 
 [dependencies]
-bevyhub_core.workspace = true
+bevyhub_core = { workspace = true, optional = true }
 bevyhub_scene = { workspace = true, optional = true }
 bevyhub_net = { workspace = true, optional = true }
 
