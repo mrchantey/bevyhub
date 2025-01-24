@@ -129,10 +129,10 @@ include = ["CHANGELOG.md", "README.md", "/src", "/examples", "/scenes"]
 
 [features]
 # default = ["net", "render"]
-net = ["dep:bevyhub_net"]
 core = ["net", "scene", "dep:bevyhub_core"]
-tokio = ["bevyhub_net/tokio"]
+net = ["dep:bevyhub_net"]
 scene = ["dep:bevyhub_scene"]
+tokio = ["bevyhub_net/tokio"]
 
 [dependencies]
 bevyhub_core = { workspace = true, optional = true }
