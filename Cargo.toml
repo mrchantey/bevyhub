@@ -107,9 +107,7 @@ wasm-bindgen-futures = "0.4"
 
 #💡 Game
 bevy = { version = "0.15", default-features = false }
-bevy_reflect = { version = "0.15" }
-# bevy = { git = "https://github.com/bevyengine/bevy", rev = "0c959f77007c29eead7f902bddd3342a1ecbca20", default-features = false }
-# bevy_reflect = { git = "https://github.com/bevyengine/bevy", rev = "0c959f77007c29eead7f902bddd3342a1ecbca20" }
+# bevy_reflect = { version = "0.15" }
 
 
 [package]

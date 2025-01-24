@@ -2042,7 +2042,6 @@ version = "0.0.1-rc.5"
 dependencies = [
  "anyhow",
  "bevy",
- "bevy_reflect",
  "extend",
  "forky 0.2.1-rc.1 (git+https://github.com/mrchantey/forky)",
  "log",

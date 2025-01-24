@@ -80,7 +80,10 @@ impl From<&NamedField> for SerdeNamedField {
 		Self {
 			name: field.name().to_string(),
 			type_path: field.type_path().to_string(),
-			docs: field.docs().map(|s| s.to_string()),
+			// #[cfg(feature = "documentation")]
+			// docs: info.docs().map(|s| s.to_string()),
+			// #[cfg(not(feature = "documentation"))]
+			docs: None,
 		}
 	}
 }
@@ -98,7 +101,10 @@ impl From<&UnnamedField> for SerdeUnnamedField {
 		Self {
 			index: field.index(),
 			type_path: field.type_path().to_string(),
-			docs: field.docs().map(|s| s.to_string()),
+			// #[cfg(feature = "documentation")]
+			// docs: info.docs().map(|s| s.to_string()),
+			// #[cfg(not(feature = "documentation"))]
+			docs: None,
 		}
 	}
 }
@@ -275,7 +281,10 @@ impl From<&StructVariantInfo> for SerdeStructVariantInfo {
 		Self {
 			name: info.name().to_string(),
 			fields: info.iter().map(SerdeNamedField::from).collect(),
-			docs: info.docs().map(|s| s.to_string()),
+			// #[cfg(feature = "documentation")]
+			// docs: info.docs().map(|s| s.to_string()),
+			// #[cfg(not(feature = "documentation"))]
+			docs: None,
 		}
 	}
 }
@@ -292,7 +301,10 @@ impl From<&TupleVariantInfo> for SerdeTupleVariantInfo {
 		Self {
 			name: info.name().to_string(),
 			fields: info.iter().map(SerdeUnnamedField::from).collect(),
-			docs: info.docs().map(|s| s.to_string()),
+			// #[cfg(feature = "documentation")]
+			// docs: info.docs().map(|s| s.to_string()),
+			// #[cfg(not(feature = "documentation"))]
+			docs: None,
 		}
 	}
 }
@@ -307,7 +319,10 @@ impl From<&UnitVariantInfo> for SerdeUnitVariantInfo {
 	fn from(info: &UnitVariantInfo) -> Self {
 		Self {
 			name: info.name().to_string(),
-			docs: info.docs().map(|s| s.to_string()),
+			// #[cfg(feature = "documentation")]
+			// docs: info.docs().map(|s| s.to_string()),
+			// #[cfg(not(feature = "documentation"))]
+			docs: None,
 		}
 	}
 }
