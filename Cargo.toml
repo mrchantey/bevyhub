@@ -129,6 +129,7 @@ include = ["CHANGELOG.md", "README.md", "/src", "/examples", "/scenes"]
 
 [features]
 # default = ["net", "render"]
+export_types = ["core", "bevyhub_core/export_types"]
 core = ["net", "scene", "dep:bevyhub_core"]
 net = ["dep:bevyhub_net"]
 scene = ["dep:bevyhub_scene"]

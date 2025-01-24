@@ -1,5 +1,6 @@
 use anyhow::Result;
 use clap::Parser;
+use forky::prelude::*;
 use std::fs;
 use std::path::PathBuf;
 use std::process::Command;
@@ -202,13 +203,10 @@ impl BuildBevyhubWeb {
 		)?;
 
 		if let Some(scenes_dir_src) = &self.copy_scenes {
-			forky::fs::utility::fs::copy_recursive(
-				scenes_dir_src,
-				target_dir.join("scenes"),
-			)?;
+			FsExt::copy_recursive(scenes_dir_src, target_dir.join("scenes"))?;
 		}
 		if let Some(registries_dir_src) = &self.copy_registries {
-			forky::fs::utility::fs::copy_recursive(
+			FsExt::copy_recursive(
 				registries_dir_src,
 				target_dir.join("registries"),
 			)?;
