@@ -1,5 +1,5 @@
 use bevy::prelude::*;
-use bevy_reflect::TypeRegistry;
+use bevy::reflect::TypeRegistry;
 
 fn main() {
 	let vec = Vec3::new(0., 1., 2.);

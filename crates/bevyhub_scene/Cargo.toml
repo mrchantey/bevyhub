@@ -12,24 +12,27 @@ categories.workspace = true
 
 
 [features]
-default = ["render", "export_types"]
+# default = ["render", "export_types"]
 # reflect
-export_types = ["dep:ts-rs", "dep:bevy_reflect", "bevy_reflect/documentation"]
-render = [
-	"scene",
-	# TODO being more granular will speed up compile times
-	"bevy/default",
-	# "bevy/bevy_asset",
-	# "bevy/animation",
-	# "bevy/bevy_core_pipeline",
-]
-scene = ["bevy/bevy_scene", "bevy/serialize"]
+export_types = ["dep:ts-rs"]
+# render = [
+# 	"bevy/default",
+# 	# "scene",
+# 	# TODO being more granular will speed up compile times
+# 	# "bevy/bevy_asset",
+# 	# "bevy/animation",
+# 	# "bevy/bevy_core_pipeline",
+# ]
+# scene = ["bevy/bevy_scene", "bevy/serialize"]
 
 [dependencies]
 ts-rs = { version = "9.0.1", optional = true }
 forky.workspace = true
-bevy.workspace = true
-bevy_reflect = { workspace = true, optional = true }
+bevy = { workspace = true, default-features = true }
+# bevy_reflect = { workspace = true, optional = true, features = [
+# 	"bevy",
+# 	# "documentation",
+# ] }
 log.workspace = true
 anyhow.workspace = true
 serde.workspace = true
@@ -38,3 +41,9 @@ extend.workspace = true
 
 [dev-dependencies]
 sweet.workspace = true
+
+
+[[example]]
+name = "export_test_scene"
+path = "examples/export_test_scene.rs"
+required-features = ["export_types"]

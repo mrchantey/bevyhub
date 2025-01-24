@@ -11,6 +11,9 @@ keywords.workspace = true
 categories.workspace = true
 
 
+[features]
+export_types = ["bevyhub_scene/export_types"]
+
 [dependencies]
 forky.workspace = true
 bevyhub_net.workspace = true
