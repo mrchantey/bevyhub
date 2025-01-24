@@ -278,6 +278,28 @@ description = "A starry background."
 path = "scenes/space-scene.json"
 
 
+[[example]]
+name = "bevyhub_app"
+path = "examples/bevyhub_app.rs"
+required-features = ["core"]
+[[example]]
+name = "export_scenes"
+path = "examples/export_scenes.rs"
+required-features = ["core"]
+[[example]]
+name = "export_typescript"
+path = "examples/export_typescript.rs"
+required-features = ["core"]
+[[example]]
+name = "terminal_populated"
+path = "examples/terminal_populated.rs"
+required-features = ["core"]
+[[example]]
+name = "terminal"
+path = "examples/terminal.rs"
+required-features = ["core"]
+
+
 # [[package.metadata.scene]]
 # name = "hello-net"
 # description = "A simple behavior demonstrating triggering and reacting to network events."

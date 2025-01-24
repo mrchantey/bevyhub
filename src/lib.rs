@@ -1,4 +1,5 @@
 #![doc = include_str!("../README.md")]
+#[cfg(feature = "core")]
 pub use bevyhub_core as core;
 #[cfg(feature = "net")]
 pub use bevyhub_net as net;
@@ -6,6 +7,7 @@ pub use bevyhub_net as net;
 pub use bevyhub_scene as scene;
 
 pub mod prelude {
+	#[cfg(feature = "core")]
 	pub use crate::core::prelude::*;
 	#[cfg(feature = "net")]
 	pub use crate::net::prelude::*;
