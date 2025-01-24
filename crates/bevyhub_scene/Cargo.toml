@@ -14,7 +14,7 @@ categories.workspace = true
 [features]
 # default = ["render", "export_types"]
 # reflect
-export_types = ["dep:ts-rs"]
+export_types = ["dep:ts-rs", "dep:bevy_reflect"]
 # render = [
 # 	"bevy/default",
 # 	# "scene",
@@ -29,10 +29,10 @@ export_types = ["dep:ts-rs"]
 ts-rs = { version = "9.0.1", optional = true }
 forky.workspace = true
 bevy = { workspace = true, default-features = true }
-# bevy_reflect = { workspace = true, optional = true, features = [
-# 	"bevy",
-# 	# "documentation",
-# ] }
+bevy_reflect = { workspace = true, optional = true, features = [
+	"bevy",
+	"documentation",
+] }
 log.workspace = true
 anyhow.workspace = true
 serde.workspace = true

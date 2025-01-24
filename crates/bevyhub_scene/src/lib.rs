@@ -4,12 +4,12 @@
 
 pub mod scene_exporter;
 #[cfg(feature = "export_types")]
-pub mod type_registry_exporter;
+pub mod export_types;
 pub mod utils;
 
 pub mod prelude {
 	pub use crate::scene_exporter::*;
 	#[cfg(feature = "export_types")]
-	pub use crate::type_registry_exporter::*;
+	pub use crate::export_types::*;
 	pub use crate::utils::*;
 }

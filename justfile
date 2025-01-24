@@ -78,20 +78,13 @@ build-wasm-test *args:
 export-test-scene:
 	cargo run -p bevyhub_scene --example export_test_scene
 
-test *args:
-	just watch 'just test-ci {{args}}'
-
-test-core *args:
-	just watch 'cargo test -p bevyhub_core --lib -- {{args}}'
-test-net *args:
-	just watch 'cargo test -p bevyhub_net --lib -- {{args}}'
-test-scene *args:
-	just watch 'cargo test -p bevyhub_scene --lib -- {{args}}'
+test crate *args:
+	just watch 'cargo test -p {{crate}} --lib --all-features -- {{args}}'
 
 test-all *args:
-	cargo test -p bevyhub_core
-	cargo test -p bevyhub_net
-	cargo test -p bevyhub_scene
+	cargo test -p bevyhub_core --all-features
+	cargo test -p bevyhub_net --all-features
+	cargo test -p bevyhub_scene --all-features
 	cd crates/bevyhub_api && just test-all
 
 assets-push:

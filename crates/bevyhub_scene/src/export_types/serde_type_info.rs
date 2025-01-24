@@ -4,6 +4,7 @@ use bevy::reflect::ListInfo;
 use bevy::reflect::MapInfo;
 use bevy::reflect::NamedField;
 use bevy::reflect::OpaqueInfo;
+use bevy::reflect::PartialReflect;
 use bevy::reflect::SetInfo;
 use bevy::reflect::StructInfo;
 use bevy::reflect::StructVariantInfo;
@@ -14,7 +15,6 @@ use bevy::reflect::TypeInfo;
 use bevy::reflect::UnitVariantInfo;
 use bevy::reflect::UnnamedField;
 use bevy::reflect::VariantInfo;
-use bevy_reflect::PartialReflect;
 use serde::Deserialize;
 use serde::Serialize;
 use ts_rs::TS;
@@ -60,7 +60,9 @@ impl From<&TypeInfo> for SerdeTypeInfo {
 
 impl SerdeTypeInfo {
 	pub fn new(val: &impl PartialReflect) -> Self {
-		let info = val.get_represented_type_info().expect("Failed to get type info");
+		let info = val
+			.get_represented_type_info()
+			.expect("Failed to get type info");
 		info.into()
 	}
 }

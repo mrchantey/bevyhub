@@ -1,10 +1,10 @@
 use crate::prelude::*;
 use bevy::prelude::*;
 use bevy::reflect::serde::ReflectSerializer;
+use bevy::reflect::GetTypeRegistration;
 use bevy::reflect::TypePathTable;
 use bevy::reflect::TypeRegistration;
 use bevy::reflect::TypeRegistry;
-use bevy_reflect::GetTypeRegistration;
 use serde::Deserialize;
 use serde::Serialize;
 use ts_rs::TS;

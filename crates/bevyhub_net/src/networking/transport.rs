@@ -1,11 +1,11 @@
-// use anyhow::Result;
+use anyhow::Result;
 use crate::prelude::*;
 use flume::Receiver;
 use flume::Sender;
 
 pub trait Transport {
-	fn send(&mut self, messages: &Vec<Message>) -> Result<(), anyhow::Error>;
-	fn recv(&mut self) -> Result<Vec<Message>, anyhow::Error>;
+	fn send(&mut self, messages: &Vec<Message>) -> Result<()>;
+	fn recv(&mut self) -> Result<Vec<Message>>;
 }
 
 pub struct ChannelsTransport {
@@ -34,12 +34,12 @@ impl ChannelsTransport {
 }
 
 impl Transport for ChannelsTransport {
-	fn send(&mut self, messages: &Vec<Message>) -> Result<(), anyhow::Error> {
+	fn send(&mut self, messages: &Vec<Message>) -> Result<()> {
 		self.send.send(messages.clone())?;
 		Ok(())
 	}
 
-	fn recv(&mut self) -> Result<Vec<Message>, anyhow::Error> {
+	fn recv(&mut self) -> Result<Vec<Message>> {
 		self.recv.try_recv_all_flat()
 	}
 }
