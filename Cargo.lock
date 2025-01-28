@@ -1164,6 +1164,7 @@ dependencies = [
  "bevy_reflect",
  "bevy_tasks",
  "bevy_utils",
+ "serde",
  "uuid",
 ]
 
@@ -1399,6 +1400,7 @@ dependencies = [
  "bevy_reflect",
  "bevy_utils",
  "derive_more 1.0.0",
+ "serde",
  "smol_str",
 ]
 
@@ -1722,6 +1724,7 @@ dependencies = [
  "nonmax",
  "radsort",
  "rectangle-pack",
+ "serde",
 ]
 
 [[package]]
@@ -1804,6 +1807,7 @@ dependencies = [
  "bevy_reflect",
  "bevy_utils",
  "crossbeam-channel",
+ "serde",
 ]
 
 [[package]]
@@ -1818,6 +1822,7 @@ dependencies = [
  "bevy_math",
  "bevy_reflect",
  "derive_more 1.0.0",
+ "serde",
 ]
 
 [[package]]
@@ -1849,6 +1854,7 @@ dependencies = [
  "bytemuck",
  "derive_more 1.0.0",
  "nonmax",
+ "serde",
  "smallvec",
  "taffy",
 ]
@@ -1894,6 +1900,7 @@ dependencies = [
  "bevy_reflect",
  "bevy_utils",
  "raw-window-handle",
+ "serde",
  "smol_str",
 ]
 
@@ -1924,6 +1931,7 @@ dependencies = [
  "cfg-if",
  "crossbeam-channel",
  "raw-window-handle",
+ "serde",
  "wasm-bindgen",
  "web-sys",
  "wgpu-types",
@@ -1939,7 +1947,7 @@ dependencies = [
  "bevyhub_core",
  "bevyhub_net",
  "bevyhub_scene",
- "forky 0.2.1-rc.1",
+ "forky 0.2.1-rc.1 (git+https://github.com/mrchantey/forky)",
  "serde_json",
 ]
 
@@ -1951,7 +1959,7 @@ dependencies = [
  "bevyhub_api",
  "cargo-manifest",
  "clap",
- "forky 0.2.1-rc.1",
+ "forky 0.2.1-rc.1 (git+https://github.com/mrchantey/forky)",
  "futures",
  "semver",
  "sweet",
@@ -1971,7 +1979,7 @@ dependencies = [
  "cargo-manifest",
  "extend",
  "flate2",
- "forky 0.2.1-rc.1",
+ "forky 0.2.1-rc.1 (git+https://github.com/mrchantey/forky)",
  "futures",
  "futures-util",
  "lambda_http",
@@ -2002,7 +2010,7 @@ dependencies = [
  "bevyhub_net",
  "bevyhub_scene",
  "extend",
- "forky 0.2.1-rc.1",
+ "forky 0.2.1-rc.1 (git+https://github.com/mrchantey/forky)",
  "log",
  "serde",
  "sweet",
@@ -2017,7 +2025,7 @@ dependencies = [
  "bincode",
  "extend",
  "flume",
- "forky 0.2.1-rc.1",
+ "forky 0.2.1-rc.1 (git+https://github.com/mrchantey/forky)",
  "futures-util",
  "js-sys",
  "log",
@@ -2043,7 +2051,7 @@ dependencies = [
  "anyhow",
  "bevy",
  "extend",
- "forky 0.2.1-rc.1",
+ "forky 0.2.1-rc.1 (git+https://github.com/mrchantey/forky)",
  "log",
  "serde",
  "serde_json",
@@ -2060,7 +2068,7 @@ dependencies = [
  "axum-extra",
  "bevyhub_net",
  "extend",
- "forky 0.2.1-rc.1",
+ "forky 0.2.1-rc.1 (git+https://github.com/mrchantey/forky)",
  "futures",
  "futures-util",
  "headers",
@@ -3402,17 +3410,6 @@ checksum = "aa9a19cbb55df58761df49b23516a86d432839add4af60fc256da840f66ed35b"
 [[package]]
 name = "forky"
 version = "0.2.1-rc.1"
-dependencies = [
- "forky_bevy",
- "forky_core 0.2.1-rc.1",
- "forky_fs 0.2.1-rc.1",
- "forky_net",
- "forky_web 0.2.1-rc.1",
-]
-
-[[package]]
-name = "forky"
-version = "0.2.1-rc.1"
 source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "3483ea75697b9842839811dfeb6ea2c3ed35a913380dc326f93ca6762992f3ff"
 dependencies = [
@@ -3422,24 +3419,28 @@ dependencies = [
 ]
 
 [[package]]
+name = "forky"
+version = "0.2.1-rc.1"
+source = "git+https://github.com/mrchantey/forky#50f067b80787cd40b6d2ef5e698ced320cd45704"
+dependencies = [
+ "forky_bevy",
+ "forky_core 0.2.1-rc.1 (git+https://github.com/mrchantey/forky)",
+ "forky_fs 0.2.1-rc.1 (git+https://github.com/mrchantey/forky)",
+ "forky_net",
+ "forky_web 0.2.1-rc.1 (git+https://github.com/mrchantey/forky)",
+]
+
+[[package]]
 name = "forky_bevy"
 version = "0.2.1-rc.1"
+source = "git+https://github.com/mrchantey/forky#50f067b80787cd40b6d2ef5e698ced320cd45704"
 dependencies = [
  "anyhow",
  "bevy",
  "extend",
- "forky_core 0.2.1-rc.1",
- "forky_web 0.2.1-rc.1",
+ "forky_core 0.2.1-rc.1 (git+https://github.com/mrchantey/forky)",
+ "forky_web 0.2.1-rc.1 (git+https://github.com/mrchantey/forky)",
  "js-sys",
- "rand",
-]
-
-[[package]]
-name = "forky_core"
-version = "0.2.1-rc.1"
-dependencies = [
- "anyhow",
- "extend",
  "rand",
 ]
 
@@ -3455,23 +3456,13 @@ dependencies = [
 ]
 
 [[package]]
-name = "forky_fs"
+name = "forky_core"
 version = "0.2.1-rc.1"
+source = "git+https://github.com/mrchantey/forky#50f067b80787cd40b6d2ef5e698ced320cd45704"
 dependencies = [
  "anyhow",
- "clap",
- "crossterm",
  "extend",
- "forky_core 0.2.1-rc.1",
- "futures",
- "gag",
- "glob",
- "hex",
- "notify",
- "notify-debouncer-full",
- "sha2",
- "thiserror 2.0.11",
- "tokio",
+ "rand",
 ]
 
 [[package]]
@@ -3497,34 +3488,42 @@ dependencies = [
 ]
 
 [[package]]
+name = "forky_fs"
+version = "0.2.1-rc.1"
+source = "git+https://github.com/mrchantey/forky#50f067b80787cd40b6d2ef5e698ced320cd45704"
+dependencies = [
+ "anyhow",
+ "clap",
+ "crossterm",
+ "extend",
+ "forky_core 0.2.1-rc.1 (git+https://github.com/mrchantey/forky)",
+ "futures",
+ "gag",
+ "glob",
+ "hex",
+ "notify",
+ "notify-debouncer-full",
+ "sha2",
+ "thiserror 2.0.11",
+ "tokio",
+]
+
+[[package]]
 name = "forky_net"
 version = "0.2.1-rc.1"
+source = "git+https://github.com/mrchantey/forky#50f067b80787cd40b6d2ef5e698ced320cd45704"
 dependencies = [
  "anyhow",
  "axum 0.8.1",
  "bytes",
  "extend",
- "forky_core 0.2.1-rc.1",
+ "forky_core 0.2.1-rc.1 (git+https://github.com/mrchantey/forky)",
  "http 1.2.0",
  "http-body 1.0.1",
  "http-body-util",
  "once_cell",
  "reqwest 0.12.12",
  "tower 0.5.2",
-]
-
-[[package]]
-name = "forky_web"
-version = "0.2.1-rc.1"
-dependencies = [
- "anyhow",
- "console_error_panic_hook",
- "extend",
- "forky_core 0.2.1-rc.1",
- "js-sys",
- "wasm-bindgen",
- "wasm-bindgen-futures",
- "web-sys",
 ]
 
 [[package]]
@@ -3537,6 +3536,21 @@ dependencies = [
  "console_error_panic_hook",
  "extend",
  "forky_core 0.2.1-rc.1 (registry+https://github.com/rust-lang/crates.io-index)",
+ "js-sys",
+ "wasm-bindgen",
+ "wasm-bindgen-futures",
+ "web-sys",
+]
+
+[[package]]
+name = "forky_web"
+version = "0.2.1-rc.1"
+source = "git+https://github.com/mrchantey/forky#50f067b80787cd40b6d2ef5e698ced320cd45704"
+dependencies = [
+ "anyhow",
+ "console_error_panic_hook",
+ "extend",
+ "forky_core 0.2.1-rc.1 (git+https://github.com/mrchantey/forky)",
  "js-sys",
  "wasm-bindgen",
  "wasm-bindgen-futures",
@@ -6011,46 +6025,12 @@ dependencies = [
 ]
 
 [[package]]
-name = "proc-macro-error-attr2"
-version = "2.0.0"
-source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "96de42df36bb9bba5542fe9f1a054b8cc87e172759a1868aa05c1f3acc89dfc5"
-dependencies = [
- "proc-macro2",
- "quote",
-]
-
-[[package]]
-name = "proc-macro-error2"
-version = "2.0.1"
-source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "11ec05c52be0a07b08061f7dd003e7d7092e0472bc731b4af7bb1ef876109802"
-dependencies = [
- "proc-macro-error-attr2",
- "proc-macro2",
- "quote",
-]
-
-[[package]]
 name = "proc-macro2"
 version = "1.0.93"
 source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "60946a68e5f9d28b0dc1c21bb8a97ee7d018a8b322fa57838ba31cc878e22d99"
 dependencies = [
  "unicode-ident",
-]
-
-[[package]]
-name = "proc-macro2-diagnostics"
-version = "0.10.1"
-source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "af066a9c399a26e020ada66a034357a868728e72cd426f3adcd35f80d88d88c8"
-dependencies = [
- "proc-macro2",
- "quote",
- "syn 2.0.96",
- "version_check",
- "yansi",
 ]
 
 [[package]]
@@ -6413,21 +6393,6 @@ name = "roxmltree"
 version = "0.20.0"
 source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "6c20b6793b5c2fa6553b250154b78d6d0db37e72700ae35fad9387a46f487c97"
-
-[[package]]
-name = "rstml"
-version = "0.12.1"
-source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "61cf4616de7499fc5164570d40ca4e1b24d231c6833a88bff0fe00725080fd56"
-dependencies = [
- "derive-where",
- "proc-macro2",
- "proc-macro2-diagnostics",
- "quote",
- "syn 2.0.96",
- "syn_derive",
- "thiserror 2.0.11",
-]
 
 [[package]]
 name = "rustc-demangle"
@@ -6915,6 +6880,9 @@ name = "smallvec"
 version = "1.13.2"
 source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "3c5e1a9a646d36c3599cd173a41282daf47c44583ad367b8e6837255952e5c67"
+dependencies = [
+ "serde",
+]
 
 [[package]]
 name = "smol_str"
@@ -7046,72 +7014,16 @@ dependencies = [
 [[package]]
 name = "sweet"
 version = "0.3.0-rc.2"
+source = "git+https://github.com/mrchantey/sweet#4a7441c21a40cd235ea018dca176b86204369578"
 dependencies = [
- "sweet_core",
- "sweet_rsx_macros",
  "sweet_test",
  "sweet_utils",
 ]
 
 [[package]]
-name = "sweet_core"
-version = "0.3.0-rc.2"
-dependencies = [
- "anyhow",
- "bincode",
- "console_error_panic_hook",
- "console_log",
- "forky 0.2.1-rc.1 (registry+https://github.com/rust-lang/crates.io-index)",
- "getrandom",
- "js-sys",
- "once_cell",
- "proc-macro2",
- "quote",
- "serde",
- "strum",
- "strum_macros",
- "sweet_utils",
- "syn 2.0.96",
- "thiserror 2.0.11",
- "tokio",
- "wasm-bindgen",
- "wasm-bindgen-futures",
- "web-sys",
-]
-
-[[package]]
-name = "sweet_rsx"
-version = "0.3.0-rc.2"
-dependencies = [
- "anyhow",
- "prettyplease",
- "proc-macro2",
- "proc-macro2-diagnostics",
- "quote",
- "rstml",
- "sweet_core",
- "sweet_utils",
- "syn 2.0.96",
- "web-sys",
-]
-
-[[package]]
-name = "sweet_rsx_macros"
-version = "0.3.0-rc.2"
-dependencies = [
- "anyhow",
- "proc-macro2",
- "proc-macro2-diagnostics",
- "quote",
- "rstml",
- "sweet_core",
- "sweet_rsx",
- "syn 2.0.96",
-]
-
-[[package]]
 name = "sweet_test"
 version = "0.3.0-rc.2"
+source = "git+https://github.com/mrchantey/sweet#4a7441c21a40cd235ea018dca176b86204369578"
 dependencies = [
  "anyhow",
  "backtrace",
@@ -7143,6 +7055,7 @@ dependencies = [
 [[package]]
 name = "sweet_test_macros"
 version = "0.3.0-rc.2"
+source = "git+https://github.com/mrchantey/sweet#4a7441c21a40cd235ea018dca176b86204369578"
 dependencies = [
  "anyhow",
  "proc-macro2",
@@ -7153,6 +7066,7 @@ dependencies = [
 [[package]]
 name = "sweet_utils"
 version = "0.3.0-rc.2"
+source = "git+https://github.com/mrchantey/sweet#4a7441c21a40cd235ea018dca176b86204369578"
 dependencies = [
  "anyhow",
  "console_error_panic_hook",
@@ -7189,18 +7103,6 @@ dependencies = [
  "proc-macro2",
  "quote",
  "unicode-ident",
-]
-
-[[package]]
-name = "syn_derive"
-version = "0.2.0"
-source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "cdb066a04799e45f5d582e8fc6ec8e6d6896040d00898eb4e6a835196815b219"
-dependencies = [
- "proc-macro-error2",
- "proc-macro2",
- "quote",
- "syn 2.0.96",
 ]
 
 [[package]]
@@ -8471,6 +8373,17 @@ dependencies = [
 ]
 
 [[package]]
+name = "windows-implement"
+version = "0.59.0"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "83577b051e2f49a058c308f17f273b570a6a758386fc291b5f6a934dd84e48c1"
+dependencies = [
+ "proc-macro2",
+ "quote",
+ "syn 2.0.96",
+]
+
+[[package]]
 name = "windows-interface"
 version = "0.57.0"
 source = "registry+https://github.com/rust-lang/crates.io-index"
@@ -8486,6 +8399,17 @@ name = "windows-interface"
 version = "0.58.0"
 source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "053c4c462dc91d3b1504c6fe5a726dd15e216ba718e84a0e46a88fbe5ded3515"
+dependencies = [
+ "proc-macro2",
+ "quote",
+ "syn 2.0.96",
+]
+
+[[package]]
+name = "windows-interface"
+version = "0.59.0"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "cb26fd936d991781ea39e87c3a27285081e3c0da5ca0fcbc02d368cc6f52ff01"
 dependencies = [
  "proc-macro2",
  "quote",
@@ -8984,12 +8908,6 @@ name = "xmlparser"
 version = "0.13.6"
 source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "66fee0b777b0f5ac1c69bb06d361268faafa61cd4682ae064a171c16c433e9e4"
-
-[[package]]
-name = "yansi"
-version = "1.0.1"
-source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "cfe53a6657fd280eaa890a3bc59152892ffa3e30101319d168b781ed6529b049"
 
 [[package]]
 name = "yazi"

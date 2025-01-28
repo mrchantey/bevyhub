@@ -1,7 +1,6 @@
 #![cfg_attr(test, feature(test, custom_test_frameworks))]
 #![cfg_attr(test, test_runner(sweet::test_runner))]
 
-#![feature(let_chains)]
 pub mod events;
 pub mod extensions;
 pub mod networking;

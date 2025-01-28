@@ -14,7 +14,8 @@ categories.workspace = true
 [features]
 # default = ["render", "export_types"]
 # reflect
-export_types = ["dep:ts-rs", "dep:bevy_reflect", "bevy_reflect/documentation"]
+export_types = ["dep:ts-rs"]
+# export_types = ["dep:ts-rs", "dep:bevy_reflect", "bevy_reflect/documentation"]
 render = [
 	"scene",
 	# TODO being more granular will speed up compile times

@@ -1,9 +1,6 @@
 #![cfg_attr(test, feature(test, custom_test_frameworks))]
 #![cfg_attr(test, test_runner(sweet::test_runner))]
 
-
-#![feature(async_fn_traits, const_trait_impl)]
-#![allow(async_fn_in_trait)]
 pub mod cargo_registry;
 pub mod crate_doc;
 pub mod crates_io;

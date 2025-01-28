@@ -1,4 +1,3 @@
-#![feature(exit_status_error)]
 use clap::Parser;
 use clap::Subcommand;
 mod api;

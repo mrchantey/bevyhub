@@ -1,4 +1,3 @@
-#![feature(never_type)]
 #[cfg(feature = "beet")]
 mod actions;
 #[cfg(feature = "beet")]

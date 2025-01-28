@@ -20,7 +20,7 @@ export_types = ["bevyhub_scene/export_types"]
 [dependencies]
 forky.workspace = true
 bevyhub_net.workspace = true
-bevyhub_scene.workspace = true
+bevyhub_scene = { workspace = true, optional = true }
 bevy.workspace = true
 log.workspace = true
 anyhow.workspace = true
