@@ -127,7 +127,6 @@ default = ["net", "render"]
 net = ["dep:bevyhub_net"]
 render = ["scene", "bevyhub_core/render"]
 tokio = ["bevyhub_net/tokio"]
-test = ["bevyhub_core/test", "bevyhub_scene/test"]
 scene = ["dep:bevyhub_scene", "bevyhub_core/scene"]
 
 [dependencies]

@@ -32,6 +32,6 @@ tracing = "0.1"
 tracing-subscriber = { version = "0.3", features = ["env-filter"] }
 
 [dev-dependencies]
-sweet.workspace = true
+sweet = { workspace = true, features = ["test"] }
 reqwest = { version = "0.11", features = ["json"] }
 tokio-tungstenite.workspace = true
