@@ -12,7 +12,7 @@ categories.workspace = true
 
 
 [features]
-default = ["render", "export_types"]
+# default = ["render", "export_types"]
 # reflect
 export_types = ["dep:ts-rs", "dep:bevy_reflect", "bevy_reflect/documentation"]
 render = [
@@ -28,14 +28,17 @@ scene = ["bevy/bevy_scene", "bevy/serialize"]
 [dependencies]
 ts-rs = { version = "9.0.1", optional = true }
 forky.workspace = true
-bevy.workspace = true
-bevy_reflect = { workspace = true, optional = true }
+bevy = { workspace = true, default-features = true }
 log.workspace = true
 anyhow.workspace = true
 serde.workspace = true
 serde_json.workspace = true
 extend.workspace = true
-sweet = { workspace = true, optional = true }
 
 [dev-dependencies]
 sweet = { workspace = true, features = ["test"] }
+
+[[example]]
+name = "export_test_scene"
+path = "examples/export_test_scene.rs"
+required-features = ["export_types"]

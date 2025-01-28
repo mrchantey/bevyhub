@@ -9,6 +9,5 @@ pub fn bevyhub_full_plugins(app: &mut App) {
 		DefaultPlaceholderPlugin,
 		DefaultReplicatePlugin,
 		UiTerminalPlugin,
-		temp_patches,
 	));
 }

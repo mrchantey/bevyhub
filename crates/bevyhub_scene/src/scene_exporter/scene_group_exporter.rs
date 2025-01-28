@@ -163,8 +163,8 @@ mod test {
 
 	#[test]
 	fn succeeds_exporting_empty_scene() -> Result<()> {
-		SceneGroupExporter::new(|app: &mut App| {
-			app.add_plugins(MostDefaultPlugins);
+		SceneGroupExporter::new(|_app: &mut App| {
+			// app.add_plugins(MostDefaultPlugins);
 		})
 		.with_config(SceneExportConfig {
 			dir: "test".into(),

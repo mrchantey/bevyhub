@@ -17,7 +17,7 @@ impl Plugin for DefaultReplicatePlugin {
 			DefaultTransportPlugin,
 		));
 
-		#[cfg(feature = "scene")]
+		// #[cfg(feature = "scene")]
 		app.add_plugins(spawn_scene_file_plugin)
 			.replicate_event_incoming::<SpawnSceneFile>()
 			.replicate_event_outgoing::<SpawnSceneFileResponse>();
@@ -26,7 +26,7 @@ impl Plugin for DefaultReplicatePlugin {
 		// .add_event::<SomeCustomEvent>()
 		// .replicate_event_incoming::<SomeCustomEvent>()
 
-		#[cfg(feature="render")]
+		// #[cfg(feature="render")]
 			app
 			.replicate_observer_incoming::<SaveScreenshot>()
 			.add_observer(screenshot_on_event)

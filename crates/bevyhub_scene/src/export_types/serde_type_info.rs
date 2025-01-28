@@ -4,6 +4,7 @@ use bevy::reflect::ListInfo;
 use bevy::reflect::MapInfo;
 use bevy::reflect::NamedField;
 use bevy::reflect::OpaqueInfo;
+use bevy::reflect::PartialReflect;
 use bevy::reflect::SetInfo;
 use bevy::reflect::StructInfo;
 use bevy::reflect::StructVariantInfo;
@@ -14,7 +15,6 @@ use bevy::reflect::TypeInfo;
 use bevy::reflect::UnitVariantInfo;
 use bevy::reflect::UnnamedField;
 use bevy::reflect::VariantInfo;
-use bevy_reflect::PartialReflect;
 use serde::Deserialize;
 use serde::Serialize;
 use ts_rs::TS;
@@ -60,7 +60,9 @@ impl From<&TypeInfo> for SerdeTypeInfo {
 
 impl SerdeTypeInfo {
 	pub fn new(val: &impl PartialReflect) -> Self {
-		let info = val.get_represented_type_info().expect("Failed to get type info");
+		let info = val
+			.get_represented_type_info()
+			.expect("Failed to get type info");
 		info.into()
 	}
 }
@@ -78,7 +80,10 @@ impl From<&NamedField> for SerdeNamedField {
 		Self {
 			name: field.name().to_string(),
 			type_path: field.type_path().to_string(),
-			docs: field.docs().map(|s| s.to_string()),
+			// #[cfg(feature = "documentation")]
+			// docs: info.docs().map(|s| s.to_string()),
+			// #[cfg(not(feature = "documentation"))]
+			docs: None,
 		}
 	}
 }
@@ -96,7 +101,10 @@ impl From<&UnnamedField> for SerdeUnnamedField {
 		Self {
 			index: field.index(),
 			type_path: field.type_path().to_string(),
-			docs: field.docs().map(|s| s.to_string()),
+			// #[cfg(feature = "documentation")]
+			// docs: info.docs().map(|s| s.to_string()),
+			// #[cfg(not(feature = "documentation"))]
+			docs: None,
 		}
 	}
 }
@@ -273,7 +281,10 @@ impl From<&StructVariantInfo> for SerdeStructVariantInfo {
 		Self {
 			name: info.name().to_string(),
 			fields: info.iter().map(SerdeNamedField::from).collect(),
-			docs: info.docs().map(|s| s.to_string()),
+			// #[cfg(feature = "documentation")]
+			// docs: info.docs().map(|s| s.to_string()),
+			// #[cfg(not(feature = "documentation"))]
+			docs: None,
 		}
 	}
 }
@@ -290,7 +301,10 @@ impl From<&TupleVariantInfo> for SerdeTupleVariantInfo {
 		Self {
 			name: info.name().to_string(),
 			fields: info.iter().map(SerdeUnnamedField::from).collect(),
-			docs: info.docs().map(|s| s.to_string()),
+			// #[cfg(feature = "documentation")]
+			// docs: info.docs().map(|s| s.to_string()),
+			// #[cfg(not(feature = "documentation"))]
+			docs: None,
 		}
 	}
 }
@@ -305,7 +319,10 @@ impl From<&UnitVariantInfo> for SerdeUnitVariantInfo {
 	fn from(info: &UnitVariantInfo) -> Self {
 		Self {
 			name: info.name().to_string(),
-			docs: info.docs().map(|s| s.to_string()),
+			// #[cfg(feature = "documentation")]
+			// docs: info.docs().map(|s| s.to_string()),
+			// #[cfg(not(feature = "documentation"))]
+			docs: None,
 		}
 	}
 }

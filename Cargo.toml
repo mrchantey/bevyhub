@@ -42,7 +42,6 @@ members = [
 	"crates/bevyhub_api",
 	"crates/cli",
 ]
-
 exclude = ["crates/bevyhub_esp"]
 
 
@@ -61,9 +60,15 @@ bevyhub_server = { path = "crates/bevyhub_server", version = "0.0.1-rc.5" }
 # forky = { version = "0.2", features = ["bevy", "web"] }
 
 #💡 local-published
-forky = { path = "../forky", features = ["bevy", "web"] }
+forky = { git = "https://github.com/mrchantey/forky", default-features = false, features = [
+	"bevy",
+	"web",
+] }
 # sweet = { path = "../sweet", version = "0.2.0-rc.3", features = ["bevy"] }
-sweet = { path = "../sweet", features = ["bevy"] }
+sweet = { git = "https://github.com/mrchantey/sweet", default-features = false, features = [
+	"test",
+	"bevy",
+] }
 # sweet = { version = "0.2", features = ["bevy"] }
 
 #💡 Utility
@@ -102,9 +107,7 @@ wasm-bindgen-futures = "0.4"
 
 #💡 Game
 bevy = { version = "0.15", default-features = false }
-bevy_reflect = { version = "0.15" }
-# bevy = { git = "https://github.com/bevyengine/bevy", rev = "0c959f77007c29eead7f902bddd3342a1ecbca20", default-features = false }
-# bevy_reflect = { git = "https://github.com/bevyengine/bevy", rev = "0c959f77007c29eead7f902bddd3342a1ecbca20" }
+# bevy_reflect = { version = "0.15" }
 
 
 [package]
@@ -123,14 +126,15 @@ categories.workspace = true
 include = ["CHANGELOG.md", "README.md", "/src", "/examples", "/scenes"]
 
 [features]
-default = ["net", "render"]
+# default = ["net", "render"]
+export_types = ["core", "bevyhub_core/export_types"]
+core = ["net", "scene", "dep:bevyhub_core"]
 net = ["dep:bevyhub_net"]
-render = ["scene", "bevyhub_core/render"]
+scene = ["dep:bevyhub_scene"]
 tokio = ["bevyhub_net/tokio"]
-scene = ["dep:bevyhub_scene", "bevyhub_core/scene"]
 
 [dependencies]
-bevyhub_core.workspace = true
+bevyhub_core = { workspace = true, optional = true }
 bevyhub_scene = { workspace = true, optional = true }
 bevyhub_net = { workspace = true, optional = true }
 
@@ -271,6 +275,28 @@ name = "space-scene"
 thumb-text = "🌌"
 description = "A starry background."
 path = "scenes/space-scene.json"
+
+
+[[example]]
+name = "bevyhub_app"
+path = "examples/bevyhub_app.rs"
+required-features = ["core"]
+[[example]]
+name = "export_scenes"
+path = "examples/export_scenes.rs"
+required-features = ["core"]
+[[example]]
+name = "export_typescript"
+path = "examples/export_typescript.rs"
+required-features = ["core"]
+[[example]]
+name = "terminal_populated"
+path = "examples/terminal_populated.rs"
+required-features = ["core"]
+[[example]]
+name = "terminal"
+path = "examples/terminal.rs"
+required-features = ["core"]
 
 
 # [[package.metadata.scene]]

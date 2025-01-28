@@ -1,22 +1,20 @@
 use crate::prelude::*;
 use anyhow::Result;
 use flume::Receiver;
-use futures_util::stream::SplitSink;
+use flume::Sender;
 use futures_util::SinkExt;
 use futures_util::StreamExt;
-use tokio::net::TcpStream;
 use tokio_tungstenite::connect_async;
-use tokio_tungstenite::MaybeTlsStream;
-use tokio_tungstenite::WebSocketStream;
+use tokio_tungstenite::tungstenite::Bytes;
 
 type TungMessage = tokio_tungstenite::tungstenite::protocol::Message;
 
 
 pub struct NativeWsClient {
-	pub send:
-		SplitSink<WebSocketStream<MaybeTlsStream<TcpStream>>, TungMessage>,
+	send: Sender<Bytes>,
+	recv: Receiver<Bytes>,
+	send_task: tokio::task::JoinHandle<Result<()>>,
 	recv_task: tokio::task::JoinHandle<Result<()>>,
-	recv: Receiver<Vec<u8>>,
 }
 
 // impl Default for NativeWsClient {
@@ -33,15 +31,23 @@ pub struct NativeWsClient {
 impl NativeWsClient {
 	pub async fn new(url: &str) -> Result<Self> {
 		let (ws_stream, _response) = connect_async(url).await?;
-		let (send, mut recv_stream) = ws_stream.split();
+		let (mut send, mut recv_stream) = ws_stream.split();
 
-		let (recv_send, recv_recv) = flume::unbounded();
+		let (recv_send, recv_recv) = flume::unbounded::<Bytes>();
+		let (send_send, send_recv) = flume::unbounded::<Bytes>();
+		let send_task = tokio::spawn(async move {
+			while let Ok(msg) = send_recv.recv_async().await {
+				send.send(TungMessage::Binary(msg.into())).await?;
+			}
+			Ok(())
+		});
+
 
 		let recv_task = tokio::spawn(async move {
 			while let Some(Ok(msg)) = recv_stream.next().await {
 				match msg {
 					// #[allow(unused_variables)]
-					TungWsEvent::Text(txt) => {
+					TungMessage::Text(_txt) => {
 						// #[cfg(feature = "json")]
 						// recv_send.recv(Message::vec_from_json(&txt)?).await?;
 						// 	#[cfg(not(feature = "json"))]
@@ -57,25 +63,47 @@ impl NativeWsClient {
 		});
 
 		Ok(Self {
-			send,
+			send_task,
 			recv_task,
+			send: send_send,
 			recv: recv_recv,
 		})
 	}
 }
 
 impl Drop for NativeWsClient {
-	fn drop(&mut self) { self.recv_task.abort(); }
+	fn drop(&mut self) {
+		self.send_task.abort();
+		self.recv_task.abort();
+	}
 }
 
 impl Transport for NativeWsClient {
-	async fn send_bytes(&mut self, bytes: Vec<u8>) -> Result<()> {
-		self.send.send(TungMessage::Binary(bytes)).await?;
+	fn send(&mut self, messages: &Vec<Message>) -> Result<()> {
+		let bytes = Message::vec_into_bytes(messages)?;
+		self.send.send(bytes.into())?;
 		Ok(())
 	}
-
-	fn recv_bytes(&mut self) -> Result<Vec<Vec<u8>>> {
-		let bytes = self.recv.try_recv_all()?;
-		Ok(bytes)
+	fn recv(&mut self) -> Result<Vec<Message>> {
+		let messages = self
+			.recv
+			.try_recv_all()?
+			.into_iter()
+			.map(|bytes| Message::vec_from_bytes(&bytes))
+			.collect::<Result<Vec<_>, _>>()?
+			.into_iter()
+			.flatten()
+			.collect::<Vec<_>>();
+		Ok(messages)
 	}
+	// async fn send(&mut self, messa: Vec<u8>) -> Result<()> {
+	// 	let bytes = Message::vec_
+
+	// 	self.send.send(TungMessage::Binary(bytes)).await?;
+	// 	Ok(())
+	// }
+
+	// fn recv(&mut self) -> Result<Vec<Vec<u8>>> {
+	// 	Ok(bytes)
+	// }
 }

@@ -33,9 +33,7 @@ embassy = [
 # bevyhub = { path = "../../", optional = true, default-features = false }
 forky_core = "0.2.0-rc.1"
 
-bevy = { version = "0.14", default-features = false }
-# bevy = { version = "0.15.0-dev", path = "/home/pete/me-temp/bevy-pre-map-entities", default-features = false }
-# bevy = { version = "0.15.0-dev", git = "https://github.com/jrobsonchase/bevy", branch = "pre_map_entities", default-features = false }
+bevy = { version = "0.15", default-features = false }
 
 anyhow = "1.0.75"
 log = { version = "0.4", default-features = false }

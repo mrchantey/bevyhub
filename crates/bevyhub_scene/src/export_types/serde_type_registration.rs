@@ -1,10 +1,10 @@
 use crate::prelude::*;
 use bevy::prelude::*;
 use bevy::reflect::serde::ReflectSerializer;
+use bevy::reflect::GetTypeRegistration;
 use bevy::reflect::TypePathTable;
 use bevy::reflect::TypeRegistration;
 use bevy::reflect::TypeRegistry;
-use bevy_reflect::GetTypeRegistration;
 use serde::Deserialize;
 use serde::Serialize;
 use ts_rs::TS;
@@ -49,14 +49,16 @@ impl SerdeTypeRegistration {
 		registry: &TypeRegistry,
 		registration: &TypeRegistration,
 	) -> Self {
-		let type_info = registration.type_info();
-		let docs = type_info.docs().map(|s| s.to_string());
+		let info = registration.type_info();
 		let default = map_default(registry, registration);
 
 		Self {
-			info: type_info.into(),
-			path_table: type_info.type_path_table().into(),
-			docs,
+			info: info.into(),
+			path_table: info.type_path_table().into(),
+			// #[cfg(feature = "documentation")]
+			// docs: info.docs().map(|s| s.to_string()),
+			// #[cfg(not(feature = "documentation"))]
+			docs: None,
 			default,
 			traits: SerdeTypeTraits::from_registration(registration),
 		}
